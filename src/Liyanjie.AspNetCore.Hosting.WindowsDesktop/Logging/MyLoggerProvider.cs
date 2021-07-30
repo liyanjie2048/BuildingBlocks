@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 
 using Microsoft.Extensions.Logging;
 
-namespace Liyanjie.DesktopWebHost.Logging
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
 {
     [ProviderAlias("My")]
     class MyLoggerProvider : ILoggerProvider

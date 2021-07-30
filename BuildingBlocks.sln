@@ -54,7 +54,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.AspNetCore.Extensi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "test\WebApplication\WebApplication.csproj", "{4E03DA03-2C06-40DF-AF33-D0150D34165D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.DesktopWebHost", "src\Liyanjie.DesktopWebHost\Liyanjie.DesktopWebHost.csproj", "{12148903-8CF3-4991-BB89-045E7BE0A22B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.AspNetCore.Hosting.WindowsDesktop", "src\Liyanjie.AspNetCore.Hosting.WindowsDesktop\Liyanjie.AspNetCore.Hosting.WindowsDesktop.csproj", "{FE9065CC-872F-4F50-A952-1A9CE0D11479}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,10 +138,10 @@ Global
 		{4E03DA03-2C06-40DF-AF33-D0150D34165D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E03DA03-2C06-40DF-AF33-D0150D34165D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E03DA03-2C06-40DF-AF33-D0150D34165D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12148903-8CF3-4991-BB89-045E7BE0A22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12148903-8CF3-4991-BB89-045E7BE0A22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12148903-8CF3-4991-BB89-045E7BE0A22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12148903-8CF3-4991-BB89-045E7BE0A22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE9065CC-872F-4F50-A952-1A9CE0D11479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9065CC-872F-4F50-A952-1A9CE0D11479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9065CC-872F-4F50-A952-1A9CE0D11479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9065CC-872F-4F50-A952-1A9CE0D11479}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,7 +166,7 @@ Global
 		{19BC5CB9-8EB7-4B63-834A-D11B0B6F3EB5} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{EC552C20-3E84-4015-8F5A-B285355B6A29} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{4E03DA03-2C06-40DF-AF33-D0150D34165D} = {E8BAE215-1C03-4791-8D18-D34C71363E07}
-		{12148903-8CF3-4991-BB89-045E7BE0A22B} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
+		{FE9065CC-872F-4F50-A952-1A9CE0D11479} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8F8E1D8-848B-4EE7-B1FD-9200F7EF1AD2}

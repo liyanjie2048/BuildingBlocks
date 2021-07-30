@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Liyanjie.DesktopWebHost": {
+    "Liyanjie.AspNetCore.Hosting.WindowsDesktop": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

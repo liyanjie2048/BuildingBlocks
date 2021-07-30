@@ -1,5 +1,5 @@
 ﻿
-namespace Liyanjie.DesktopWebHost
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 {
     partial class Form
     {
@@ -57,6 +57,7 @@ namespace Liyanjie.DesktopWebHost
             this.TextBox.Size = new System.Drawing.Size(800, 450);
             this.TextBox.TabIndex = 0;
             this.TextBox.TabStop = false;
+            this.TextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TextBox_PreviewKeyDown);
             // 
             // NotifyIcon
             // 
@@ -117,6 +118,7 @@ namespace Liyanjie.DesktopWebHost
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Liyanjie.Desktop.WebHost";
             this.Load += new System.EventHandler(this.Form_Load);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Form_PreviewKeyDown);
             this.ContextMenuStrip_NotifyIcon.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

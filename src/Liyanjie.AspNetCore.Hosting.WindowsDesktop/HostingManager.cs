@@ -9,15 +9,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Liyanjie.DesktopWebHost
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 {
-    class WebHostManager
+    class HostingManager
     {
         static readonly string[] startup;
         static readonly string[] urls;
-        static IHost webhost;
+        static IHost host;
 
-        static WebHostManager()
+        static HostingManager()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Liyanjie.DesktopWebHost
             catch { }
         }
 
-        internal static void StartWebHost()
+        internal static void Start()
         {
             if (startup is null || startup.Length < 2)
             {
@@ -48,7 +48,7 @@ namespace Liyanjie.DesktopWebHost
             }
             try
             {
-                webhost = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
+                host = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
                         webBuilder.UseStartup(Assembly.LoadFrom(startup[0]).GetType(startup[1]));
@@ -57,32 +57,28 @@ namespace Liyanjie.DesktopWebHost
                         webBuilder.ConfigureLogging(logging => logging.AddProvider(new Logging.MyLoggerProvider()));
                     })
                     .Build();
-                webhost.RunAsync();
+                host.RunAsync();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
         }
-        internal static void CloseWebHost()
+        internal static void Close()
         {
             try
             {
-                if (webhost is not null)
+                if (host is not null)
                 {
-                    webhost.StopAsync().ConfigureAwait(false);
-                    webhost.Dispose();
+                    host.StopAsync().ConfigureAwait(false);
+                    host.Dispose();
                 }
             }
             catch { }
         }
         internal static string[] GetUrls()
         {
-            return urls?.Length > 0
-                ? urls
-                : new[] { "http://localhost:5000" };
-
-            //System.Diagnostics.Process.Start("explorer", url);
+            return urls?.Length > 0 ? urls : new[] { "http://localhost:5000" };
         }
     }
 }

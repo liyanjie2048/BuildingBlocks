@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Liyanjie.DesktopWebHost
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 {
     public partial class Form : System.Windows.Forms.Form
     {
@@ -17,26 +17,27 @@ namespace Liyanjie.DesktopWebHost
 
         private void Form_Load(object sender, EventArgs e)
         {
-            var favicon = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "favicon.ico"));
-            if (File.Exists(favicon))
+            var appIcon = ConfigurationManager.AppSettings["AppIcon"] ?? "icon.ico";
+            var iconPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appIcon));
+            if (File.Exists(iconPath))
             {
-                var icon = new System.Drawing.Icon(favicon);
+                var icon = new System.Drawing.Icon(iconPath);
                 this.Icon = icon;
                 this.NotifyIcon.Icon = icon;
             }
-            var appname = ConfigurationManager.AppSettings["Appname"];
-            if (!string.IsNullOrEmpty(appname))
+            var appName = ConfigurationManager.AppSettings["AppName"];
+            if (!string.IsNullOrEmpty(appName))
             {
-                this.Text = appname;
-                this.NotifyIcon.Text = appname;
+                this.Text = appName;
+                this.NotifyIcon.Text = appName;
             }
 
             this.Visible = false;
             this.FormClosing += Form_FormClosing;
             this.LogShowing += Form_LogShowing;
 
-            Task.Run(() => WebHostManager.StartWebHost());
-            foreach (var url in WebHostManager.GetUrls().Reverse())
+            Task.Run(() => HostingManager.Start());
+            foreach (var url in HostingManager.GetUrls().Reverse())
             {
                 var item = new ToolStripMenuItem
                 {
@@ -59,9 +60,18 @@ namespace Liyanjie.DesktopWebHost
                 return;
             }
         }
+        private void Form_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            PreviewKeyDown_(sender, e);
+        }
         private void Form_LogShowing(object sender, Logging.LogMessage e)
         {
             this.TextBox.AppendText(e.Message);
+        }
+
+        private void TextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            PreviewKeyDown_(sender, e);
         }
 
         private void NotifyIcon_DoubleClick(object sender, EventArgs e)
@@ -76,21 +86,19 @@ namespace Liyanjie.DesktopWebHost
         }
         private void ToolStripMenuItem_Restart_Click(object sender, EventArgs e)
         {
-            WebHostManager.CloseWebHost();
+            HostingManager.Close();
             Task.Run(async () =>
             {
                 this.TextBox.Clear();
                 this.TextBox.AppendText($"WebHost restarting……{Environment.NewLine}");
                 await Task.Delay(3000);
-                this.TextBox.AppendText($"WebHost restart success.{Environment.NewLine}{Environment.NewLine}");
-                WebHostManager.StartWebHost();
+                this.TextBox.AppendText($"WebHost restarts success.{Environment.NewLine}{Environment.NewLine}");
+                HostingManager.Start();
             });
-
         }
         private void ToolStripMenuItem_Exit_Click(object sender, EventArgs e)
         {
-            WebHostManager.CloseWebHost();
-            Application.Exit();
+            Exit();
         }
 
         private event EventHandler<Logging.LogMessage> LogShowing;
@@ -98,6 +106,22 @@ namespace Liyanjie.DesktopWebHost
         internal void ShowLog(Logging.LogMessage log)
         {
             LogShowing?.Invoke(this, log);
+        }
+
+        void PreviewKeyDown_(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.C))
+            {
+                this.TextBox.AppendText($"{Environment.NewLine}Shutting down...");
+                System.Threading.Thread.Sleep(1000);
+                Exit();
+            }
+        }
+
+        void Exit()
+        {
+            HostingManager.Close();
+            Application.Exit();
         }
     }
 }

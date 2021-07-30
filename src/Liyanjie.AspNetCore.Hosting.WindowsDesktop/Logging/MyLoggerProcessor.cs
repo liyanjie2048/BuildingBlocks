@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Liyanjie.DesktopWebHost.Logging
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
 {
     class MyLoggerProcessor : IDisposable
     {
@@ -33,7 +33,6 @@ namespace Liyanjie.DesktopWebHost.Logging
                 catch (InvalidOperationException) { }
             }
 
-            // Adding is completed so just log the message
             try
             {
                 WriteMessage(message);
@@ -41,7 +40,6 @@ namespace Liyanjie.DesktopWebHost.Logging
             catch (Exception) { }
         }
 
-        // for testing
         static void WriteMessage(LogMessage message)
         {
             Program.Form.ShowLog(message);

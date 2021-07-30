@@ -1,6 +1,6 @@
 using System;
 
-namespace Liyanjie.DesktopWebHost.Logging
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
 {
     readonly struct LogMessage
     {

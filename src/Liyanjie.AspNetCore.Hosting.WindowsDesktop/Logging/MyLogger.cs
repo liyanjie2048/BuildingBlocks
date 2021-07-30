@@ -3,7 +3,7 @@ using System.Text;
 
 using Microsoft.Extensions.Logging;
 
-namespace Liyanjie.DesktopWebHost.Logging
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
 {
     class MyLogger : ILogger
     {
@@ -15,7 +15,7 @@ namespace Liyanjie.DesktopWebHost.Logging
         static StringBuilder logBuilder;
 
         readonly string name;
-        readonly MyLoggerProcessor queueProcessor;
+        readonly MyLoggerProcessor processor;
 
         static MyLogger()
         {
@@ -23,10 +23,10 @@ namespace Liyanjie.DesktopWebHost.Logging
             newLineWithMessagePadding = Environment.NewLine + messagePadding;
         }
 
-        internal MyLogger(string name, MyLoggerProcessor loggerProcessor)
+        internal MyLogger(string name, MyLoggerProcessor processor)
         {
             this.name = name ?? throw new ArgumentNullException(nameof(name));
-            this.queueProcessor = loggerProcessor ?? throw new ArgumentNullException(nameof(loggerProcessor)); ;
+            this.processor = processor ?? throw new ArgumentNullException(nameof(processor)); ;
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -40,7 +40,7 @@ namespace Liyanjie.DesktopWebHost.Logging
             var message = formatter(state, exception);
 
             if (!string.IsNullOrEmpty(message) || exception != null)
-                WriteMessage(queueProcessor, logLevel, name, eventId.Id, message, exception);
+                WriteMessage(processor, logLevel, name, eventId.Id, message, exception);
         }
 
         public bool IsEnabled(LogLevel logLevel)
@@ -50,7 +50,13 @@ namespace Liyanjie.DesktopWebHost.Logging
 
         public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
 
-        static void WriteMessage(MyLoggerProcessor queueProcessor, LogLevel logLevel, string logName, int eventId, string message, Exception exception)
+        static void WriteMessage(
+            MyLoggerProcessor queueProcessor,
+            LogLevel logLevel, 
+            string logName, 
+            int eventId, 
+            string message,
+            Exception exception)
         {
             var _logBuilder = logBuilder ?? new();
             logBuilder = null;

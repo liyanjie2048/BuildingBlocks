@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Liyanjie.DesktopWebHost
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 {
     static class Program
     {
