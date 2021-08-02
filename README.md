@@ -50,11 +50,10 @@
   - 将 Host 目录中对应版本的文件夹下的所有文件设置 “生成操作=内容”、“复制到输出目录=始终复制”
   - 编译 AspNetCore 应用（net5.0下需要先修改targetFramework为net5.0-windows）
   - 发布 AspNetCore 应用
-  - 进入发布后的目录，将 DWH\对应版本\* 目录下所有文件移动到与 AspNetCore 应用同一目录
+  - 进入发布后的目录，将 Host\对应版本\* 目录下所有文件移动到与 AspNetCore 应用同一目录
   - 配置 Host.exe.config，将 Startup 指向 AspNetCore 应用的 dll
   - 运行 Host.exe
-  - 将 favicon.ico 文件放入 Host.exe 所在目录，可以改变通知栏图标
-  - 在 Host.exe.config 中可以配置桌面应用显示名称、绑定 host 和 port
+  - 在 Host.exe.config 中可以配置桌面应用图标与名称、绑定 host 和 port
 - #### Liyanjie.Drawing.Extensions
     Image绘图相关的一些扩展
   - GIFWriter

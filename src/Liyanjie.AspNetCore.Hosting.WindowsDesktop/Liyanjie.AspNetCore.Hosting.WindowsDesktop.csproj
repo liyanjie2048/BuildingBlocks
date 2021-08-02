@@ -26,11 +26,13 @@
       <None Remove="Host\net5.0-windows\Host.dll.config" />
       <None Remove="Host\net5.0-windows\Host.exe" />
       <None Remove="Host\net5.0-windows\Host.runtimeconfig.json" />
+      <None Remove="Host\net5.0-windows\wwwroot\index.html" />
       <None Remove="Host\netcoreapp3.1\Host.deps.json" />
       <None Remove="Host\netcoreapp3.1\Host.dll" />
       <None Remove="Host\netcoreapp3.1\Host.dll.config" />
       <None Remove="Host\netcoreapp3.1\Host.exe" />
       <None Remove="Host\netcoreapp3.1\Host.runtimeconfig.json" />
+      <None Remove="Host\netcoreapp3.1\wwwroot\index.html" />
     </ItemGroup>
 
     <ItemGroup>
@@ -47,6 +49,9 @@
       <Content Include="Host\net5.0-windows\Host.runtimeconfig.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Include="Host\net5.0-windows\wwwroot\index.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="Host\netcoreapp3.1\Host.deps.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
@@ -60,6 +65,9 @@
       <Content Include="Host\netcoreapp3.1\Host.runtimeconfig.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Include="Host\netcoreapp3.1\wwwroot\index.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -70,6 +78,12 @@
         <None Include="App.config">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="wwwroot\index.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
