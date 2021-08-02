@@ -11,13 +11,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 {
-    class HostingManager
+    class HostManager
     {
         static readonly string[] startup;
         static readonly string[] urls;
         static IHost host;
 
-        static HostingManager()
+        static HostManager()
         {
             try
             {

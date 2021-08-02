@@ -36,8 +36,8 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
             this.FormClosing += Form_FormClosing;
             this.LogShowing += Form_LogShowing;
 
-            Task.Run(() => HostingManager.Start());
-            foreach (var url in HostingManager.GetUrls().Reverse())
+            Task.Run(() => HostManager.Start());
+            foreach (var url in HostManager.GetUrls().Reverse())
             {
                 var item = new ToolStripMenuItem
                 {
@@ -86,14 +86,14 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
         }
         private void ToolStripMenuItem_Restart_Click(object sender, EventArgs e)
         {
-            HostingManager.Close();
+            HostManager.Close();
             Task.Run(async () =>
             {
                 this.TextBox.Clear();
                 this.TextBox.AppendText($"WebHost restarting……{Environment.NewLine}");
                 await Task.Delay(3000);
                 this.TextBox.AppendText($"WebHost restarts success.{Environment.NewLine}{Environment.NewLine}");
-                HostingManager.Start();
+                HostManager.Start();
             });
         }
         private void ToolStripMenuItem_Exit_Click(object sender, EventArgs e)
@@ -120,7 +120,7 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 
         void Exit()
         {
-            HostingManager.Close();
+            HostManager.Close();
             Application.Exit();
         }
     }
