@@ -4,7 +4,7 @@
 
 - #### Liyanjie.AspNetCore.Authentication.Code
     Code认证
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     // services is IServiceCollection
     services.AddAuthentication().AddCode("CODE");
@@ -23,7 +23,7 @@
     {
         [ModelBinder(typeof(Liyanjie.AspNetCore.Extensions.DelimitedArrayModelBinder))]
         [DelimitedArray(Delimiter = ",")]
-        public string[] Array { get; set; }
+        public string[] ArrayProperty { get; set; }
     }
     ```
   - UniqueAuthorizationFilter
@@ -37,7 +37,7 @@
     ```csharp
     services.AddHostedService<WakeupBackgroundService>();  //默认从配置文件中查找键“WakeupUrl”
     ```
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     string GetClientIpAddress(this HttpContext httpContext);  //获取客户端IP地址
     bool IsValid(this ModelStateDictionary modelState, string key);  //查看模型绑定中某一项是否验证通过
@@ -56,11 +56,11 @@
   - 在 Host.exe.config 中可以配置桌面应用图标与名称、绑定 host 和 port
 - #### Liyanjie.Drawing.Extensions
     Image绘图相关的一些扩展
-  - GIFWriter
+  - GifWriter
     ```csharp
     void WriteFrame(Image image, int delay = 0);
     ```
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     Image SetOpacity(this Image image, float opacity);  //设置透明度
     Image Clear(this Image image, Color color);  //清除整个图像并以指定颜色填充
@@ -68,7 +68,7 @@
     Image Crop(this Image image, Rectangle rectangle);  //裁剪
     Image Resize(this Image image, int? width, int? height, bool zoom = true, bool coverSize = false);  //调整尺寸
     Image Combine(this Image image, params (Point Point, Size Size, Image Image)[] images);  //组合多张图片
-    Image CombineToGIF(this Image image, int delay = 0, int repeat = 0, params (Point Point, Size Size, Image Image, int Delay)[] images);  //组合多张图片并生成GIF
+    Image CombineToGif(this Image image, int delay = 0, int repeat = 0, params (Point Point, Size Size, Image Image, int Delay)[] images);  //组合多张图片并生成GIF
     Image Concatenate(this Image image, Image image2, bool direction = false);  //拼接多张图片
     void CompressSave(this Image image, string path, long quality, ImageFormat format = default);  //压缩存储
     string Encode(this Image image, ImageFormat format = default);  //将图片转换为Base64字符串
@@ -83,7 +83,7 @@
     ```
 - #### Liyanjie.GrpcServer
     GrpcServer实现
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     // services is IServiceCollection
     services.AddGrpcServer(options => 
@@ -139,7 +139,7 @@
     ```csharp
     BsonSerializer.RegisterSerializer(new MongoDBDateTimeOffsetSerializer());
     ```
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     IMongoQueryable<TSource> IfWhere<TSource>(this IMongoQueryable<TSource> source, Func<bool> ifPredicate, Expression<Func<TSource, bool>> wherePredicate);
     ```
@@ -169,7 +169,7 @@
     ```csharp
     IEnumerable<T> GetItems<T>() where T : Enum;
     ```
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     //so many…
     ```
@@ -198,7 +198,7 @@
     string[] GetChineseWordPinyin(this string chineseWord);  //尝试获取中文词语的拼音
     string[] GetChineseCharPinyins(this char chineseChar);  //尝试获取中文字符的拼音
     ```
-  - ExtendMethods
+  - Extension Methods
     ```csharp
     string ToCn(this number number, OutputType outputType);  //将数字转换为中文
     string ChangeToZhHans(this string zhHantInput);  //中文繁体转简体
@@ -216,7 +216,7 @@
     Guid Guid.newGuid();  //新Guid实例
     Guid.prototype.format(format?: 'N|D|B|P');  //Guid格式化，format默认为D
     ```
-  - ExtendMethods
+  - Extension Methods
     ```javascript
     Date.prototype.format(format: string, weekDisplay: {sun,mon,tue,wed,thu,fri,sat}); //Date格式化
     Date.prototype.addMillionSeconds(millionSeconds: number);

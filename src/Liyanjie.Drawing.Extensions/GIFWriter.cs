@@ -5,7 +5,7 @@ using System.IO;
 
 namespace System.Drawing
 {
-    public class GIFWriter : IDisposable
+    public class GifWriter : IDisposable
     {
         const long SourceGlobalColorInfoPosition = 10;
         const long SourceImageBlockPosition = 789;
@@ -15,7 +15,7 @@ namespace System.Drawing
 
         bool firstFrame = true;
 
-        public GIFWriter(
+        public GifWriter(
             Stream outStream,
             int defaultFrameDelay = 500,
             int repeat = 0)

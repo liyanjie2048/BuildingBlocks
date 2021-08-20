@@ -21,7 +21,7 @@ namespace Liyanjie.Utilities.Cn
         /// <summary>
         /// 
         /// </summary>
-        public static string PhoneNumbersFile { get; set; } = @"Resources\phone.dat";
+        public static string DataFile { get; set; } = @"Resources\phone.dat";
         static readonly Lazy<Dictionary<string, PhoneNumber>> phoneNumbers_Lazy = new(() => ReadData());
         static Dictionary<string, PhoneNumber> ReadData()
         {
@@ -73,7 +73,7 @@ namespace Liyanjie.Utilities.Cn
         /// <param name="phoneNumber"></param>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static bool TryFindPhoneNumber(string phoneNumber, out PhoneNumber number)
+        public static bool TryFind(string phoneNumber, out PhoneNumber number)
         {
             number = default;
 

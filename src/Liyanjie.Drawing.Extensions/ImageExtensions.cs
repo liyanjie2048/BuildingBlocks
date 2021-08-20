@@ -237,7 +237,7 @@ namespace System.Drawing
         /// <param name="repeat"></param>
         /// <param name="images"></param>
         /// <returns></returns>
-        public static Image CombineToGIF(this Image image,
+        public static Image CombineToGif(this Image image,
             int delay = 0,
             int repeat = -1,
             params (Point Point, Size Size, Image Image, int Delay)[] images)
@@ -248,7 +248,7 @@ namespace System.Drawing
                 throw new ArgumentNullException(nameof(images));
 
             using var memory = new MemoryStream();
-            using var gif = new GIFWriter(memory, repeat: repeat);
+            using var gif = new GifWriter(memory, repeat: repeat);
             gif.WriteFrame(image, delay);
 
             foreach (var item in images)
