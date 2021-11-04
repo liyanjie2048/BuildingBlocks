@@ -7,23 +7,13 @@ namespace System
     /// </summary>
     public static class NumberExtensions
     {
-        public enum OutputType
-        {
-            /// <summary>
-            /// 12345.6789 &gt;&gt; 一万二千三百四十五又六分七釐八毫九丝
-            /// </summary>
-            Number,
-
-            /// <summary>
-            /// 12345.6789 &gt;&gt; 壹万贰仟叁佰肆拾伍圆陆角柒分捌厘玖
-            /// </summary>
-            Currency,
-
-            /// <summary>
-            /// 12345.6789 &gt;&gt; 一二三四五点六七八九
-            /// </summary>
-            Digit,
-        }
+        /// <summary>
+        /// 将数字转换成中文表示形式
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
+        /// <returns></returns>
+        public static string ToCn(this short number, CnNumberType type) => ToCn<long>(number, type);
 
         /// <summary>
         /// 将数字转换成中文表示形式
@@ -31,7 +21,7 @@ namespace System
         /// <param name="number"></param>
         /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
         /// <returns></returns>
-        public static string ToCn(this short number, OutputType type) => ToCn<long>(number, type);
+        public static string ToCn(this int number, CnNumberType type) => ToCn<long>(number, type);
 
         /// <summary>
         /// 将数字转换成中文表示形式
@@ -39,7 +29,7 @@ namespace System
         /// <param name="number"></param>
         /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
         /// <returns></returns>
-        public static string ToCn(this int number, OutputType type) => ToCn<long>(number, type);
+        public static string ToCn(this long number, CnNumberType type) => ToCn<long>(number, type);
 
         /// <summary>
         /// 将数字转换成中文表示形式
@@ -47,7 +37,7 @@ namespace System
         /// <param name="number"></param>
         /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
         /// <returns></returns>
-        public static string ToCn(this long number, OutputType type) => ToCn<long>(number, type);
+        public static string ToCn(this float number, CnNumberType type) => ToCn<double>(number, type);
 
         /// <summary>
         /// 将数字转换成中文表示形式
@@ -55,7 +45,7 @@ namespace System
         /// <param name="number"></param>
         /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
         /// <returns></returns>
-        public static string ToCn(this float number, OutputType type) => ToCn<double>(number, type);
+        public static string ToCn(this double number, CnNumberType type) => ToCn<double>(number, type);
 
         /// <summary>
         /// 将数字转换成中文表示形式
@@ -63,23 +53,15 @@ namespace System
         /// <param name="number"></param>
         /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
         /// <returns></returns>
-        public static string ToCn(this double number, OutputType type) => ToCn<double>(number, type);
+        public static string ToCn(this decimal number, CnNumberType type) => ToCn<decimal>(number, type);
 
-        /// <summary>
-        /// 将数字转换成中文表示形式
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="type">Normal:中文数字,Currency:中文货币,Direct:仅转中文</param>
-        /// <returns></returns>
-        public static string ToCn(this decimal number, OutputType type) => ToCn<decimal>(number, type);
-
-        static string ToCn<T>(T number, OutputType type)
+        static string ToCn<T>(T number, CnNumberType type)
         {
             return type switch
             {
-                OutputType.Number => ConvertToCnNumber(number),
-                OutputType.Currency => ConvertToCnCurrency(number),
-                OutputType.Digit => ConvertToCnDigit(number),
+                CnNumberType.Number => ConvertToCnNumber(number),
+                CnNumberType.Currency => ConvertToCnCurrency(number),
+                CnNumberType.Digit => ConvertToCnDigit(number),
                 _ => throw new ArgumentException("T must be short|int|long|decimal|float|double", nameof(number))
             };
         }
@@ -115,5 +97,23 @@ namespace System
             Console.WriteLine(s);
             return Regex.Replace(s, ".", _ => "负点-〇一二三四五六七八九"[_.Value[0] - 45].ToString());
         }
+    }
+
+    public enum CnNumberType
+    {
+        /// <summary>
+        /// 12345.6789 &gt;&gt; 一万二千三百四十五又六分七釐八毫九丝
+        /// </summary>
+        Number,
+
+        /// <summary>
+        /// 12345.6789 &gt;&gt; 壹万贰仟叁佰肆拾伍圆陆角柒分捌厘玖
+        /// </summary>
+        Currency,
+
+        /// <summary>
+        /// 12345.6789 &gt;&gt; 一二三四五点六七八九
+        /// </summary>
+        Digit,
     }
 }

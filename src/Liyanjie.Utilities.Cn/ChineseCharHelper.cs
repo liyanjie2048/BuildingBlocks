@@ -11,11 +11,9 @@ namespace Liyanjie.Utilities.Cn
     /// </summary>
     public class ChineseCharHelper
     {
-        public static string ChineseCharsFile { get; set; } = @"Resources\\ChineseChars.txt";
-        static readonly Lazy<Dictionary<char, (string, int, string[])>> chineseChars_Lazy = new(() => ReadData());
-        static Dictionary<char, (string, int, string[])> ReadData()
+        static readonly Lazy<Dictionary<char, (string, int, string[])>> lazyData = new(() =>
         {
-            var dataFile = ChineseCharsFile.GetAbsolutePath();
+            var dataFile = DataFile.GetAbsolutePath();
             if (!File.Exists(dataFile))
                 throw new FileNotFoundException("数据文件未找到", dataFile);
             var chineseChars = new Dictionary<char, (string, int, string[])>();
@@ -32,9 +30,11 @@ namespace Liyanjie.Utilities.Cn
                 chineseChars.Add(@char, (array[0], int.Parse(array[2]), array[3].Split(',')));
             }
             return chineseChars;
-        }
+        });
 
-        public static IReadOnlyDictionary<char, (string Unicode, int StrokeCount, string[] Pinyins)> ChineseChars => chineseChars_Lazy.Value;
+        public static string DataFile { get; set; } = @"Resources\\ChineseChars.txt";
+
+        public static IReadOnlyDictionary<char, (string Unicode, int StrokeCount, string[] Pinyins)> ChineseChars => lazyData.Value;
 
         public static bool TryGetChineseCharInfo(char chineseChar, out (string Unicode, int StrokeCount, string[] Pinyins) info)
         {

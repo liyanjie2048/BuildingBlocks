@@ -14,25 +14,47 @@ namespace System.Security.Cryptography
         /// 
         /// </summary>
         /// <returns></returns>
-        public static (string PublicKey, string PrivateKey) GenerateKeys()
+        public static (Stream RSAPublicKeyXml, Stream RSAPrivateKeyXml) GenerateXmlKeys()
         {
             using var rsa = RSA.Create();
-            return (SerializeParameters(rsa.ExportParameters(false)), SerializeParameters(rsa.ExportParameters(true)));
+            return (SerializeRSAParameters(rsa.ExportParameters(false)), SerializeRSAParameters(rsa.ExportParameters(true)));
         }
 
-        internal static string SerializeParameters(RSAParameters parameters)
+        internal static Stream SerializeRSAParameters(RSAParameters parameters)
         {
-            using var stream = new MemoryStream();
+            var stream = new MemoryStream();
             using var xmlWriter = XmlWriter.Create(stream);
             new XmlSerializer(typeof(RSAParameters)).Serialize(xmlWriter, parameters);
-            return Encoding.UTF8.GetString(stream.ToArray());
+            return stream;
         }
 
-        internal static RSAParameters DeserializeParameters(string xmlString)
+        internal static RSAParameters DeserializeRSAParameters(Stream xmlDocStream)
         {
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xmlString));
-            using var xmlReader = XmlReader.Create(stream);
+            using var xmlReader = XmlReader.Create(xmlDocStream);
             return (RSAParameters)new XmlSerializer(typeof(RSAParameters)).Deserialize(xmlReader);
         }
+
+#if NETSTANDARD
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static (string RSAPublicKeyString, string RSAPrivateKeyString) GenerateStringKeys()
+        {
+            using var rsa = RSA.Create();
+
+            return (SerializeRSAKey(rsa.ExportRSAPublicKey()), SerializeRSAKey(rsa.ExportRSAPrivateKey()));
+        }
+
+        internal static string SerializeRSAKey(byte[] keyBytes)
+        {
+            return Convert.ToBase64String(keyBytes);
+        }
+
+        internal static byte[] DeserializeRSAKey(string keyString)
+        {
+            return Convert.FromBase64String(keyString);
+        }
+#endif
     }
 }

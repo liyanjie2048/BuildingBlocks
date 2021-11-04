@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,8 +18,8 @@ namespace System
         /// <param name="encodeMode"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        public static string Encode(this string input, EncodeMode encodeMode, Encoding encoding = null)
-            => (encoding ?? Encoding.Unicode).GetBytes(input).Encode(encodeMode).ToString(true);
+        public static string Encode(this string input, EncodeType encodeMode, Encoding encoding = null)
+            => (encoding ?? Encoding.UTF8).GetBytes(input).Encode(encodeMode).ToString(true);
 
         /// <summary>
         /// 
@@ -27,7 +28,7 @@ namespace System
         /// <param name="encoding"></param>
         /// <returns></returns>
         public static string Base64Encode(this string input, Encoding encoding = null)
-            => Convert.ToBase64String((encoding ?? Encoding.Unicode).GetBytes(input));
+            => Convert.ToBase64String((encoding ?? Encoding.UTF8).GetBytes(input));
 
         /// <summary>
         /// 
@@ -36,7 +37,7 @@ namespace System
         /// <param name="encoding"></param>
         /// <returns></returns>
         public static string Base64Decode(this string input, Encoding encoding = null)
-            => (encoding ?? Encoding.Unicode).GetString(Convert.FromBase64String(input));
+            => (encoding ?? Encoding.UTF8).GetString(Convert.FromBase64String(input));
 
         /// <summary>
         /// Aes加密
@@ -46,7 +47,7 @@ namespace System
         /// <param name="iv">长度16字符，为空时使用ECB模式，非空时使用CBC模式</param>
         /// <returns>Base64String</returns>
         public static string AesEncrypt(this string input, string key, string iv = null)
-            => Convert.ToBase64String(Encoding.Unicode.GetBytes(input).AesEncrypt(key, iv));
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).AesEncrypt(key, iv));
 
         /// <summary>
         /// Aes解密
@@ -56,7 +57,7 @@ namespace System
         /// <param name="iv">长度16字符，为空时使用ECB模式，非空时使用CBC模式</param>
         /// <returns></returns>
         public static string AesDecrypt(this string base64String, string key, string iv = null)
-            => Encoding.Unicode.GetString(Convert.FromBase64String(base64String).AesDecrypt(key, iv));
+            => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).AesDecrypt(key, iv));
 
         /// <summary>
         /// 加密
@@ -66,7 +67,7 @@ namespace System
         /// <param name="key">长度24字符</param>
         /// <returns>Base64String</returns>
         public static string TripleDESEncrypt(this string input, string key, string iv = null)
-            => Convert.ToBase64String(Encoding.Unicode.GetBytes(input).TripleDESEncrypt(key, iv));
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).TripleDESEncrypt(key, iv));
 
         /// <summary>
         /// 解密
@@ -76,46 +77,126 @@ namespace System
         /// <param name="key">长度24字符</param>
         /// <returns></returns>
         public static string TripleDESDecrypt(this string base64String, string key, string iv = null)
-            => Encoding.Unicode.GetString(Convert.FromBase64String(base64String).TripleDESDecrypt(key, iv));
+            => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).TripleDESDecrypt(key, iv));
 
         /// <summary>
         /// 加密
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="publicKeyString">公钥</param>
+        /// <param name="publicKey_xml">公钥</param>
         /// <returns>Base64String</returns>
-        public static string RSAEncrypt(this string input, string publicKeyString)
-            => Convert.ToBase64String(Encoding.Unicode.GetBytes(input).RSAEncrypt(publicKeyString));
+        public static string RSAEncrypt(this string input, Stream publicKey_xml)
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSAEncrypt(publicKey_xml));
 
         /// <summary>
         /// 解密
         /// </summary>
         /// <param name="base64String"></param>
-        /// <param name="privateKeyString">私钥</param>
+        /// <param name="privateKey_xml">私钥</param>
         /// <returns></returns>
-        public static string RSADecrypt(this string base64String, string privateKeyString)
-            => Encoding.Unicode.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKeyString));
+        public static string RSADecrypt(this string base64String, Stream privateKey_xml)
+            => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKey_xml));
+
+        /// <summary>
+        /// 签名
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="privateKey_xml">私钥</param>
+        /// <param name="hashAlgorithmName"></param>
+        /// <param name="rsaSignaturePadding"></param>
+        /// <returns>Base64String</returns>
+        public static string RSASign(this string input,
+            Stream privateKey_xml,
+            HashAlgorithmName hashAlgorithmName,
+            RSASignaturePadding rsaSignaturePadding = default)
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSASign(privateKey_xml, hashAlgorithmName, rsaSignaturePadding));
+
+        /// <summary>
+        /// 验签
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="signature"></param>
+        /// <param name="publicKey_xml"></param>
+        /// <param name="hashAlgorithmName"></param>
+        /// <param name="rsaSignaturePadding"></param>
+        /// <returns></returns>
+        public static bool RSAVerify(this string input,
+            string signature,
+            Stream publicKey_xml,
+            HashAlgorithmName hashAlgorithmName,
+            RSASignaturePadding rsaSignaturePadding = default)
+            => Encoding.UTF8.GetBytes(input).RSAVerify(Convert.FromBase64String(signature), publicKey_xml, hashAlgorithmName, rsaSignaturePadding);
 
 #if NETSTANDARD
         /// <summary>
-        /// 
+        /// 加密
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="publicKeyString">公钥</param>
+        /// <param name="publicKey_xml">公钥</param>
         /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
         /// <returns>Base64String</returns>
-        public static string RSAEncrypt(this string input, string publicKeyString, RSAEncryptionPadding encryptionPadding)
-            => Convert.ToBase64String(Encoding.Unicode.GetBytes(input).RSAEncrypt(publicKeyString, encryptionPadding));
+        public static string RSAEncrypt(this string input, Stream publicKey_xml, RSAEncryptionPadding encryptionPadding)
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSAEncrypt(publicKey_xml, encryptionPadding));
 
         /// <summary>
-        /// 
+        /// 解密
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="privateKeyString">私钥</param>
+        /// <param name="base64String"></param>
+        /// <param name="privateKey_xml">私钥</param>
         /// <param name="encryptionPadding"></param>
         /// <returns></returns>
-        public static string RSADecrypt(this string input, string privateKeyString, RSAEncryptionPadding encryptionPadding)
-            => Encoding.Unicode.GetString(Convert.FromBase64String(input).RSADecrypt(privateKeyString, encryptionPadding));
+        public static string RSADecrypt(this string base64String, Stream privateKey_xml, RSAEncryptionPadding encryptionPadding)
+            => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKey_xml, encryptionPadding));
+            
+        /// <summary>
+        /// 加密
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="publicKey_str">公钥</param>
+        /// <param name="encryptionPadding"></param>
+        /// <returns>Base64String</returns>
+        public static string RSAEncrypt(this string input, string publicKey_str, RSAEncryptionPadding encryptionPadding = default)
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSAEncrypt(publicKey_str, encryptionPadding));
+
+        /// <summary>
+        /// 解密
+        /// </summary>
+        /// <param name="base64String"></param>
+        /// <param name="privateKey_str">私钥</param>
+        /// <param name="encryptionPadding"></param>
+        /// <returns></returns>
+        public static string RSADecrypt(this string base64String, string privateKey_str, RSAEncryptionPadding encryptionPadding = default)
+            => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKey_str, encryptionPadding));
+
+        /// <summary>
+        /// 签名
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="privateKey_str">私钥</param>
+        /// <param name="hashAlgorithmName"></param>
+        /// <param name="rsaSignaturePadding"></param>
+        /// <returns>Base64String</returns>
+        public static string RSASign(this string input,
+            string privateKey_str,
+            HashAlgorithmName hashAlgorithmName,
+            RSASignaturePadding rsaSignaturePadding = default)
+            => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSASign(privateKey_str, hashAlgorithmName, rsaSignaturePadding));
+
+        /// <summary>
+        /// 验签
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="signature"></param>
+        /// <param name="publicKey_str"></param>
+        /// <param name="hashAlgorithmName"></param>
+        /// <param name="rsaSignaturePadding"></param>
+        /// <returns></returns>
+        public static bool RSAVerify(this string input,
+            string signature,
+            string publicKey_str,
+            HashAlgorithmName hashAlgorithmName,
+            RSASignaturePadding rsaSignaturePadding = default)
+            => Encoding.UTF8.GetBytes(input).RSAVerify(Convert.FromBase64String(signature), publicKey_str, hashAlgorithmName, rsaSignaturePadding);
 #endif
 
         /// <summary>

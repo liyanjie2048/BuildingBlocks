@@ -58,19 +58,9 @@ namespace Liyanjie.Utilities.Cn
         /// </summary>
         public class ChineseCharManager
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            public static string DataVersion { get; private set; }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public static string ChineseCharsFile { get; set; } = @"Resources\pinyin.txt";
-            static readonly Lazy<Dictionary<char, (string Code, string[] Pinyins)>> chineseChars_Lazy = new(() => ReadData());
-            static Dictionary<char, (string, string[])> ReadData()
+            static readonly Lazy<Dictionary<char, (string Code, string[] Pinyins)>> lazyData = new(() =>
             {
-                var dataFile = ChineseCharsFile.GetAbsolutePath();
+                var dataFile = DataFile.GetAbsolutePath();
                 if (!File.Exists(dataFile))
                     throw new FileNotFoundException("数据文件未找到", dataFile);
                 var chineseChars = new Dictionary<char, (string, string[])>();
@@ -88,12 +78,22 @@ namespace Liyanjie.Utilities.Cn
                     chineseChars.Add(@char, (array[0].TrimEnd(':'), array[1].Split(',')));
                 }
                 return chineseChars;
-            }
+            });
 
             /// <summary>
             /// 
             /// </summary>
-            public static IReadOnlyDictionary<char, (string Code, string[] Pinyins)> ChineseChars => chineseChars_Lazy.Value;
+            public static string DataFile { get; set; } = @"Resources\pinyin.txt";
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static string DataVersion { get; private set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static IReadOnlyDictionary<char, (string Code, string[] Pinyins)> ChineseChars => lazyData.Value;
 
             /// <summary>
             /// 
@@ -103,10 +103,10 @@ namespace Liyanjie.Utilities.Cn
             /// <param name="pinyins"></param>
             public static void AddChineseChar(char chineseChar, string code, string[] pinyins)
             {
-                if (chineseChars_Lazy.Value.ContainsKey(chineseChar))
-                    chineseChars_Lazy.Value[chineseChar] = (chineseChars_Lazy.Value[chineseChar].Code, chineseChars_Lazy.Value[chineseChar].Pinyins.Concat(pinyins).ToArray());
+                if (lazyData.Value.ContainsKey(chineseChar))
+                    lazyData.Value[chineseChar] = (lazyData.Value[chineseChar].Code, lazyData.Value[chineseChar].Pinyins.Concat(pinyins).ToArray());
                 else
-                    chineseChars_Lazy.Value[chineseChar] = (code, pinyins);
+                    lazyData.Value[chineseChar] = (code, pinyins);
             }
         }
 
@@ -115,19 +115,9 @@ namespace Liyanjie.Utilities.Cn
         /// </summary>
         public class ChineseWordManager
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            public static string DataVersion { get; private set; }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public static string ChineseWordsFile { get; set; } = @"Resources\large_pinyin.txt";
-            static readonly Lazy<Dictionary<string, string[]>> chineseWords_Lazy = new(() => ReadData());
-            static Dictionary<string, string[]> ReadData()
+            static readonly Lazy<Dictionary<string, string[]>> lazyData = new(() =>
             {
-                var dataFile = ChineseWordsFile.GetAbsolutePath();
+                var dataFile = DataFile.GetAbsolutePath();
                 if (!File.Exists(dataFile))
                     throw new FileNotFoundException("数据文件未找到", dataFile);
                 var chineseWords = new Dictionary<string, string[]>();
@@ -144,12 +134,22 @@ namespace Liyanjie.Utilities.Cn
                     chineseWords.Add(word, array[1].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
                 }
                 return chineseWords;
-            }
+            });
 
             /// <summary>
             /// 
             /// </summary>
-            public static IReadOnlyDictionary<string, string[]> ChineseWords => chineseWords_Lazy.Value;
+            public static string DataVersion { get; private set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static string DataFile { get; set; } = @"Resources\large_pinyin.txt";
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static IReadOnlyDictionary<string, string[]> ChineseWords => lazyData.Value;
 
             /// <summary>
             /// 
@@ -158,10 +158,10 @@ namespace Liyanjie.Utilities.Cn
             /// <param name="pinyins"></param>
             public static void AddChineseWord(string chineseWord, params string[] pinyins)
             {
-                if (chineseWords_Lazy.Value.ContainsKey(chineseWord))
-                    chineseWords_Lazy.Value[chineseWord] = chineseWords_Lazy.Value[chineseWord].Concat(pinyins).ToArray();
+                if (lazyData.Value.ContainsKey(chineseWord))
+                    lazyData.Value[chineseWord] = lazyData.Value[chineseWord].Concat(pinyins).ToArray();
                 else
-                    chineseWords_Lazy.Value[chineseWord] = pinyins;
+                    lazyData.Value[chineseWord] = pinyins;
             }
         }
     }

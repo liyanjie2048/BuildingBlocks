@@ -13,19 +13,9 @@ namespace Liyanjie.Utilities.Cn
     /// </summary>
     public class PhoneNumberHelper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string DataVersion { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string DataFile { get; set; } = @"Resources\phone.dat";
-        static readonly Lazy<Dictionary<string, PhoneNumber>> phoneNumbers_Lazy = new(() => ReadData());
-        static Dictionary<string, PhoneNumber> ReadData()
+        static readonly Lazy<Dictionary<string, PhoneNumber>> lazyData = new(() =>
         {
-            var dataFile = PhoneNumbersFile.GetAbsolutePath();
+            var dataFile = DataFile.GetAbsolutePath();
             if (!File.Exists(dataFile))
                 throw new FileNotFoundException("数据文件未找到", dataFile);
 
@@ -60,12 +50,22 @@ namespace Liyanjie.Utilities.Cn
                 }
             }
             return phoneNumbers;
-        }
+        });
 
         /// <summary>
         /// 
         /// </summary>
-        public static IReadOnlyDictionary<string, PhoneNumber> PhoneNumbers => phoneNumbers_Lazy.Value;
+        public static string DataFile { get; set; } = @"Resources\phone.dat";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string DataVersion { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static IReadOnlyDictionary<string, PhoneNumber> PhoneNumbers => lazyData.Value;
 
         /// <summary>
         /// 返回查找的号码的信息
@@ -83,9 +83,9 @@ namespace Liyanjie.Utilities.Cn
                 return false;
 
             var number7 = phoneNumber.Substring(0, 7);
-            if (phoneNumbers_Lazy.Value.ContainsKey(number7))
+            if (lazyData.Value.ContainsKey(number7))
             {
-                number = phoneNumbers_Lazy.Value[number7];
+                number = lazyData.Value[number7];
                 return true;
             }
             else
