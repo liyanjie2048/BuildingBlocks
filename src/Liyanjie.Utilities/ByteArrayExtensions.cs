@@ -300,8 +300,7 @@ namespace System.Security.Cryptography
             RSASignaturePadding rsaSignaturePadding = default)
         {
             using var rsa = CreateRSAByXmlKey(privateKey_xml);
-            var putput = rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
-            return putput;
+            return rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
 
         /// <summary>
@@ -433,8 +432,7 @@ namespace System.Security.Cryptography
             RSASignaturePadding rsaSignaturePadding = default)
         {
             using var rsa = CreateRSAByStringKey(null, privateKey_str);
-            var putput = rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
-            return putput;
+            return rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
 
         /// <summary>
