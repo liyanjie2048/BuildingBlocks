@@ -86,7 +86,7 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
         }
         private void ToolStripMenuItem_Restart_Click(object sender, EventArgs e)
         {
-            HostManager.Close();
+            HostManager.Stop();
             Task.Run(async () =>
             {
                 this.TextBox.Clear();
@@ -120,7 +120,7 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
 
         void Exit()
         {
-            HostManager.Close();
+            HostManager.Stop();
             Application.Exit();
         }
     }

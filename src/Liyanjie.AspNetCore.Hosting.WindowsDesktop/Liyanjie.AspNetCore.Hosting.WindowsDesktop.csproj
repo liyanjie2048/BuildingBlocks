@@ -21,53 +21,57 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Host\net5.0-windows\Host.deps.json" />
-      <None Remove="Host\net5.0-windows\Host.dll" />
-      <None Remove="Host\net5.0-windows\Host.dll.config" />
-      <None Remove="Host\net5.0-windows\Host.exe" />
-      <None Remove="Host\net5.0-windows\Host.runtimeconfig.json" />
-      <None Remove="Host\net5.0-windows\wwwroot\index.html" />
-      <None Remove="Host\netcoreapp3.1\Host.deps.json" />
-      <None Remove="Host\netcoreapp3.1\Host.dll" />
-      <None Remove="Host\netcoreapp3.1\Host.dll.config" />
-      <None Remove="Host\netcoreapp3.1\Host.exe" />
-      <None Remove="Host\netcoreapp3.1\Host.runtimeconfig.json" />
-      <None Remove="Host\netcoreapp3.1\wwwroot\index.html" />
+        <None Remove="Host\net5.0-windows\Host.deps.json" />
+        <None Remove="Host\net5.0-windows\Host.dll" />
+        <None Remove="Host\net5.0-windows\Host.dll.config" />
+        <None Remove="Host\net5.0-windows\Host.exe" />
+        <None Remove="Host\net5.0-windows\Host.runtimeconfig.json" />
+        <None Remove="Host\net5.0-windows\ref\Host.dll" />
+        <None Remove="Host\net5.0-windows\wwwroot\index.html" />
+        <None Remove="Host\netcoreapp3.1\Host.deps.json" />
+        <None Remove="Host\netcoreapp3.1\Host.dll" />
+        <None Remove="Host\netcoreapp3.1\Host.dll.config" />
+        <None Remove="Host\netcoreapp3.1\Host.exe" />
+        <None Remove="Host\netcoreapp3.1\Host.runtimeconfig.json" />
+        <None Remove="Host\netcoreapp3.1\wwwroot\index.html" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Host\net5.0-windows\Host.deps.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\net5.0-windows\Host.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\net5.0-windows\Host.dll.config" />
-      <Content Include="Host\net5.0-windows\Host.exe">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\net5.0-windows\Host.runtimeconfig.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\net5.0-windows\wwwroot\index.html">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\netcoreapp3.1\Host.deps.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\netcoreapp3.1\Host.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\netcoreapp3.1\Host.dll.config" />
-      <Content Include="Host\netcoreapp3.1\Host.exe">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\netcoreapp3.1\Host.runtimeconfig.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Host\netcoreapp3.1\wwwroot\index.html">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Include="Host\net5.0-windows\Host.deps.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\net5.0-windows\Host.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\net5.0-windows\Host.dll.config" />
+        <Content Include="Host\net5.0-windows\Host.exe">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\net5.0-windows\Host.runtimeconfig.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\net5.0-windows\ref\Host.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\net5.0-windows\wwwroot\index.html">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\netcoreapp3.1\Host.deps.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\netcoreapp3.1\Host.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\netcoreapp3.1\Host.dll.config" />
+        <Content Include="Host\netcoreapp3.1\Host.exe">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\netcoreapp3.1\Host.runtimeconfig.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Host\netcoreapp3.1\wwwroot\index.html">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -81,9 +85,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="wwwroot\index.html">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="wwwroot\index.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,7 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
         static readonly string[] startup;
         static readonly string[] urls;
         static IHost host;
+        static CancellationTokenSource cts;
 
         static HostManager()
         {
@@ -48,6 +50,7 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
             }
             try
             {
+                cts = new();
                 host = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
@@ -57,24 +60,28 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop
                         webBuilder.ConfigureLogging(logging => logging.AddProvider(new Logging.MyLoggerProvider()));
                     })
                     .Build();
-                host.RunAsync();
+                host.RunAsync(cts.Token);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                cts?.Cancel();
             }
         }
-        internal static void Close()
+        internal static void Stop()
         {
             try
             {
                 if (host is not null)
                 {
-                    host.StopAsync().ConfigureAwait(false);
+                    host.StopAsync(cts.Token).ConfigureAwait(false);
                     host.Dispose();
                 }
             }
-            catch { }
+            catch
+            {
+                cts?.Cancel();
+            }
         }
         internal static string[] GetUrls()
         {
