@@ -9,12 +9,12 @@ namespace Liyanjie.AspNetCore.Extensions
 {
     public class UniqueAuthorizationFilter : IAuthorizationFilter
     {
-        public const string ClaimType_UniqueIdentity = "UId";
+        public const string ClaimType_UniqueId = "UId";
 
-        readonly Func<AuthorizationFilterContext, string> getUserUniqueIdentity;
-        public UniqueAuthorizationFilter(Func<AuthorizationFilterContext, string> getUserUniqueIdentity)
+        readonly Func<AuthorizationFilterContext, string> _getUserUniqueId;
+        public UniqueAuthorizationFilter(Func<AuthorizationFilterContext, string> getUserUniqueIdFunc)
         {
-            this.getUserUniqueIdentity = getUserUniqueIdentity ?? throw new ArgumentNullException(nameof(getUserUniqueIdentity));
+            _getUserUniqueId = getUserUniqueIdFunc ?? throw new ArgumentNullException(nameof(getUserUniqueIdFunc));
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -25,11 +25,11 @@ namespace Liyanjie.AspNetCore.Extensions
                 && context.HttpContext.User.Identity.IsAuthenticated)
             {
                 var tokenUniqueId = context.HttpContext.User.Claims
-                    .SingleOrDefault(_ => _.Type == ClaimType_UniqueIdentity)?.Value ?? Guid.NewGuid().ToString("N");
+                    .SingleOrDefault(_ => _.Type == ClaimType_UniqueId)?.Value ?? Guid.NewGuid().ToString("N");
                 if (tokenUniqueId == null)
                     goto Unauthorized;
 
-                var userUniqueId = getUserUniqueIdentity.Invoke(context);
+                var userUniqueId = _getUserUniqueId.Invoke(context);
                 if (tokenUniqueId != userUniqueId)
                     goto Unauthorized;
 
