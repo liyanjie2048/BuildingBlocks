@@ -1,5 +1,3 @@
-using System;
-
 namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
 {
     readonly struct LogMessage

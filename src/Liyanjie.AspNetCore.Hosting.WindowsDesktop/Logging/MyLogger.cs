@@ -52,9 +52,9 @@ namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
 
         static void WriteMessage(
             MyLoggerProcessor queueProcessor,
-            LogLevel logLevel, 
-            string logName, 
-            int eventId, 
+            LogLevel logLevel,
+            string logName,
+            int eventId,
             string message,
             Exception exception)
         {
