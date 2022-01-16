@@ -25,46 +25,7 @@
     </ItemGroup>
 
     <Target Name="MovePackage" AfterTargets="Pack">
-        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="C:\_NugetPackages\" />
+        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\_Packages\" />
     </Target>
-
-    <ItemGroup>
-      <None Remove="ChineseChars.txt" />
-      <None Remove="phone.dat" />
-      <None Remove="Resources\ChineseADs.json" />
-      <None Remove="Resources\large_pinyin.txt" />
-      <None Remove="Resources\pinyin.txt" />
-      <None Remove="Resources\qqwry.dat" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Resources\ChineseADs.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\ChineseChars.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\large_pinyin.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\phone.dat">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\pinyin.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\qqwry.dat">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
-        <PackageReference Include="System.Text.Json" Version="5.0.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)'=='net461'">
-        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    </ItemGroup>
 
 </Project>

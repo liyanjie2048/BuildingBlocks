@@ -7,11 +7,9 @@ namespace Liyanjie.ValueObjects
     /// </summary>
     public class Name : ValueObject
     {
-        public string FirstName { get; set; }
+        public string GivenName { get; set; }
 
-        public string MiddleName { get; set; }
-
-        public string FamilyName { get; set; }
+        public string Surname { get; set; }
 
         /// <summary>
         /// 
@@ -19,9 +17,8 @@ namespace Liyanjie.ValueObjects
         /// <returns></returns>
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return FirstName;
-            yield return MiddleName;
-            yield return FamilyName;
+            yield return GivenName;
+            yield return Surname;
         }
     }
 }
