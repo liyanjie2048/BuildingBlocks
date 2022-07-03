@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Numerics;
 using System.Text;
 
 namespace System
@@ -159,7 +158,6 @@ namespace System.Security.Cryptography
             Stream privateKey_xml)
             => _RSADecrypt(input, privateKey_xml);
 
-#if NETSTANDARD
         /// <summary>
         /// 
         /// </summary>
@@ -179,30 +177,18 @@ namespace System.Security.Cryptography
         /// <returns></returns>
         public static byte[] RSADecrypt(this byte[] input, Stream privateKey_xml, RSAEncryptionPadding encryptionPadding)
             => _RSADecrypt(input, privateKey_xml, encryptionPadding);
-#endif
 
         static byte[] _RSAEncrypt(this byte[] input,
-            Stream publicKey_xml
-#if NETSTANDARD
-            , RSAEncryptionPadding encryptionPadding = null
-#endif
-            )
+            Stream publicKey_xml,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-#if NETSTANDARD
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
-#endif
             using var rsa = CreateRSAByXmlKey(publicKey_xml);
             var bufferSize = rsa.KeySize / 8 - 11;    //加密块最大长度限制
 
             if (input.Length <= bufferSize)
             {
-                return
-#if NETSTANDARD
-                    rsa.Encrypt(input, encryptionPadding)
-#elif NETFRAMEWORK
-                    rsa.EncryptValue(input)
-#endif
-                    ;
+                return rsa.Encrypt(input, encryptionPadding);
             }
             else
             {
@@ -215,13 +201,7 @@ namespace System.Security.Cryptography
                 {
                     var tmpBuffer = new byte[readSize];
                     Array.Copy(buffer, 0, tmpBuffer, 0, readSize);
-                    var tmpEncrypted =
-#if NETSTANDARD
-                        rsa.Encrypt(tmpBuffer, encryptionPadding)
-#elif NETFRAMEWORK
-                        rsa.EncryptValue(tmpBuffer)
-#endif
-                        ;
+                    var tmpEncrypted = rsa.Encrypt(tmpBuffer, encryptionPadding);
                     encryptedStream.Write(tmpEncrypted, 0, tmpEncrypted.Length);
 
                     readSize = originalStream.Read(buffer, 0, bufferSize);
@@ -231,27 +211,16 @@ namespace System.Security.Cryptography
         }
 
         static byte[] _RSADecrypt(this byte[] input,
-            Stream privateKey_xml
-#if NETSTANDARD
-            , RSAEncryptionPadding encryptionPadding = null
-#endif
-            )
+            Stream privateKey_xml,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-#if NETSTANDARD
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
-#endif
             using var rsa = CreateRSAByXmlKey(privateKey_xml);
             var maxBlockSize = rsa.KeySize / 8;    //解密块最大长度限制
 
             if (input.Length <= maxBlockSize)
             {
-                return
-#if NETSTANDARD
-                    rsa.Decrypt(input, encryptionPadding)
-#elif NETFRAMEWORK
-                    rsa.DecryptValue(input)
-#endif
-                    ;
+                return rsa.Decrypt(input, encryptionPadding);
             }
             else
             {
@@ -264,13 +233,7 @@ namespace System.Security.Cryptography
                 {
                     var tmpBuffer = new byte[blockSize];
                     Array.Copy(buffer, 0, tmpBuffer, 0, blockSize);
-                    var tmpDecrypted =
-#if NETSTANDARD
-                        rsa.Decrypt(tmpBuffer, encryptionPadding)
-#elif NETFRAMEWORK
-                        rsa.DecryptValue(tmpBuffer)
-#endif
-                        ;
+                    var tmpDecrypted = rsa.Decrypt(tmpBuffer, encryptionPadding);
                     decryptedStream.Write(tmpDecrypted, 0, tmpDecrypted.Length);
 
                     blockSize = encryptedStream.Read(buffer, 0, maxBlockSize);
@@ -322,7 +285,6 @@ namespace System.Security.Cryptography
             return rsa.VerifyData(input, signature, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
 
-#if NETSTANDARD
         /// <summary>
         /// 加密
         /// </summary>
@@ -407,14 +369,32 @@ namespace System.Security.Cryptography
 
         static RSA CreateRSAByStringKey(string publicKey_str, string privateKey_str)
         {
-            if (publicKey_str.IsNullOrWhiteSpace() && privateKey_str.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(publicKey_str) && string.IsNullOrWhiteSpace(privateKey_str))
                 throw new ArgumentException("No keys.");
 
             var rsa = RSA.Create();
-            if (publicKey_str.IsNotNullOrEmpty())
-                rsa.ImportRSAPublicKey(new ReadOnlySpan<byte>(RSAHelper.DeserializeRSAKey(publicKey_str)), out _);
-            if (privateKey_str.IsNotNullOrEmpty())
-                rsa.ImportRSAPrivateKey(new ReadOnlySpan<byte>(RSAHelper.DeserializeRSAKey(privateKey_str)), out _);
+            if (!string.IsNullOrEmpty(publicKey_str))
+            {
+                var publicKey_bytes = RSAHelper.DeserializeRSAKey(publicKey_str);
+#if NETSTANDARD2_0
+                var parameter=rsa.ExportParameters(false);
+                parameter.Modulus = publicKey_bytes;
+                rsa.ImportParameters(parameter);
+#elif NETSTANDARD2_1_OR_GREATER
+                rsa.ImportRSAPublicKey(new ReadOnlySpan<byte>(publicKey_bytes), out _);
+#endif
+            }
+            if (!string.IsNullOrEmpty(privateKey_str))
+            {
+                var privateKey_bytes = RSAHelper.DeserializeRSAKey(privateKey_str);
+#if NETSTANDARD2_0
+                var parameter=rsa.ExportParameters(true);
+                parameter.Exponent = privateKey_bytes;
+                rsa.ImportParameters(parameter);
+#elif NETSTANDARD2_1_OR_GREATER
+                rsa.ImportRSAPrivateKey(new ReadOnlySpan<byte>(privateKey_bytes), out _);
+#endif
+            }
             return rsa;
         }
 
@@ -453,7 +433,6 @@ namespace System.Security.Cryptography
             using var rsa = CreateRSAByStringKey(publicKey_str, null);
             return rsa.VerifyData(input, signature, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
-#endif
         #endregion
     }
 

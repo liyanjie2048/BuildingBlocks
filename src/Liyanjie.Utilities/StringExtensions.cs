@@ -210,38 +210,6 @@ namespace System
             => RadixHelper.GetLong(input, radix, radixCodes);
 
         /// <summary>
-        /// 为 null 或空字符
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static bool IsNullOrEmpty(this string input)
-            => string.IsNullOrEmpty(input);
-
-        /// <summary>
-        /// 非 null 并且非空字符
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static bool IsNotNullOrEmpty(this string input)
-            => !string.IsNullOrEmpty(input);
-
-        /// <summary>
-        /// 为 null 或空字符，或空白字符
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static bool IsNullOrWhiteSpace(this string input)
-            => string.IsNullOrWhiteSpace(input);
-
-        /// <summary>
-        /// 非 null 或并且非空字符，非空白字符
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static bool IsNotNullOrWhiteSpace(this string input)
-            => !string.IsNullOrWhiteSpace(input);
-
-        /// <summary>
         /// 转换为骆驼命名法
         /// </summary>
         /// <param name="input"></param>

@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -34,7 +33,6 @@ namespace System.Security.Cryptography
             return (RSAParameters)new XmlSerializer(typeof(RSAParameters)).Deserialize(xmlReader);
         }
 
-#if NETSTANDARD
         /// <summary>
         /// 
         /// </summary>
@@ -42,8 +40,12 @@ namespace System.Security.Cryptography
         public static (string RSAPublicKeyString, string RSAPrivateKeyString) GenerateStringKeys()
         {
             using var rsa = RSA.Create();
-
+#if NETSTANDARD2_0
+            var parameter = rsa.ExportParameters(true);
+            return (SerializeRSAKey(parameter.Modulus), SerializeRSAKey(parameter.Exponent));
+#elif NETSTANDARD2_0_OR_GREATER
             return (SerializeRSAKey(rsa.ExportRSAPublicKey()), SerializeRSAKey(rsa.ExportRSAPrivateKey()));
+#endif
         }
 
         internal static string SerializeRSAKey(byte[] keyBytes)
@@ -55,6 +57,5 @@ namespace System.Security.Cryptography
         {
             return Convert.FromBase64String(keyString);
         }
-#endif
     }
 }
