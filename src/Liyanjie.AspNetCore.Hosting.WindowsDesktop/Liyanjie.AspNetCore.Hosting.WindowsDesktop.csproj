@@ -28,7 +28,9 @@
 		<Content Include="Host\net6.0-windows\Host.dll">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Host\net6.0-windows\Host.dll.config" />
+		<Content Include="Host\net6.0-windows\Host.dll.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Host\net6.0-windows\Host.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>

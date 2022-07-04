@@ -16,7 +16,7 @@ public static class ModelStateDictionaryExtensions
     public static bool IsValid(this ModelStateDictionary modelState, string key)
     {
         if (modelState.ContainsKey(key))
-            return modelState[key].ValidationState == ModelValidationState.Valid;
+            return modelState[key]!.ValidationState == ModelValidationState.Valid;
 
         return true;
     }
