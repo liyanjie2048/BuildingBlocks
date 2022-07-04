@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
 
-namespace Liyanjie.EnglishPluralization.Internals
+namespace Liyanjie.EnglishPluralization.Internals;
+
+internal class StringBidirectionalDictionary : BidirectionalDictionary<string, string>
 {
-    internal class StringBidirectionalDictionary : BidirectionalDictionary<string, string>
+    public StringBidirectionalDictionary()
     {
-        public StringBidirectionalDictionary()
-        {
-        }
+    }
 
-        public StringBidirectionalDictionary(Dictionary<string, string> firstToSecondDictionary) : base(firstToSecondDictionary)
-        {
-        }
+    public StringBidirectionalDictionary(Dictionary<string, string> firstToSecondDictionary) : base(firstToSecondDictionary)
+    {
+    }
 
-        public override bool ExistsInFirst(string value)
-        {
-            return base.ExistsInFirst(value.ToLowerInvariant());
-        }
+    public override bool ExistsInFirst(string value)
+    {
+        return base.ExistsInFirst(value.ToLowerInvariant());
+    }
 
-        public override bool ExistsInSecond(string value)
-        {
-            return base.ExistsInSecond(value.ToLowerInvariant());
-        }
+    public override bool ExistsInSecond(string value)
+    {
+        return base.ExistsInSecond(value.ToLowerInvariant());
+    }
 
-        public override string GetFirstValue(string value)
-        {
-            return base.GetFirstValue(value.ToLowerInvariant());
-        }
+    public override string? GetFirstValue(string value)
+    {
+        return base.GetFirstValue(value.ToLowerInvariant());
+    }
 
-        public override string GetSecondValue(string value)
-        {
-            return base.GetSecondValue(value.ToLowerInvariant());
-        }
+    public override string? GetSecondValue(string value)
+    {
+        return base.GetSecondValue(value.ToLowerInvariant());
     }
 }

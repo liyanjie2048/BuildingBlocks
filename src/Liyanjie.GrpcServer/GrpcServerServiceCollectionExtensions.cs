@@ -2,26 +2,25 @@
 
 using Liyanjie.GrpcServer;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// 
+/// </summary>
+public static class GrpcServerServiceCollectionExtensions
 {
     /// <summary>
     /// 
     /// </summary>
-    public static class GrpcServerServiceCollectionExtensions
+    /// <param name="services"></param>
+    /// <param name="configureOptions"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddGrpcServer(this IServiceCollection services,
+        Action<GrpcServerOptions> configureOptions)
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configureOptions"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddGrpcServer(this IServiceCollection services,
-            Action<GrpcServerOptions> configureOptions)
-        {
-            services.Configure(configureOptions);
-            services.AddHostedService<GrpcServerHostedService>();
+        services.Configure(configureOptions);
+        services.AddHostedService<GrpcServerHostedService>();
 
-            return services;
-        }
+        return services;
     }
 }

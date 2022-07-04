@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Liyanjie.PhoneNumber.Cn;
+
 /// <summary>
 /// 
 /// </summary>
@@ -21,7 +22,7 @@ public class PNCnHelper
 
     static readonly Lazy<Dictionary<string, PhoneNumber>> lazyData = new(() =>
     {
-        var dataFile = GetAbsolutePath(DataFile);
+        var dataFile = GetAbsolutePath(DataFile!);
         if (!File.Exists(dataFile))
             throw new FileNotFoundException($"Data file not exists:{dataFile}", dataFile);
 
@@ -66,7 +67,7 @@ public class PNCnHelper
     /// <summary>
     /// 
     /// </summary>
-    public static string DataVersion { get; private set; }
+    public static string? DataVersion { get; private set; }
 
     /// <summary>
     /// 
@@ -88,7 +89,7 @@ public class PNCnHelper
         if (!Regex.IsMatch(phoneNumber, @"^1[3-9]\d{5,9}"))
             return false;
 
-        var number7 = phoneNumber.Substring(0, 7);
+        var number7 = phoneNumber[..7];
         if (lazyData.Value.ContainsKey(number7))
         {
             number = lazyData.Value[number7];

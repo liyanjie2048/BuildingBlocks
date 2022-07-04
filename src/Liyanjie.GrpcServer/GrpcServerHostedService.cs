@@ -5,38 +5,37 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace Liyanjie.GrpcServer
+namespace Liyanjie.GrpcServer;
+
+/// <summary>
+/// 
+/// </summary>
+public class GrpcServerHostedService : IHostedService
 {
+    readonly Grpc.Core.Server server;
+
     /// <summary>
     /// 
     /// </summary>
-    public class GrpcServerHostedService : IHostedService
+    /// <param name="serviceProvider"></param>
+    /// <param name="options"></param>
+    public GrpcServerHostedService(
+        IServiceProvider serviceProvider,
+        IOptions<GrpcServerOptions> options)
     {
-        readonly Grpc.Core.Server server;
+        this.server = options.Value.CreateServer(serviceProvider);
+    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="serviceProvider"></param>
-        /// <param name="options"></param>
-        public GrpcServerHostedService(
-            IServiceProvider serviceProvider,
-            IOptions<GrpcServerOptions> options)
-        {
-            this.server = options.Value.CreateServer(serviceProvider);
-        }
+    /// <inheritdoc/>
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        server.Start();
+        await Task.CompletedTask;
+    }
 
-        /// <inheritdoc/>
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            server.Start();
-            await Task.CompletedTask;
-        }
-
-        /// <inheritdoc/>
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await server.ShutdownAsync();
-        }
+    /// <inheritdoc/>
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await server.ShutdownAsync();
     }
 }

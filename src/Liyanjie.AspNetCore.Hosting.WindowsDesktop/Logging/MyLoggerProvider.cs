@@ -2,27 +2,26 @@ using System.Collections.Concurrent;
 
 using Microsoft.Extensions.Logging;
 
-namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging
+namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging;
+
+[ProviderAlias("My")]
+class MyLoggerProvider : ILoggerProvider
 {
-    [ProviderAlias("My")]
-    class MyLoggerProvider : ILoggerProvider
+    readonly ConcurrentDictionary<string, MyLogger> _loggers = new();
+    readonly MyLoggerProcessor _messageQueue;
+
+    public MyLoggerProvider()
     {
-        readonly ConcurrentDictionary<string, MyLogger> loggers = new();
-        readonly MyLoggerProcessor messageQueue;
+        _messageQueue = new MyLoggerProcessor();
+    }
 
-        public MyLoggerProvider()
-        {
-            this.messageQueue = new MyLoggerProcessor();
-        }
+    public ILogger CreateLogger(string name)
+    {
+        return _loggers.GetOrAdd(name, name => new MyLogger(name, _messageQueue));
+    }
 
-        public ILogger CreateLogger(string name)
-        {
-            return loggers.GetOrAdd(name, name => new MyLogger(name, messageQueue));
-        }
-
-        public void Dispose()
-        {
-            messageQueue.Dispose();
-        }
+    public void Dispose()
+    {
+        _messageQueue.Dispose();
     }
 }

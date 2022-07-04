@@ -1,188 +1,187 @@
-﻿namespace Liyanjie.Linq.Expressions.Internal
+﻿namespace Liyanjie.Linq.Expressions.Internal;
+
+/// <summary>
+/// 
+/// </summary>
+internal enum CharId
 {
     /// <summary>
     /// 
     /// </summary>
-    internal enum CharId
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        Unknow,
+    Unknow,
 
-        /// <summary>
-        /// 
-        /// </summary>
-        Empty,
+    /// <summary>
+    /// 
+    /// </summary>
+    Empty,
 
-        /// <summary>
-        /// !
-        /// </summary>
-        Exclam,
+    /// <summary>
+    /// !
+    /// </summary>
+    Exclam,
 
-        /// <summary>
-        /// "
-        /// </summary>
-        DoubleQuote,
+    /// <summary>
+    /// "
+    /// </summary>
+    DoubleQuote,
 
-        /// <summary>
-        /// #
-        /// </summary>
-        Sharp,
+    /// <summary>
+    /// #
+    /// </summary>
+    Sharp,
 
-        /// <summary>
-        /// $
-        /// </summary>
-        Dollar,
+    /// <summary>
+    /// $
+    /// </summary>
+    Dollar,
 
-        /// <summary>
-        /// %
-        /// </summary>
-        Modulo,
+    /// <summary>
+    /// %
+    /// </summary>
+    Modulo,
 
-        /// <summary>
-        /// &amp;
-        /// </summary>
-        And,
+    /// <summary>
+    /// &amp;
+    /// </summary>
+    And,
 
-        /// <summary>
-        /// '
-        /// </summary>
-        SingleQuote,
+    /// <summary>
+    /// '
+    /// </summary>
+    SingleQuote,
 
-        /// <summary>
-        /// (
-        /// </summary>
-        LeftParenthesis,
+    /// <summary>
+    /// (
+    /// </summary>
+    LeftParenthesis,
 
-        /// <summary>
-        /// )
-        /// </summary>
-        RightParenthesis,
+    /// <summary>
+    /// )
+    /// </summary>
+    RightParenthesis,
 
-        /// <summary>
-        /// *
-        /// </summary>
-        Asterisk,
+    /// <summary>
+    /// *
+    /// </summary>
+    Asterisk,
 
-        /// <summary>
-        /// +
-        /// </summary>
-        Plus,
+    /// <summary>
+    /// +
+    /// </summary>
+    Plus,
 
-        /// <summary>
-        /// ,
-        /// </summary>
-        Comma,
+    /// <summary>
+    /// ,
+    /// </summary>
+    Comma,
 
-        /// <summary>
-        /// -
-        /// </summary>
-        Minus,
+    /// <summary>
+    /// -
+    /// </summary>
+    Minus,
 
-        /// <summary>
-        /// .
-        /// </summary>
-        Dot,
+    /// <summary>
+    /// .
+    /// </summary>
+    Dot,
 
-        /// <summary>
-        /// /
-        /// </summary>
-        Slash,
+    /// <summary>
+    /// /
+    /// </summary>
+    Slash,
 
-        /// <summary>
-        /// 数字
-        /// </summary>
-        Digit,
+    /// <summary>
+    /// 数字
+    /// </summary>
+    Digit,
 
-        /// <summary>
-        /// :
-        /// </summary>
-        Colon,
+    /// <summary>
+    /// :
+    /// </summary>
+    Colon,
 
-        /// <summary>
-        /// ;
-        /// </summary>
-        Semicolon,
+    /// <summary>
+    /// ;
+    /// </summary>
+    Semicolon,
 
-        /// <summary>
-        /// &lt;
-        /// </summary>
-        LessThan,
+    /// <summary>
+    /// &lt;
+    /// </summary>
+    LessThan,
 
-        /// <summary>
-        /// =
-        /// </summary>
-        Equal,
+    /// <summary>
+    /// =
+    /// </summary>
+    Equal,
 
-        /// <summary>
-        /// &gt;
-        /// </summary>
-        GreaterThan,
+    /// <summary>
+    /// &gt;
+    /// </summary>
+    GreaterThan,
 
-        /// <summary>
-        /// ?
-        /// </summary>
-        Question,
+    /// <summary>
+    /// ?
+    /// </summary>
+    Question,
 
-        /// <summary>
-        /// @
-        /// </summary>
-        At,
+    /// <summary>
+    /// @
+    /// </summary>
+    At,
 
-        /// <summary>
-        /// 字母
-        /// </summary>
-        Letter,
+    /// <summary>
+    /// 字母
+    /// </summary>
+    Letter,
 
-        /// <summary>
-        /// [
-        /// </summary>
-        LeftBracket,
+    /// <summary>
+    /// [
+    /// </summary>
+    LeftBracket,
 
-        /// <summary>
-        /// \
-        /// </summary>
-        Backslash,
+    /// <summary>
+    /// \
+    /// </summary>
+    Backslash,
 
-        /// <summary>
-        /// ]
-        /// </summary>
-        RightBracket,
+    /// <summary>
+    /// ]
+    /// </summary>
+    RightBracket,
 
-        /// <summary>
-        /// ^
-        /// </summary>
-        Caret,
+    /// <summary>
+    /// ^
+    /// </summary>
+    Caret,
 
-        /// <summary>
-        /// _
-        /// </summary>
-        Underline,
+    /// <summary>
+    /// _
+    /// </summary>
+    Underline,
 
-        /// <summary>
-        /// `
-        /// </summary>
-        Backquote,
+    /// <summary>
+    /// `
+    /// </summary>
+    Backquote,
 
-        /// <summary>
-        /// {
-        /// </summary>
-        LeftBrace,
+    /// <summary>
+    /// {
+    /// </summary>
+    LeftBrace,
 
-        /// <summary>
-        /// |
-        /// </summary>
-        Bar,
+    /// <summary>
+    /// |
+    /// </summary>
+    Bar,
 
-        /// <summary>
-        /// }
-        /// </summary>
-        RightBrace,
+    /// <summary>
+    /// }
+    /// </summary>
+    RightBrace,
 
-        /// <summary>
-        /// ~
-        /// </summary>
-        Tilde,
-    }
+    /// <summary>
+    /// ~
+    /// </summary>
+    Tilde,
 }

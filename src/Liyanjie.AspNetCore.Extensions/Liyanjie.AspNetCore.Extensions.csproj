@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <IsPackable>True</IsPackable>
-        <TargetFrameworks>net5.0;</TargetFrameworks>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
         <Description>AspNetCore 扩展</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie8712@outlook.com</Authors>
@@ -13,6 +13,7 @@
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>liyanjie.net.256.png</PackageIcon>
         <PackageIconUrl />
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -27,7 +28,7 @@
     </ItemGroup>
 
     <Target Name="MovePackage" AfterTargets="Pack">
-        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\_Packages\" />
+        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="C:\_Packages\" />
     </Target>
 
     <ItemGroup>

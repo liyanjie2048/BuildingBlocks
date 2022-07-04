@@ -38,7 +38,7 @@ public class PinyinHelper
     /// </summary>
     /// <param name="chineseWord"></param>
     /// <returns></returns>
-    public static string[] GetChineseWordPinyin(string chineseWord)
+    public static string[]? GetChineseWordPinyin(string chineseWord)
     {
         if (string.IsNullOrWhiteSpace(chineseWord))
             return default;
@@ -65,15 +65,15 @@ public class PinyinHelper
     /// </summary>
     public class ChineseCharManager
     {
-        static readonly Lazy<Dictionary<char, (string Code, string[] Pinyins)>> lazyData = new(() =>
+        static readonly Lazy<(string Version, Dictionary<char, (string Code, string[] Pinyins)> Data)> lazyData = new(() =>
         {
-            var dataFile = GetAbsolutePath(DataFile);
+            var dataFile = GetAbsolutePath(DataFile!);
             if (!File.Exists(dataFile))
                 throw new FileNotFoundException($"Data file not exists:{dataFile}", dataFile);
             var chineseChars = new Dictionary<char, (string, string[])>();
             var data = File.ReadAllLines(dataFile, Encoding.UTF8)
                 .Where(_ => !string.IsNullOrWhiteSpace(_));
-            DataVersion = data.First().Split(':')[1].Trim();
+            var version = data.First().Split(':')[1].Trim();
             var charsData = data.Where(_ => !_.StartsWith("#"))
                 .Select(_ => _.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             foreach (var array in charsData)
@@ -84,7 +84,7 @@ public class PinyinHelper
 
                 chineseChars.Add(@char, (array[0].TrimEnd(':'), array[1].Split(',')));
             }
-            return chineseChars;
+            return (version, chineseChars);
         });
 
         /// <summary>
@@ -95,12 +95,12 @@ public class PinyinHelper
         /// <summary>
         /// 
         /// </summary>
-        public static string DataVersion { get; private set; }
+        public static string? DataVersion => lazyData.Value.Version;
 
         /// <summary>
         /// 
         /// </summary>
-        public static IReadOnlyDictionary<char, (string Code, string[] Pinyins)> ChineseChars => lazyData.Value;
+        public static IReadOnlyDictionary<char, (string Code, string[] Pinyins)> ChineseChars => lazyData.Value.Data;
 
         /// <summary>
         /// 
@@ -110,10 +110,10 @@ public class PinyinHelper
         /// <param name="pinyins"></param>
         public static void AddChineseChar(char chineseChar, string code, string[] pinyins)
         {
-            if (lazyData.Value.ContainsKey(chineseChar))
-                lazyData.Value[chineseChar] = (lazyData.Value[chineseChar].Code, lazyData.Value[chineseChar].Pinyins.Concat(pinyins).ToArray());
+            if (lazyData.Value.Data.ContainsKey(chineseChar))
+                lazyData.Value.Data[chineseChar] = (lazyData.Value.Data[chineseChar].Code, lazyData.Value.Data[chineseChar].Pinyins.Concat(pinyins).ToArray());
             else
-                lazyData.Value[chineseChar] = (code, pinyins);
+                lazyData.Value.Data[chineseChar] = (code, pinyins);
         }
     }
 
@@ -122,15 +122,15 @@ public class PinyinHelper
     /// </summary>
     public class ChineseWordManager
     {
-        static readonly Lazy<Dictionary<string, string[]>> lazyData = new(() =>
+        static readonly Lazy<(string Version, Dictionary<string, string[]> Data)> lazyData = new(() =>
         {
-            var dataFile = GetAbsolutePath(DataFile);
+            var dataFile = GetAbsolutePath(DataFile!);
             if (!File.Exists(dataFile))
                 throw new FileNotFoundException($"Data file not exists:{dataFile}", dataFile);
             var chineseWords = new Dictionary<string, string[]>();
             var data = File.ReadAllLines(dataFile, Encoding.UTF8)
                 .Where(_ => !string.IsNullOrWhiteSpace(_));
-            DataVersion = data.First().Split(':')[1].Trim();
+            var version = data.First().Split(':')[1].Trim();
             var wordsData = data.Where(_ => !_.StartsWith("#"))
                 .Select(_ => _.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries));
             foreach (var array in wordsData)
@@ -140,13 +140,8 @@ public class PinyinHelper
                     continue;
                 chineseWords.Add(word, array[1].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             }
-            return chineseWords;
+            return (version, chineseWords);
         });
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string DataVersion { get; private set; }
 
         /// <summary>
         /// 
@@ -156,7 +151,12 @@ public class PinyinHelper
         /// <summary>
         /// 
         /// </summary>
-        public static IReadOnlyDictionary<string, string[]> ChineseWords => lazyData.Value;
+        public static string? DataVersion => lazyData.Value.Version;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static IReadOnlyDictionary<string, string[]> ChineseWords => lazyData.Value.Data;
 
         /// <summary>
         /// 
@@ -165,10 +165,10 @@ public class PinyinHelper
         /// <param name="pinyins"></param>
         public static void AddChineseWord(string chineseWord, params string[] pinyins)
         {
-            if (lazyData.Value.ContainsKey(chineseWord))
-                lazyData.Value[chineseWord] = lazyData.Value[chineseWord].Concat(pinyins).ToArray();
+            if (lazyData.Value.Data.ContainsKey(chineseWord))
+                lazyData.Value.Data[chineseWord] = lazyData.Value.Data[chineseWord].Concat(pinyins).ToArray();
             else
-                lazyData.Value[chineseWord] = pinyins;
+                lazyData.Value.Data[chineseWord] = pinyins;
         }
     }
 }

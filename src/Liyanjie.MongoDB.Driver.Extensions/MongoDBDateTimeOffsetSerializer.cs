@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace MongoDB.Bson.Serialization.Serializers
-{
-    public class MongoDBDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>
-    {
-        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateTimeOffset value)
-        {
-            context.Writer.WriteDateTime(BsonUtils.ToMillisecondsSinceEpoch(value.UtcDateTime));
-        }
+namespace MongoDB.Bson.Serialization.Serializers;
 
-        public override DateTimeOffset Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
-        {
-            return new DateTimeOffset(BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime())).ToLocalTime();
-        }
+public class MongoDBDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>
+{
+    public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateTimeOffset value)
+    {
+        context.Writer.WriteDateTime(BsonUtils.ToMillisecondsSinceEpoch(value.UtcDateTime));
+    }
+
+    public override DateTimeOffset Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+    {
+        return new DateTimeOffset(BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime())).ToLocalTime();
     }
 }

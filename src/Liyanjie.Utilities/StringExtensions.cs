@@ -216,7 +216,7 @@ namespace System
         /// <returns></returns>
         public static string ToCamelCase(this string input)
         {
-            if (input == null)
+            if (input is null)
                 return null;
 
             if (input.Length < 2)

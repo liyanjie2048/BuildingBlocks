@@ -6,44 +6,43 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Extensions.Hosting
+namespace Microsoft.Extensions.Hosting;
+
+public class WakeupBackgroundService : BackgroundService
 {
-    public class WakeupBackgroundService : BackgroundService
+    readonly ILogger<WakeupBackgroundService> _logger;
+    readonly IHttpClientFactory _httpClientFactory;
+    readonly string _wakeupUrl;
+    public WakeupBackgroundService(
+        ILogger<WakeupBackgroundService> logger,
+        IHttpClientFactory httpClientFactory,
+        IConfiguration configuration)
     {
-        readonly ILogger<WakeupBackgroundService> logger;
-        readonly IHttpClientFactory httpClientFactory;
-        readonly string wakeupUrl;
-        public WakeupBackgroundService(
-            ILogger<WakeupBackgroundService> logger,
-            IHttpClientFactory httpClientFactory,
-            IConfiguration configuration)
-        {
-            this.logger = logger;
-            this.httpClientFactory = httpClientFactory;
-            this.wakeupUrl = configuration.GetValue<string>("WakeupUrl", null) ?? throw new ApplicationException("找不到 WakeupUrl 配置项");
-        }
+        _logger = logger;
+        _httpClientFactory = httpClientFactory;
+        _wakeupUrl = configuration.GetValue<string?>("WakeupUrl", default) ?? throw new ApplicationException("找不到 WakeupUrl 配置项");
+    }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            if (string.IsNullOrEmpty(wakeupUrl))
-                return;
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        if (string.IsNullOrEmpty(_wakeupUrl))
+            return;
 
-            while (!stoppingToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+
+            _logger.LogTrace("Wake up!");
+            try
             {
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                using var http = _httpClientFactory.CreateClient();
+                var response = await http.GetStringAsync(_wakeupUrl, stoppingToken);
 
-                logger.LogTrace("Wake up!");
-                try
-                {
-                    using var http = httpClientFactory.CreateClient();
-                    var response = await http.GetStringAsync(wakeupUrl, stoppingToken);
-
-                    logger.LogTrace(response);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex.Message);
-                }
+                _logger.LogTrace(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
     }

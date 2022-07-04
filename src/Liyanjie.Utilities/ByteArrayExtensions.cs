@@ -36,7 +36,7 @@ namespace System.Security.Cryptography
         /// <param name="input"></param>
         /// <param name="encodeMode"></param>
         /// <returns></returns>
-        public static byte[] Encode(this byte[] input, EncodeType encodeMode)
+        public static byte[]? Encode(this byte[] input, EncodeType encodeMode)
         {
             using HashAlgorithm encoder = encodeMode switch
             {
@@ -59,7 +59,9 @@ namespace System.Security.Cryptography
         /// <param name="key">长度32字符</param>
         /// <param name="iv">长度16字符，为空时使用ECB模式，非空时使用CBC模式</param>
         /// <returns></returns>
-        public static byte[] AesEncrypt(this byte[] input, string key, string iv = null)
+        public static byte[] AesEncrypt(this byte[] input,
+            string key,
+            string? iv = null)
         {
             using var aes = CreateAes(key, iv);
             using var encryptor = aes.CreateEncryptor();
@@ -73,14 +75,16 @@ namespace System.Security.Cryptography
         /// <param name="key">长度32字符</param>
         /// <param name="iv">长度16字符，为空时使用ECB模式，非空时使用CBC模式</param>
         /// <returns></returns>
-        public static byte[] AesDecrypt(this byte[] input, string key, string iv = null)
+        public static byte[] AesDecrypt(this byte[] input,
+            string key,
+            string? iv = null)
         {
             using var aes = CreateAes(key, iv);
             using var decryptor = aes.CreateDecryptor();
             return decryptor.TransformFinalBlock(input, 0, input.Length);
         }
 
-        static Aes CreateAes(string key, string iv)
+        static Aes CreateAes(string key, string? iv)
         {
             var aes = Aes.Create();
             aes.Mode = string.IsNullOrWhiteSpace(iv) ? CipherMode.ECB : CipherMode.CBC;
@@ -102,7 +106,7 @@ namespace System.Security.Cryptography
         /// <param name="iv">长度8字符</param>
         /// <param name="key">长度24字符</param>
         /// <returns></returns>
-        public static byte[] TripleDESEncrypt(this byte[] input, string key, string iv = null)
+        public static byte[] TripleDESEncrypt(this byte[] input, string key, string? iv = null)
         {
             using var tripleDES = CreateTripleDES(key, iv);
             using var encryptor = tripleDES.CreateEncryptor();
@@ -116,14 +120,14 @@ namespace System.Security.Cryptography
         /// <param name="iv">长度8字符</param>
         /// <param name="key">长度24字符</param>
         /// <returns></returns>
-        public static byte[] TripleDESDecrypt(this byte[] input, string key, string iv = null)
+        public static byte[] TripleDESDecrypt(this byte[] input, string key, string? iv = null)
         {
             using var tripleDES = CreateTripleDES(key, iv);
             using var decryptor = tripleDES.CreateDecryptor();
             return decryptor.TransformFinalBlock(input, 0, input.Length);
         }
 
-        static TripleDES CreateTripleDES(string key, string iv)
+        static TripleDES CreateTripleDES(string key, string? iv)
         {
             var tripleDES = TripleDES.Create();
             tripleDES.Mode = string.IsNullOrWhiteSpace(iv) ? CipherMode.ECB : CipherMode.CBC;
@@ -146,7 +150,7 @@ namespace System.Security.Cryptography
         /// <returns></returns>
         public static byte[] RSAEncrypt(this byte[] input,
             Stream publicKey_xml)
-            => _RSAEncrypt(input, publicKey_xml);
+            => RSAEncrypt_(input, publicKey_xml);
 
         /// <summary>
         /// 解密
@@ -156,7 +160,7 @@ namespace System.Security.Cryptography
         /// <returns></returns>
         public static byte[] RSADecrypt(this byte[] input,
             Stream privateKey_xml)
-            => _RSADecrypt(input, privateKey_xml);
+            => RSADecrypt_(input, privateKey_xml);
 
         /// <summary>
         /// 
@@ -166,7 +170,7 @@ namespace System.Security.Cryptography
         /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
         /// <returns></returns>
         public static byte[] RSAEncrypt(this byte[] input, Stream publicKey_xml, RSAEncryptionPadding encryptionPadding)
-            => _RSAEncrypt(input, publicKey_xml, encryptionPadding);
+            => RSAEncrypt_(input, publicKey_xml, encryptionPadding);
 
         /// <summary>
         /// 
@@ -176,11 +180,11 @@ namespace System.Security.Cryptography
         /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
         /// <returns></returns>
         public static byte[] RSADecrypt(this byte[] input, Stream privateKey_xml, RSAEncryptionPadding encryptionPadding)
-            => _RSADecrypt(input, privateKey_xml, encryptionPadding);
+            => RSADecrypt_(input, privateKey_xml, encryptionPadding);
 
-        static byte[] _RSAEncrypt(this byte[] input,
+        static byte[] RSAEncrypt_(this byte[] input,
             Stream publicKey_xml,
-            RSAEncryptionPadding encryptionPadding = null)
+            RSAEncryptionPadding? encryptionPadding = null)
         {
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
             using var rsa = CreateRSAByXmlKey(publicKey_xml);
@@ -210,9 +214,9 @@ namespace System.Security.Cryptography
             }
         }
 
-        static byte[] _RSADecrypt(this byte[] input,
+        static byte[] RSADecrypt_(this byte[] input,
             Stream privateKey_xml,
-            RSAEncryptionPadding encryptionPadding = null)
+            RSAEncryptionPadding? encryptionPadding = null)
         {
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
             using var rsa = CreateRSAByXmlKey(privateKey_xml);
@@ -260,7 +264,7 @@ namespace System.Security.Cryptography
         public static byte[] RSASign(this byte[] input,
             Stream privateKey_xml,
             HashAlgorithmName hashAlgorithmName,
-            RSASignaturePadding rsaSignaturePadding = default)
+            RSASignaturePadding? rsaSignaturePadding = default)
         {
             using var rsa = CreateRSAByXmlKey(privateKey_xml);
             return rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
@@ -279,7 +283,7 @@ namespace System.Security.Cryptography
             byte[] signature,
             Stream publicKey_xml,
             HashAlgorithmName hashAlgorithmName,
-            RSASignaturePadding rsaSignaturePadding = default)
+            RSASignaturePadding? rsaSignaturePadding = default)
         {
             using var rsa = CreateRSAByXmlKey(publicKey_xml);
             return rsa.VerifyData(input, signature, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
@@ -294,7 +298,7 @@ namespace System.Security.Cryptography
         /// <returns></returns>
         public static byte[] RSAEncrypt(this byte[] input,
             string publicKey_str,
-            RSAEncryptionPadding encryptionPadding = default)
+            RSAEncryptionPadding? encryptionPadding = default)
         {
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
             using var rsa = CreateRSAByStringKey(publicKey_str, null);
@@ -335,7 +339,7 @@ namespace System.Security.Cryptography
         /// <returns></returns>
         public static byte[] RSADecrypt(this byte[] input,
             string privateKey_str,
-            RSAEncryptionPadding encryptionPadding = default)
+            RSAEncryptionPadding? encryptionPadding = default)
         {
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
             using var rsa = CreateRSAByStringKey(null, privateKey_str);
@@ -367,7 +371,7 @@ namespace System.Security.Cryptography
             }
         }
 
-        static RSA CreateRSAByStringKey(string publicKey_str, string privateKey_str)
+        static RSA CreateRSAByStringKey(string? publicKey_str, string? privateKey_str)
         {
             if (string.IsNullOrWhiteSpace(publicKey_str) && string.IsNullOrWhiteSpace(privateKey_str))
                 throw new ArgumentException("No keys.");
@@ -376,24 +380,12 @@ namespace System.Security.Cryptography
             if (!string.IsNullOrEmpty(publicKey_str))
             {
                 var publicKey_bytes = RSAHelper.DeserializeRSAKey(publicKey_str);
-#if NETSTANDARD2_0
-                var parameter=rsa.ExportParameters(false);
-                parameter.Modulus = publicKey_bytes;
-                rsa.ImportParameters(parameter);
-#elif NETSTANDARD2_1_OR_GREATER
                 rsa.ImportRSAPublicKey(new ReadOnlySpan<byte>(publicKey_bytes), out _);
-#endif
             }
             if (!string.IsNullOrEmpty(privateKey_str))
             {
                 var privateKey_bytes = RSAHelper.DeserializeRSAKey(privateKey_str);
-#if NETSTANDARD2_0
-                var parameter=rsa.ExportParameters(true);
-                parameter.Exponent = privateKey_bytes;
-                rsa.ImportParameters(parameter);
-#elif NETSTANDARD2_1_OR_GREATER
                 rsa.ImportRSAPrivateKey(new ReadOnlySpan<byte>(privateKey_bytes), out _);
-#endif
             }
             return rsa;
         }
@@ -409,7 +401,7 @@ namespace System.Security.Cryptography
         public static byte[] RSASign(this byte[] input,
             string privateKey_str,
             HashAlgorithmName hashAlgorithmName,
-            RSASignaturePadding rsaSignaturePadding = default)
+            RSASignaturePadding? rsaSignaturePadding = default)
         {
             using var rsa = CreateRSAByStringKey(null, privateKey_str);
             return rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
@@ -428,7 +420,7 @@ namespace System.Security.Cryptography
             byte[] signature,
             string publicKey_str,
             HashAlgorithmName hashAlgorithmName,
-            RSASignaturePadding rsaSignaturePadding = default)
+            RSASignaturePadding? rsaSignaturePadding = default)
         {
             using var rsa = CreateRSAByStringKey(publicKey_str, null);
             return rsa.VerifyData(input, signature, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);

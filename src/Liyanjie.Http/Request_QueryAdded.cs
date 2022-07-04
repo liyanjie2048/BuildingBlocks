@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 
-namespace Liyanjie.Http
+namespace Liyanjie.Http;
+
+/// <summary>
+/// 
+/// </summary>
+public class Request_QueryAdded : Request_HeaderAdded
 {
     /// <summary>
     /// 
     /// </summary>
-    public class Request_QueryAdded : Request_HeaderAdded
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public Request_QueryAdded AddQuery(string name, string value)
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public Request_QueryAdded AddQuery(string name, string value)
-        {
-            Queries.Add(new KeyValuePair<string, string>(name, value));
-            return this;
-        }
+        Queries.Add(new KeyValuePair<string, string>(name, value));
+        return this;
     }
 }

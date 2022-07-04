@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Http", "src\Liyanjie.Http\Liyanjie.Http.csproj", "{887B7D80-CFE9-4146-855F-D18E9DB6F2C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.TemplateMatching", "src\Liyanjie.TemplateMatching\Liyanjie.TemplateMatching.csproj", "{714941A1-46F7-45F4-8B1B-3ADF0661D02E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.EnglishPluralization", "src\Liyanjie.EnglishPluralization\Liyanjie.EnglishPluralization.csproj", "{F89CCA45-FC3B-4D74-A0C0-54D121F4508D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Linq.Expressions", "src\Liyanjie.Linq.Expressions\Liyanjie.Linq.Expressions.csproj", "{F1902356-652E-4204-BFCC-2570D5AEE6BC}"
@@ -56,13 +54,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "test\WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.AspNetCore.Hosting.WindowsDesktop", "src\Liyanjie.AspNetCore.Hosting.WindowsDesktop\Liyanjie.AspNetCore.Hosting.WindowsDesktop.csproj", "{FE9065CC-872F-4F50-A952-1A9CE0D11479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.Pinyin", "src\Liyanjie.Pinyin\Liyanjie.Pinyin.csproj", "{37EF2348-C269-4802-835C-C05EF2A6E33D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Pinyin", "src\Liyanjie.Pinyin\Liyanjie.Pinyin.csproj", "{37EF2348-C269-4802-835C-C05EF2A6E33D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.AdministrativeDevision.Cn", "src\Liyanjie.AdministrativeDevision.Cn\Liyanjie.AdministrativeDevision.Cn.csproj", "{10126FE3-0C42-4590-A6F2-A71174E38A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.AdministrativeDevision.Cn", "src\Liyanjie.AdministrativeDevision.Cn\Liyanjie.AdministrativeDevision.Cn.csproj", "{10126FE3-0C42-4590-A6F2-A71174E38A22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.PhoneNumber.Cn", "src\Liyanjie.PhoneNumber.Cn\Liyanjie.PhoneNumber.Cn.csproj", "{C312199D-35A4-4E8F-B4A8-6FA585A20F06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.PhoneNumber.Cn", "src\Liyanjie.PhoneNumber.Cn\Liyanjie.PhoneNumber.Cn.csproj", "{C312199D-35A4-4E8F-B4A8-6FA585A20F06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.QQWry", "src\Liyanjie.QQWry\Liyanjie.QQWry.csproj", "{A882178E-DBFD-48A3-AEBF-F43A10A05A60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.QQWry", "src\Liyanjie.QQWry\Liyanjie.QQWry.csproj", "{A882178E-DBFD-48A3-AEBF-F43A10A05A60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,10 +72,6 @@ Global
 		{887B7D80-CFE9-4146-855F-D18E9DB6F2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{887B7D80-CFE9-4146-855F-D18E9DB6F2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{887B7D80-CFE9-4146-855F-D18E9DB6F2C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{714941A1-46F7-45F4-8B1B-3ADF0661D02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{714941A1-46F7-45F4-8B1B-3ADF0661D02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{714941A1-46F7-45F4-8B1B-3ADF0661D02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{714941A1-46F7-45F4-8B1B-3ADF0661D02E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F89CCA45-FC3B-4D74-A0C0-54D121F4508D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F89CCA45-FC3B-4D74-A0C0-54D121F4508D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F89CCA45-FC3B-4D74-A0C0-54D121F4508D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -172,7 +166,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{887B7D80-CFE9-4146-855F-D18E9DB6F2C2} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
-		{714941A1-46F7-45F4-8B1B-3ADF0661D02E} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{F89CCA45-FC3B-4D74-A0C0-54D121F4508D} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{F1902356-652E-4204-BFCC-2570D5AEE6BC} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{6294B336-E01F-4EBC-AFFB-2FD54A1233D4} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}

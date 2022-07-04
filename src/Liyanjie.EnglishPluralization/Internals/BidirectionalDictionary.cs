@@ -1,62 +1,61 @@
 ﻿using System.Collections.Generic;
 
-namespace Liyanjie.EnglishPluralization.Internals
+namespace Liyanjie.EnglishPluralization.Internals;
+
+internal class BidirectionalDictionary<TFirst, TSecond>
 {
-    internal class BidirectionalDictionary<TFirst, TSecond>
+    public Dictionary<TFirst, TSecond> FirstToSecondDictionary { get; set; }
+
+    public Dictionary<TSecond, TFirst> SecondToFirstDictionary { get; set; }
+
+    public BidirectionalDictionary()
     {
-        public Dictionary<TFirst, TSecond> FirstToSecondDictionary { get; set; }
+        this.FirstToSecondDictionary = new Dictionary<TFirst, TSecond>();
+        this.SecondToFirstDictionary = new Dictionary<TSecond, TFirst>();
+    }
 
-        public Dictionary<TSecond, TFirst> SecondToFirstDictionary { get; set; }
-
-        public BidirectionalDictionary()
+    public BidirectionalDictionary(Dictionary<TFirst, TSecond> firstToSecondDictionary) : this()
+    {
+        foreach (TFirst current in firstToSecondDictionary.Keys)
         {
-            this.FirstToSecondDictionary = new Dictionary<TFirst, TSecond>();
-            this.SecondToFirstDictionary = new Dictionary<TSecond, TFirst>();
+            this.AddValue(current, firstToSecondDictionary[current]);
         }
+    }
 
-        public BidirectionalDictionary(Dictionary<TFirst, TSecond> firstToSecondDictionary) : this()
+    public virtual bool ExistsInFirst(TFirst value)
+    {
+        return this.FirstToSecondDictionary.ContainsKey(value);
+    }
+
+    public virtual bool ExistsInSecond(TSecond value)
+    {
+        return this.SecondToFirstDictionary.ContainsKey(value);
+    }
+
+    public virtual TSecond? GetSecondValue(TFirst value)
+    {
+        if (this.ExistsInFirst(value))
         {
-            foreach (TFirst current in firstToSecondDictionary.Keys)
-            {
-                this.AddValue(current, firstToSecondDictionary[current]);
-            }
+            return this.FirstToSecondDictionary[value];
         }
+        return default;
+    }
 
-        public virtual bool ExistsInFirst(TFirst value)
+    public virtual TFirst? GetFirstValue(TSecond value)
+    {
+        if (this.ExistsInSecond(value))
         {
-            return this.FirstToSecondDictionary.ContainsKey(value);
+            return this.SecondToFirstDictionary[value];
         }
+        return default;
+    }
 
-        public virtual bool ExistsInSecond(TSecond value)
+    public void AddValue(TFirst firstValue, TSecond secondValue)
+    {
+        this.FirstToSecondDictionary.Add(firstValue, secondValue);
+        if (!this.SecondToFirstDictionary.ContainsKey(secondValue))
         {
-            return this.SecondToFirstDictionary.ContainsKey(value);
-        }
-
-        public virtual TSecond GetSecondValue(TFirst value)
-        {
-            if (this.ExistsInFirst(value))
-            {
-                return this.FirstToSecondDictionary[value];
-            }
-            return default;
-        }
-
-        public virtual TFirst GetFirstValue(TSecond value)
-        {
-            if (this.ExistsInSecond(value))
-            {
-                return this.SecondToFirstDictionary[value];
-            }
-            return default;
-        }
-
-        public void AddValue(TFirst firstValue, TSecond secondValue)
-        {
-            this.FirstToSecondDictionary.Add(firstValue, secondValue);
-            if (!this.SecondToFirstDictionary.ContainsKey(secondValue))
-            {
-                this.SecondToFirstDictionary.Add(secondValue, firstValue);
-            }
+            this.SecondToFirstDictionary.Add(secondValue, firstValue);
         }
     }
 }

@@ -1,34 +1,33 @@
 using System;
 
-namespace Liyanjie.EnglishPluralization.Internals
+namespace Liyanjie.EnglishPluralization.Internals;
+
+internal class Check
 {
-    internal class Check
+    public static T NotNull<T>(T value, string parameterName) where T : class
     {
-        public static T NotNull<T>(T value, string parameterName) where T : class
+        if (value is null)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
-            return value;
+            throw new ArgumentNullException(parameterName);
         }
+        return value;
+    }
 
-        public static T? NotNull<T>(T? value, string parameterName) where T : struct
+    public static T? NotNull<T>(T? value, string parameterName) where T : struct
+    {
+        if (!value.HasValue)
         {
-            if (!value.HasValue)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
-            return value;
+            throw new ArgumentNullException(parameterName);
         }
+        return value;
+    }
 
-        public static string NotEmpty(string value, string parameterName)
+    public static string NotEmpty(string value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException("值不能为null或空字符串。", "parameterName");
-            }
-            return value;
+            throw new ArgumentException("值不能为null或空字符串。", "parameterName");
         }
+        return value;
     }
 }

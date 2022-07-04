@@ -29,7 +29,7 @@ public class QQWryHelper
     }
 
     public static string QQWryDatFile { get; set; } = @"Resources\\qqwry.dat";
-    public static (string Area, string ISP) SearchIP(string ip)
+    public static (string? Area, string? ISP) SearchIP(string ip)
     {
         if (string.IsNullOrWhiteSpace(ip))
             return default;
@@ -45,8 +45,8 @@ public class QQWryHelper
     /// </summary>
     class IPLocation
     {
-        public string ISP { get; set; }
-        public string Area { get; set; }
+        public string? ISP { get; set; }
+        public string? Area { get; set; }
     }
 
     /// <summary>
@@ -126,13 +126,13 @@ public class QQWryHelper
                 IP[i] = (byte)(Int32.Parse(ipSp[i]) & 0xFF);
             }
 
-            IPLocation local = null;
+            IPLocation? local = null;
             var offset = LocateIP(IP);
             if (offset != -1)
             {
                 local = GetIPLocation(offset);
             }
-            if (local == null)
+            if (local is null)
             {
                 local = new IPLocation
                 {

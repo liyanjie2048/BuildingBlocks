@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
 
-namespace Liyanjie.ValueObjects
+namespace Liyanjie.ValueObjects;
+
+/// <summary>
+/// 
+/// </summary>
+public class Name : ValueObject
 {
+    public string? GivenName { get; set; }
+
+    public string? Surname { get; set; }
+
     /// <summary>
     /// 
     /// </summary>
-    public class Name : ValueObject
+    /// <returns></returns>
+    protected override IEnumerable<object> GetAtomicValues()
     {
-        public string GivenName { get; set; }
-
-        public string Surname { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return GivenName;
-            yield return Surname;
-        }
+        yield return GivenName!;
+        yield return Surname!;
     }
 }
