@@ -1,9 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-
-using Microsoft.AspNetCore.WebUtilities;
-
-namespace Microsoft.AspNetCore.Http;
+﻿namespace Microsoft.AspNetCore.Http;
 
 /// <summary>
 /// 

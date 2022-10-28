@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Grpc.Core;
-
-namespace Liyanjie.GrpcServer;
+﻿namespace Liyanjie.GrpcServer;
 
 /// <summary>
 /// 

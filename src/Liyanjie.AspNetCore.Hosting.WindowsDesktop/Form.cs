@@ -1,13 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
+﻿namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
 
 public partial class Form : System.Windows.Forms.Form
 {

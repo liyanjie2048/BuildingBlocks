@@ -36,7 +36,7 @@
 	</ItemGroup>
 
 	<Target Name="MovePackage" AfterTargets="Pack">
-		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="C:\_Packages\" />
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\_Packages\" />
 	</Target>
 
 	<ItemGroup>

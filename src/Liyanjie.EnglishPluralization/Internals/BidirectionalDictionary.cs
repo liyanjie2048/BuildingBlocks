@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Liyanjie.EnglishPluralization.Internals;
+﻿namespace Liyanjie.EnglishPluralization.Internals;
 
 internal class BidirectionalDictionary<TFirst, TSecond>
 {

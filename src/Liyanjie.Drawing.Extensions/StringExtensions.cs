@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
-
-namespace System;
+﻿namespace System;
 
 /// <summary>
 /// 

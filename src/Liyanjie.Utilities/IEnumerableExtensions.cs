@@ -1,31 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace System.Linq;
+﻿namespace System.Linq;
 
 /// <summary>
 /// 
 /// </summary>
 public static class IEnumerableExtensions
 {
-    /// <summary>
-    /// 判断此集合为null或为空集合
-    /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static bool IsNullOrEmpty<TSource>(this IEnumerable<TSource> source)
-        => source is null || source.Count() == 0;
-
-    /// <summary>
-    /// 判断此集合非null且非空集合
-    /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static bool IsNotNullOrEmpty<TSource>(this IEnumerable<TSource> source)
-        => !source.IsNullOrEmpty();
-
     /// <summary>
     /// 
     /// </summary>

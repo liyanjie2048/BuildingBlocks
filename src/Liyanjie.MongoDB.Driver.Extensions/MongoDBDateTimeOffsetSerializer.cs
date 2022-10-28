@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MongoDB.Bson.Serialization.Serializers;
+﻿namespace MongoDB.Bson.Serialization.Serializers;
 
 public class MongoDBDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>
 {

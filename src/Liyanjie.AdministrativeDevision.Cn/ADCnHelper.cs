@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-
-namespace Liyanjie.AdministrativeDevision.Cn;
+﻿namespace Liyanjie.AdministrativeDevision.Cn;
 
 public class ADCnHelper
 {

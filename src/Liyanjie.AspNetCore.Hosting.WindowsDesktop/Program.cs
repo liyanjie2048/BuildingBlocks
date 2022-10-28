@@ -1,6 +1,3 @@
-using System;
-using System.Windows.Forms;
-
 namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
 
 static class Program

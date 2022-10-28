@@ -1,15 +1,29 @@
-﻿using System.Collections.Generic;
+﻿namespace Liyanjie.ValueObjects;
 
-namespace Liyanjie.ValueObjects;
-
+/// <summary>
+/// 
+/// </summary>
+/// <typeparam name="TIndustry"></typeparam>
 public class Job<TIndustry> : ValueObject
 {
+    /// <summary>
+    /// 行业
+    /// </summary>
     public TIndustry? Industry { get; set; }
 
+    /// <summary>
+    /// 公司
+    /// </summary>
     public string? Company { get; set; }
 
+    /// <summary>
+    /// 职位
+    /// </summary>
     public string? Position { get; set; }
 
+    /// <summary>
+    /// 地址
+    /// </summary>
     public Address? Address { get; set; }
 
     protected override IEnumerable<object> GetAtomicValues()

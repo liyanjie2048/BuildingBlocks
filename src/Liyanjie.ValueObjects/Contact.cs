@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Liyanjie.ValueObjects;
+﻿namespace Liyanjie.ValueObjects;
 
 /// <summary>
 /// 联系人

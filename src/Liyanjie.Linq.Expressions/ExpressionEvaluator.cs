@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-
-namespace Liyanjie.Linq.Expressions;
+﻿namespace Liyanjie.Linq.Expressions;
 
 /// <summary>
 /// 

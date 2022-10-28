@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace System;
+﻿namespace System;
 
 /// <summary>
 /// 

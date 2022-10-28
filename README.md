@@ -45,10 +45,10 @@
     ```
 - #### Liyanjie.AspNetCore.Hosting.WindowsDesktop
     可以在Windows桌面上托管AspNetCore应用
-  - 新建 netcoreapp3.1 或 net5.0 的 AspNetCore 应用
+  - 新建 net6.0 的 AspNetCore 应用
   - 安装 Liyanjie.AspNetCore.Hosting.WindowsDesktop.1.0.0.nupkg (https://www.myget.org/feed/liyanjie/package/nuget/Liyanjie.AspNetCore.Hosting.WindowsDesktop)
   - 将 Host 目录中对应版本的文件夹下的所有文件设置 “生成操作=内容”、“复制到输出目录=始终复制”
-  - 编译 AspNetCore 应用（net5.0下需要先修改targetFramework为net5.0-windows）
+  - 编译 AspNetCore 应用
   - 发布 AspNetCore 应用
   - 进入发布后的目录，将 Host\对应版本\* 目录下所有文件移动到与 AspNetCore 应用同一目录
   - 配置 Host.exe.config，将 Startup 指向 AspNetCore 应用的 dll

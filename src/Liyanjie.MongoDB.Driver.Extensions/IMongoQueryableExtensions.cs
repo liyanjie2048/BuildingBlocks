@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace MongoDB.Driver.Linq;
+﻿namespace MongoDB.Driver.Linq;
 
 public static class IMongoQueryableExtensions
 {

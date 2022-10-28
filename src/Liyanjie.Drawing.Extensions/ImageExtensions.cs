@@ -1,8 +1,4 @@
-﻿using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-
-namespace System.Drawing;
+﻿namespace System.Drawing;
 
 /// <summary>
 /// 
@@ -324,7 +320,7 @@ public static class ImageExtensions
         if (imageCodecInfo != null)
         {
             using var encoderParameters = new EncoderParameters(1);
-            encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, quality);
+            encoderParameters.Param[0] = new EncoderParameter(Imaging.Encoder.Quality, quality);
             image.Save(path, imageCodecInfo, encoderParameters);
         }
         else

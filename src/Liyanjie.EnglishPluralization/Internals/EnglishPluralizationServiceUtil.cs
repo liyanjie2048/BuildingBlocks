@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Liyanjie.EnglishPluralization.Internals;
+﻿namespace Liyanjie.EnglishPluralization.Internals;
 
 internal static class EnglishPluralizationServiceUtil
 {

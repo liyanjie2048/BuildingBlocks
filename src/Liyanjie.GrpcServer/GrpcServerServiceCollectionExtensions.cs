@@ -1,8 +1,4 @@
-﻿using System;
-
-using Liyanjie.GrpcServer;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// 

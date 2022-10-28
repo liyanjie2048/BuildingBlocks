@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace Liyanjie.EnglishPluralization.Internals;
 
-namespace Liyanjie.EnglishPluralization.Internals;
-
-internal class StringBidirectionalDictionary : BidirectionalDictionary<string, string>
+internal sealed class StringBidirectionalDictionary : BidirectionalDictionary<string, string>
 {
     public StringBidirectionalDictionary()
     {

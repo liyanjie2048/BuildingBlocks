@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace Microsoft.AspNetCore.Mvc;
+﻿namespace Microsoft.AspNetCore.Mvc;
 
 /// <summary>
 /// 

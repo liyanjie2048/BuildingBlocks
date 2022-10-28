@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Liyanjie.ValueObjects;
+﻿namespace Liyanjie.ValueObjects;
 
 /// <summary>
 /// 

@@ -1,8 +1,4 @@
-﻿using System;
-
-using Liyanjie.Linq.Expressions.Internal;
-
-namespace Liyanjie.Linq.Expressions.Exceptions;
+﻿namespace Liyanjie.Linq.Expressions.Exceptions;
 
 /// <summary>
 /// 

@@ -1,11 +1,7 @@
-using System.Collections.Concurrent;
-
-using Microsoft.Extensions.Logging;
-
 namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging;
 
 [ProviderAlias("My")]
-class MyLoggerProvider : ILoggerProvider
+sealed class MyLoggerProvider : ILoggerProvider
 {
     readonly ConcurrentDictionary<string, MyLogger> _loggers = new();
     readonly MyLoggerProcessor _messageQueue;

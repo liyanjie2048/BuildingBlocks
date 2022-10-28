@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Liyanjie.TypeBuilder;
+﻿namespace Liyanjie.TypeBuilder;
 
 /// <summary>
 /// 

@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Net.Http;
-using System.Text;
-
-namespace Liyanjie.Http;
+﻿namespace Liyanjie.Http;
 
 /// <summary>
 /// 

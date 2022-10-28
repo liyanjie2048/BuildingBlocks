@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Liyanjie.AspNetCore.Extensions;
+﻿namespace Liyanjie.AspNetCore.Extensions;
 
 /// <summary>
 /// 配合DelimitedArrayModelBinderProvider使用

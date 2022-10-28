@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 
@@ -36,7 +33,7 @@ namespace System.Security.Cryptography
         /// <param name="input"></param>
         /// <param name="encodeMode"></param>
         /// <returns></returns>
-        public static byte[]? Encode(this byte[] input, EncodeType encodeMode)
+        public static byte[] Encode(this byte[] input, EncodeType encodeMode)
         {
             using HashAlgorithm encoder = encodeMode switch
             {
@@ -47,7 +44,7 @@ namespace System.Security.Cryptography
                 EncodeType.SHA512 => SHA512.Create(),
                 _ => throw new ArgumentOutOfRangeException(nameof(encodeMode)),
             };
-            return encoder?.ComputeHash(input);
+            return encoder.ComputeHash(input);
         }
 
         #region Aes
@@ -142,47 +139,7 @@ namespace System.Security.Cryptography
 
         #region RSA
 
-        /// <summary>
-        /// 加密
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="publicKey_xml">公钥</param>
-        /// <returns></returns>
         public static byte[] RSAEncrypt(this byte[] input,
-            Stream publicKey_xml)
-            => RSAEncrypt_(input, publicKey_xml);
-
-        /// <summary>
-        /// 解密
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="privateKey_xml">私钥</param>
-        /// <returns></returns>
-        public static byte[] RSADecrypt(this byte[] input,
-            Stream privateKey_xml)
-            => RSADecrypt_(input, privateKey_xml);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="publicKey_xml">密钥</param>
-        /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
-        /// <returns></returns>
-        public static byte[] RSAEncrypt(this byte[] input, Stream publicKey_xml, RSAEncryptionPadding encryptionPadding)
-            => RSAEncrypt_(input, publicKey_xml, encryptionPadding);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="privateKey_xml">密钥</param>
-        /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
-        /// <returns></returns>
-        public static byte[] RSADecrypt(this byte[] input, Stream privateKey_xml, RSAEncryptionPadding encryptionPadding)
-            => RSADecrypt_(input, privateKey_xml, encryptionPadding);
-
-        static byte[] RSAEncrypt_(this byte[] input,
             Stream publicKey_xml,
             RSAEncryptionPadding? encryptionPadding = null)
         {
@@ -214,7 +171,7 @@ namespace System.Security.Cryptography
             }
         }
 
-        static byte[] RSADecrypt_(this byte[] input,
+        public static byte[] RSADecrypt(this byte[] input,
             Stream privateKey_xml,
             RSAEncryptionPadding? encryptionPadding = null)
         {

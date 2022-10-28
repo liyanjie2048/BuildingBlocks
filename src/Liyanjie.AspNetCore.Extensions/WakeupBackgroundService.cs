@@ -1,12 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-
-namespace Microsoft.Extensions.Hosting;
+﻿namespace Microsoft.Extensions.Hosting;
 
 public class WakeupBackgroundService : BackgroundService
 {
@@ -42,7 +34,7 @@ public class WakeupBackgroundService : BackgroundService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError("{message}", ex.Message);
             }
         }
     }

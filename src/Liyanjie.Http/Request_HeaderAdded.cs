@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Liyanjie.Http;
+﻿namespace Liyanjie.Http;
 
 /// <summary>
 /// 

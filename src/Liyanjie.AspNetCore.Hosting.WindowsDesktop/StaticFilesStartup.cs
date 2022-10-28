@@ -1,10 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
+﻿namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
 
 public class StaticFilesStartup
 {

@@ -1,15 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
+﻿namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop;
 
 class HostManager
 {

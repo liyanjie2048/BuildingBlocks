@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
-
-namespace Liyanjie.ValueObjects;
+﻿namespace Liyanjie.ValueObjects;
 
 /// <summary>
 /// 
 /// </summary>
 public class Name : ValueObject
 {
+    /// <summary>
+    /// 名
+    /// </summary>
     public string? GivenName { get; set; }
 
+    /// <summary>
+    /// 姓
+    /// </summary>
     public string? Surname { get; set; }
 
     /// <summary>

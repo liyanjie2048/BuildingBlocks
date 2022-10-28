@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Liyanjie.Linq.Expressions.Internal;
+﻿namespace Liyanjie.Linq.Expressions.Internal;
 
 /// <summary>
 /// 

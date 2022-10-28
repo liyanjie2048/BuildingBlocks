@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-namespace Liyanjie.ValueObjects;
+﻿namespace Liyanjie.ValueObjects;
 
 /// <summary>
 /// 

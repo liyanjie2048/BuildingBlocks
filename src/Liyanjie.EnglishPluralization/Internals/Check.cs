@@ -1,8 +1,6 @@
-using System;
-
 namespace Liyanjie.EnglishPluralization.Internals;
 
-internal class Check
+internal static class Check
 {
     public static T NotNull<T>(T value, string parameterName) where T : class
     {

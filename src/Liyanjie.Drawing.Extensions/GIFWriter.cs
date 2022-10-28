@@ -1,7 +1,4 @@
-﻿using System.Drawing.Imaging;
-using System.IO;
-
-namespace System.Drawing;
+﻿namespace System.Drawing;
 
 public class GIFWriter : IDisposable
 {

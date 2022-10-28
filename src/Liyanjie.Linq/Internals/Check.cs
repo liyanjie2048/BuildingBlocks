@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-
-namespace Liyanjie.Linq.Internals;
+﻿namespace Liyanjie.Linq.Internals;
 
 internal static class Check
 {

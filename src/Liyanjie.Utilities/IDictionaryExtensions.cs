@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace System.Reflection;
+﻿namespace System.Reflection;
 
 /// <summary>
 /// 
@@ -43,7 +39,7 @@ public static class IDictionaryExtensions
     /// <param name="model"></param>
     public static void UpdateModel(this IDictionary<string, object> dictionary, object model)
     {
-        if (dictionary.IsNullOrEmpty())
+        if (dictionary is null || dictionary.Count == 0)
             return;
 
         if (model is null)

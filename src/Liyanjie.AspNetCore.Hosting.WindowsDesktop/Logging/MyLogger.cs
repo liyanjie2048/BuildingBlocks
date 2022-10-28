@@ -1,11 +1,6 @@
-using System;
-using System.Text;
-
-using Microsoft.Extensions.Logging;
-
 namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging;
 
-class MyLogger : ILogger
+sealed class MyLogger : ILogger
 {
     static readonly string loglevelPadding = ": ";
     static readonly string messagePadding;

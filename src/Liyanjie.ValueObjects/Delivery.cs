@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Liyanjie.ValueObjects;
+﻿namespace Liyanjie.ValueObjects;
 
 /// <summary>
 /// 
@@ -8,12 +6,12 @@ namespace Liyanjie.ValueObjects;
 public class Delivery<TIdentity> : ValueObject
 {
     /// <summary>
-    /// 
+    /// 标识
     /// </summary>
     public TIdentity? Identity { get; set; }
 
     /// <summary>
-    /// 
+    /// 运单号码
     /// </summary>
     public string? TrackingNumber { get; set; }
 

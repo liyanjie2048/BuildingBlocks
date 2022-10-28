@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace Liyanjie.QQWry;
+﻿namespace Liyanjie.QQWry;
 
 public class QQWryHelper
 {
@@ -52,7 +47,7 @@ public class QQWryHelper
     /// <summary>
     /// 读取QQ纯真IP数据库 
     /// </summary>    
-    class QQWry
+    sealed class QQWry
     {
         //第一种模式 
         const byte REDIRECT_MODE_1 = 0x01;

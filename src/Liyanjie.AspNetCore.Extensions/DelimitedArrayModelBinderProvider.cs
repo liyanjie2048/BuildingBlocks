@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace Liyanjie.AspNetCore.Extensions;
+﻿namespace Liyanjie.AspNetCore.Extensions;
 
 /// <summary>
 /// services.AddMvc(options => 

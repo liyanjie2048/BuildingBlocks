@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Microsoft.AspNetCore.Http;
+﻿namespace Microsoft.AspNetCore.Http;
 
 public static class HttpContextExtensions
 {

@@ -1,5 +1,3 @@
-using Liyanjie.EnglishPluralization.Internals;
-
 namespace Liyanjie.EnglishPluralization;
 
 /// <summary>

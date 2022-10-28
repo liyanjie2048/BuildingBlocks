@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Concurrent;
-using System.Threading;
-
 namespace Liyanjie.AspNetCore.Hosting.WindowsDesktop.Logging;
 
-class MyLoggerProcessor : IDisposable
+sealed class MyLoggerProcessor : IDisposable
 {
     const int _maxQueuedMessages = 1024;
 

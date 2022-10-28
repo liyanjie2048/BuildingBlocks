@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Liyanjie.Linq.Expressions.Exceptions;
-
-namespace Liyanjie.Linq.Expressions.Internal;
+﻿namespace Liyanjie.Linq.Expressions.Internal;
 
 /// <summary>
 /// 

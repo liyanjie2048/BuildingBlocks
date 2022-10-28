@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace Liyanjie.Utilities;
+﻿namespace Liyanjie.Utilities;
 
 public class BEncoding
 {

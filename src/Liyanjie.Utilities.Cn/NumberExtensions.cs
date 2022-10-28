@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace System;
+﻿namespace System;
 
 /// <summary>
 /// 数值类型的扩展方法

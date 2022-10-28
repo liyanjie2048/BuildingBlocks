@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-
-namespace Liyanjie.AspNetCore.Authentication.Code;
+﻿namespace Liyanjie.AspNetCore.Authentication.Code;
 
 /// <summary>
 /// 

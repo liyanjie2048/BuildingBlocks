@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-
-using Liyanjie.Linq.Expressions;
-using Liyanjie.Linq.Internals;
-
-namespace System.Linq;
+﻿namespace System.Linq;
 
 /// <summary>
 /// 

@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace System.Linq;
+﻿namespace System.Linq;
 
 /// <summary>
 /// 
