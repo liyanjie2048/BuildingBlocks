@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-public class Delivery<TIdentity> : ValueObject
+public class Shipment<TIdentity> : ValueObject
 {
     /// <summary>
     /// 标识
@@ -31,6 +31,6 @@ public class Delivery<TIdentity> : ValueObject
 /// <summary>
 /// 
 /// </summary>
-public class Delivery : Delivery<string>
+public class Delivery : Shipment<string>
 {
 }

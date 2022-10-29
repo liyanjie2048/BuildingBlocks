@@ -18,12 +18,7 @@ public class Score : ValueObject
     /// <summary>
     /// 平均分
     /// </summary>
-    public double GetAverage(int digits = 1)
-    {
-        return Count > 0
-            ? Math.Round(((double)Total / Count), digits, MidpointRounding.AwayFromZero)
-            : 0;
-    }
+    public double Average => (double)Total / Count;
 
     /// <summary>
     /// 
@@ -35,5 +30,6 @@ public class Score : ValueObject
         yield return Count;
     }
 
-    public override string ToString() => GetAverage().ToString();
+    public override string ToString() => Average.ToString();
+    public string ToString(string format) => Average.ToString(format);
 }
