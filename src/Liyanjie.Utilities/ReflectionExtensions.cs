@@ -11,10 +11,10 @@ public static class ReflectionExtensions
     /// <typeparam name="TOutput"></typeparam>
     /// <param name="input"></param>
     /// <returns></returns>
-    public static TOutput? Translate<TOutput>(this object? input)
+    public static TOutput? TranslateTo<TOutput>(this object? input)
     {
         var translated = new Dictionary<(Type, Type, object), object>();
-        var output = Translate(typeof(TOutput), input, translated);
+        var output = DoTranslate(typeof(TOutput), input, translated);
 
         translated.Clear();
 
@@ -26,44 +26,42 @@ public static class ReflectionExtensions
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TInput"></typeparam>
     /// <typeparam name="TOutput"></typeparam>
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static TOutput? Translate<TInput, TOutput>(this TInput? input, Action<TInput?, TOutput?> extra)
+    public static TOutput? TranslateTo<TOutput>(this object? input, Action<TOutput?> extra)
     {
-        var output = Translate<TOutput>(input!);
+        var output = TranslateTo<TOutput>(input!);
 
         if (output is null)
             return default;
 
-        extra?.Invoke(input, output);
+        extra?.Invoke(output);
         return output;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TInput"></typeparam>
     /// <typeparam name="TOutput"></typeparam>
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static async Task<TOutput?> TranslateAsync<TInput, TOutput>(this TInput? input, Func<TInput?, TOutput?, Task> extra)
+    public static async Task<TOutput?> TranslateToAsync<TOutput>(this object? input, Func<TOutput?, Task> extra)
     {
-        var output = Translate<TOutput>(input!);
+        var output = TranslateTo<TOutput>(input!);
 
         if (output is null)
             return default;
 
         if (extra is not null)
-            await extra.Invoke(input, output);
+            await extra.Invoke(output);
 
         return output;
     }
 
-    static object? Translate(Type outputType, object? input, Dictionary<(Type, Type, object), object> translated)
+    static object? DoTranslate(Type outputType, object? input, Dictionary<(Type, Type, object), object> translated)
     {
         if (input is null)
             return null;
@@ -99,7 +97,7 @@ public static class ReflectionExtensions
                     : null;
             var inputArray = Enumerable.ToArray((input as IEnumerable).Cast<object>());
             var outputArray = Array.CreateInstance(outputElementType ?? typeof(object), inputArray.Length);
-            inputArray.Select(_ => outputElementType is null ? _ : Translate(outputElementType, _, translated)).ToArray().CopyTo(outputArray, 0);
+            inputArray.Select(_ => outputElementType is null ? _ : DoTranslate(outputElementType, _, translated)).ToArray().CopyTo(outputArray, 0);
             return outputArray;
         }
 
@@ -146,13 +144,13 @@ public static class ReflectionExtensions
             if (inputProperty is null || !inputProperty.CanRead)
                 continue;
 
-            outputProperty.SetValue(output, Translate(outputProperty.PropertyType, inputProperty.GetValue(input), translated));
+            outputProperty.SetValue(output, DoTranslate(outputProperty.PropertyType, inputProperty.GetValue(input), translated));
         }
 
         return output;
     }
 
-    public static void UpdateModel(this object value, object model)
+    public static void UpdateFrom(this object value, object model)
     {
         if (value is null)
             return;
@@ -208,7 +206,7 @@ public static class ReflectionExtensions
                 if (property_value.PropertyType != typeof(string) && property_value.PropertyType.IsClass)
                 {
                     var value_model = property_model.GetValue(model) ?? Activator.CreateInstance(property_model.PropertyType);
-                    value_.UpdateModel(value_model);
+                    value_.UpdateFrom(value_model);
                     property_model.SetValue(model, value_model);
                 }
             }
