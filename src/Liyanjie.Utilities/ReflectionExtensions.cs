@@ -11,7 +11,7 @@ public static class ReflectionExtensions
     /// <typeparam name="TOutput"></typeparam>
     /// <param name="input"></param>
     /// <returns></returns>
-    public static TOutput? Translate<TOutput>(this object input)
+    public static TOutput? Translate<TOutput>(this object? input)
     {
         var translated = new Dictionary<(Type, Type, object), object>();
         var output = Translate(typeof(TOutput), input, translated);
@@ -31,7 +31,7 @@ public static class ReflectionExtensions
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static TOutput? Translate<TInput, TOutput>(this TInput input, Action<TInput, TOutput> extra)
+    public static TOutput? Translate<TInput, TOutput>(this TInput? input, Action<TInput?, TOutput?> extra)
     {
         var output = Translate<TOutput>(input!);
 
@@ -50,7 +50,7 @@ public static class ReflectionExtensions
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static async Task<TOutput?> TranslateAsync<TInput, TOutput>(this TInput input, Func<TInput, TOutput, Task> extra)
+    public static async Task<TOutput?> TranslateAsync<TInput, TOutput>(this TInput? input, Func<TInput?, TOutput?, Task> extra)
     {
         var output = Translate<TOutput>(input!);
 
@@ -63,10 +63,10 @@ public static class ReflectionExtensions
         return output;
     }
 
-    static object? Translate(Type outputType, object input, Dictionary<(Type, Type, object), object> translated)
+    static object? Translate(Type outputType, object? input, Dictionary<(Type, Type, object), object> translated)
     {
         if (input is null)
-            throw new ArgumentNullException(nameof(input));
+            return null;
 
         var inputType = input.GetType();
 
