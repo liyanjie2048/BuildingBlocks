@@ -59,13 +59,15 @@ public abstract class ValueObject
         return (ValueObject)MemberwiseClone();
     }
 
-    public static bool operator ==(ValueObject a, ValueObject b)
+    public static bool operator ==(ValueObject? a, ValueObject? b)
     {
-        return a is null ? b is null : a.Equals(b);
+        return a is null
+            ? b is null
+            : b is not null && a.Equals(b);
     }
 
-    public static bool operator !=(ValueObject a, ValueObject b)
+    public static bool operator !=(ValueObject? a, ValueObject? b)
     {
-        return !(a is null ? b is null : a.Equals(b));
+        return !(a is null ? b is null : b is not null && a.Equals(b));
     }
 }
