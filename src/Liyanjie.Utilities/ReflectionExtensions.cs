@@ -10,34 +10,17 @@ public static class ReflectionExtensions
     /// </summary>
     /// <typeparam name="TOutput"></typeparam>
     /// <param name="input"></param>
-    /// <returns></returns>
-    public static TOutput? TranslateTo<TOutput>(this object? input)
-    {
-        var translated = new Dictionary<(Type, Type, object), object>();
-        var output = DoTranslate(typeof(TOutput), input, translated);
-
-        translated.Clear();
-
-        if (output is null)
-            return default;
-        return (TOutput)output;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="TOutput"></typeparam>
-    /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static TOutput? TranslateTo<TOutput>(this object? input, Action<TOutput?> extra)
+    public static TOutput? TranslateTo<TOutput>(this object? input, Action<TOutput>? extra = default)
     {
-        var output = TranslateTo<TOutput>(input!);
+        var output = DoTranslate<TOutput>(input!);
 
         if (output is null)
             return default;
 
         extra?.Invoke(output);
+
         return output;
     }
 
@@ -48,15 +31,25 @@ public static class ReflectionExtensions
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static async Task<TOutput?> TranslateToAsync<TOutput>(this object? input, Func<TOutput?, Task> extra)
+    public static async Task<TOutput?> TranslateToAsync<TOutput>(this object? input, Func<TOutput, Task> extra)
     {
-        var output = TranslateTo<TOutput>(input!);
+        var output = DoTranslate<TOutput>(input!);
 
         if (output is null)
             return default;
 
         if (extra is not null)
             await extra.Invoke(output);
+
+        return output;
+    }
+
+    static TOutput? DoTranslate<TOutput>(this object? input)
+    {
+        var translated = new Dictionary<(Type, Type, object), object>();
+        var output = (TOutput?)DoTranslate(typeof(TOutput), input, translated);
+
+        translated.Clear();
 
         return output;
     }
@@ -97,7 +90,9 @@ public static class ReflectionExtensions
                     : null;
             var inputArray = Enumerable.ToArray((input as IEnumerable).Cast<object>());
             var outputArray = Array.CreateInstance(outputElementType ?? typeof(object), inputArray.Length);
-            inputArray.Select(_ => outputElementType is null ? _ : DoTranslate(outputElementType, _, translated)).ToArray().CopyTo(outputArray, 0);
+            inputArray.Select(_ => outputElementType is null ? _ : DoTranslate(outputElementType, _, translated))
+                .ToArray()
+                .CopyTo(outputArray, 0);
             return outputArray;
         }
 
