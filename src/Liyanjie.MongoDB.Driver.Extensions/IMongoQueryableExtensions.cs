@@ -2,6 +2,15 @@
 
 public static class IMongoQueryableExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="ifPredicate"></param>
+    /// <param name="wherePredicate"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public static IMongoQueryable<TSource> IfWhere<TSource>(this IMongoQueryable<TSource> source,
         Func<bool> ifPredicate,
         Expression<Func<TSource, bool>> wherePredicate)
