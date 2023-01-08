@@ -88,7 +88,7 @@ public static class IEnumerableExtensions
     /// <param name="ifPredicate"></param>
     /// <param name="wherePredicate"></param>
     /// <returns></returns>
-    public static IEnumerable<TSource> IfWhere<TSource>(this IQueryable<TSource> source,
+    public static IEnumerable<TSource> IfWhere<TSource>(this IEnumerable<TSource> source,
         Func<bool> ifPredicate,
         Func<TSource, bool> wherePredicate)
     {
