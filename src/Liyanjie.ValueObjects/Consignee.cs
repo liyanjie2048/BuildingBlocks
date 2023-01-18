@@ -19,10 +19,10 @@ public class Consignee : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Address!;
-        yield return Contact!;
+        yield return Address;
+        yield return Contact;
     }
 
     public override string ToString() => $"{Contact} {Address}";

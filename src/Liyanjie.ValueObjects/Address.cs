@@ -24,10 +24,10 @@ public class Address : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return ADCode!;
-        yield return Detail!;
+        yield return ADCode;
+        yield return Detail;
     }
 
     public override string ToString() => $"{ADCode} {Detail}";

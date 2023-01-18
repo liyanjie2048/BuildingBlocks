@@ -9,7 +9,7 @@ public abstract class ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected abstract IEnumerable<object> GetAtomicValues();
+    protected abstract IEnumerable<object?> GetAtomicValues();
 
     /// <summary>
     /// 

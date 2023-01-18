@@ -11,17 +11,23 @@ public class Name : ValueObject
     public string? GivenName { get; set; }
 
     /// <summary>
+    /// 中间名
+    /// </summary>
+    public string? MiddleName { get; set; }
+
+    /// <summary>
     /// 姓
     /// </summary>
-    public string? Surname { get; set; }
+    public string? FamilyName { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return GivenName!;
-        yield return Surname!;
+        yield return GivenName;
+        yield return MiddleName;
+        yield return FamilyName;
     }
 }

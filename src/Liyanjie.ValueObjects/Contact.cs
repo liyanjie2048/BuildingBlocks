@@ -24,11 +24,11 @@ public class Contact<TType, TName> : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Type!;
-        yield return Name!;
-        yield return Number!;
+        yield return Type;
+        yield return Name;
+        yield return Number;
     }
 
     public override string ToString() => $"{Name} {Number}";

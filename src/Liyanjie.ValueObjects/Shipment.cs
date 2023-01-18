@@ -19,10 +19,10 @@ public class Shipment<TIdentity> : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Identity!;
-        yield return TrackingNumber!;
+        yield return Identity;
+        yield return TrackingNumber;
     }
 
     public override string ToString() => $"{Identity} {TrackingNumber}";

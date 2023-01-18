@@ -23,7 +23,12 @@ public class Licence<TType> : ValueObject
     /// <summary>
     /// 照片
     /// </summary>
-    public string? Picture { get; set; }
+    public string[]? Pictures { get; set; }
+
+    /// <summary>
+    /// 认证状态
+    /// </summary>
+    public Status<bool> IsIdentified { get; set; } = new();
 
     /// <summary>
     /// 

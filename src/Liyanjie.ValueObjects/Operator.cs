@@ -21,10 +21,10 @@ public class Operator<TStatus, TIdentity> : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Status!;
-        yield return Identity!;
+        yield return Status;
+        yield return Identity;
     }
 
     public override string? ToString() => Status?.ToString();

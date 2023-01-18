@@ -25,9 +25,9 @@ public class Status<TStatus> : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Value!;
+        yield return Value;
     }
 
     public override string? ToString() => Value?.ToString();

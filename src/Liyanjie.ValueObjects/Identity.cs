@@ -19,10 +19,10 @@ public class Identity<TType, TValue> : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Type!;
-        yield return Value!;
+        yield return Type;
+        yield return Value;
     }
 
     public override string? ToString() => Type?.ToString();

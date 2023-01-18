@@ -24,7 +24,7 @@ public class Score : ValueObject
     /// 
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
         yield return Total;
         yield return Count;

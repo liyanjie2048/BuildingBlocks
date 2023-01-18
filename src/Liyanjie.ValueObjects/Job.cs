@@ -26,12 +26,12 @@ public class Job<TIndustry> : ValueObject
     /// </summary>
     public Address? Address { get; set; }
 
-    protected override IEnumerable<object> GetAtomicValues()
+    protected override IEnumerable<object?> GetAtomicValues()
     {
-        yield return Industry!;
-        yield return Company!;
-        yield return Position!;
-        yield return Address!;
+        yield return Industry;
+        yield return Company;
+        yield return Position;
+        yield return Address;
     }
 
     public override string ToString() => $"{Company} {Position}";
