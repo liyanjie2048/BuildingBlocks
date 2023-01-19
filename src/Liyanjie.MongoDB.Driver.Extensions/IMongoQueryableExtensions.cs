@@ -7,22 +7,19 @@ public static class IMongoQueryableExtensions
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <param name="source"></param>
-    /// <param name="ifPredicate"></param>
+    /// <param name="predicate"></param>
     /// <param name="wherePredicate"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static IMongoQueryable<TSource> IfWhere<TSource>(this IMongoQueryable<TSource> source,
-        Func<bool> ifPredicate,
+    public static IMongoQueryable<TSource> If_Where<TSource>(this IMongoQueryable<TSource> source,
+        bool predicate,
         Expression<Func<TSource, bool>> wherePredicate)
     {
-        if (ifPredicate is null)
-            throw new ArgumentNullException(nameof(ifPredicate));
+        if (wherePredicate is not null)
+            return predicate
+                ? source.Where(wherePredicate)
+                : source;
 
-        if (wherePredicate is null)
-            throw new ArgumentNullException(nameof(wherePredicate));
-
-        return ifPredicate.Invoke()
-            ? source.Where(wherePredicate)
-            : source;
+        return source;
     }
 }

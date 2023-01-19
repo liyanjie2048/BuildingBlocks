@@ -14,6 +14,26 @@ public static class IEnumerableExtensions
     /// <param name="toString"></param>
     /// <returns></returns>
     public static string ToString<TSource>(this IEnumerable<TSource> source,
+        char separator,
+        Func<TSource, string?>? toString = default)
+    {
+        if (source is null)
+            throw new ArgumentNullException(nameof(source));
+
+        toString ??= _ => _?.ToString();
+
+        return string.Join(separator, source.Select(toString));
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="separator"></param>
+    /// <param name="toString"></param>
+    /// <returns></returns>
+    public static string ToString<TSource>(this IEnumerable<TSource> source,
         string separator,
         Func<TSource, string?>? toString = default)
     {
@@ -85,22 +105,17 @@ public static class IEnumerableExtensions
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <param name="source"></param>
-    /// <param name="ifPredicate"></param>
+    /// <param name="predicate"></param>
     /// <param name="wherePredicate"></param>
     /// <returns></returns>
-    public static IEnumerable<TSource> IfWhere<TSource>(this IEnumerable<TSource> source,
-        Func<bool> ifPredicate,
+    public static IEnumerable<TSource> If_Where<TSource>(this IEnumerable<TSource> source,
+        bool predicate,
         Func<TSource, bool> wherePredicate)
     {
-        if (ifPredicate is null)
-            throw new ArgumentNullException(nameof(ifPredicate));
+        if (predicate && wherePredicate is not null)
+            return source.Where(wherePredicate);
 
-        if (wherePredicate is null)
-            throw new ArgumentNullException(nameof(wherePredicate));
-
-        return ifPredicate.Invoke()
-            ? source.Where(wherePredicate)
-            : source;
+        return source;
     }
 
     /// <summary>
@@ -110,9 +125,11 @@ public static class IEnumerableExtensions
     /// <typeparam name="TResult"></typeparam>
     /// <param name="source"></param>
     /// <param name="selector"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(this IEnumerable<TSource> source,
-        Func<TSource, Task<TResult>> selector)
+        Func<TSource, CancellationToken, Task<TResult>> selector,
+        CancellationToken cancellationToken = default)
     {
         if (selector is null)
             throw new ArgumentNullException(nameof(selector));
@@ -120,7 +137,7 @@ public static class IEnumerableExtensions
         var output = new List<TResult>();
         foreach (var item in source)
         {
-            output.Add(await selector.Invoke(item));
+            output.Add(await selector.Invoke(item, cancellationToken));
         }
         return output;
     }
@@ -132,9 +149,11 @@ public static class IEnumerableExtensions
     /// <typeparam name="TResult"></typeparam>
     /// <param name="source"></param>
     /// <param name="selector"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static async Task<IEnumerable<TResult>> SelectManyAsync<TSource, TResult>(this IEnumerable<TSource> source,
-        Func<TSource, Task<IEnumerable<TResult>>> selector)
+        Func<TSource, CancellationToken, Task<IEnumerable<TResult>>> selector,
+        CancellationToken cancellationToken = default)
     {
         if (selector is null)
             throw new ArgumentNullException(nameof(selector));
@@ -142,7 +161,7 @@ public static class IEnumerableExtensions
         var output = new List<TResult>();
         foreach (var item in source)
         {
-            output.AddRange(await selector.Invoke(item));
+            output.AddRange(await selector.Invoke(item, cancellationToken));
         }
         return output;
     }

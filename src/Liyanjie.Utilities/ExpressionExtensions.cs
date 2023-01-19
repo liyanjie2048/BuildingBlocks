@@ -10,21 +10,16 @@ public static class ExpressionExtensions
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="ifPredicate"></param>
+    /// <param name="predicate"></param>
     /// <param name="concat"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static Expression<Func<T, bool>> If_AndAlso<T>(this Expression<Func<T, bool>> source,
-        Func<bool> ifPredicate,
+        bool predicate,
         Expression<Func<T, bool>> concat)
     {
-        if (ifPredicate is null)
-            throw new ArgumentNullException(nameof(ifPredicate));
-
-        if (concat is not null)
-            return ifPredicate.Invoke()
-                ? source.AndAlso(concat)
-                : source;
+        if (predicate && concat is not null)
+            return source.AndAlso(concat);
 
         return source;
     }
@@ -34,21 +29,16 @@ public static class ExpressionExtensions
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="ifPredicate"></param>
+    /// <param name="predicate"></param>
     /// <param name="concat"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static Expression<Func<T, bool>> If_OrElse<T>(this Expression<Func<T, bool>> source,
-        Func<bool> ifPredicate,
+        bool predicate,
         Expression<Func<T, bool>> concat)
     {
-        if (ifPredicate is null)
-            throw new ArgumentNullException(nameof(ifPredicate));
-
-        if (concat is not null)
-            return ifPredicate.Invoke()
-                ? source.OrElse(concat)
-                : source;
+        if (predicate && concat is not null)
+            return source.OrElse(concat);
 
         return source;
     }

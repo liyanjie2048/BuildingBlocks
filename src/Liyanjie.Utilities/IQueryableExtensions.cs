@@ -10,21 +10,16 @@ public static class IQueryableExtensions
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <param name="source"></param>
-    /// <param name="ifPredicate"></param>
+    /// <param name="predicate"></param>
     /// <param name="wherePredicate"></param>
     /// <returns></returns>
-    public static IQueryable<TSource> IfWhere<TSource>(this IQueryable<TSource> source,
-        Func<bool> ifPredicate,
+    public static IQueryable<TSource> If_Where<TSource>(this IQueryable<TSource> source,
+        bool predicate,
         Expression<Func<TSource, bool>> wherePredicate)
     {
-        if (ifPredicate is null)
-            throw new ArgumentNullException(nameof(ifPredicate));
+        if (predicate && wherePredicate is not null)
+            return source.Where(wherePredicate);
 
-        if (wherePredicate is null)
-            throw new ArgumentNullException(nameof(wherePredicate));
-
-        return ifPredicate.Invoke()
-            ? source.Where(wherePredicate)
-            : source;
+        return source;
     }
 }
