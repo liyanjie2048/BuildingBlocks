@@ -125,6 +125,29 @@ public static class IEnumerableExtensions
     /// <typeparam name="TResult"></typeparam>
     /// <param name="source"></param>
     /// <param name="selector"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(this IEnumerable<TSource> source,
+        Func<TSource, Task<TResult>> selector)
+    {
+        if (selector is null)
+            throw new ArgumentNullException(nameof(selector));
+
+        var output = new List<TResult>();
+        foreach (var item in source)
+        {
+            output.Add(await selector.Invoke(item));
+        }
+        return output;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="selector"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(this IEnumerable<TSource> source,
@@ -138,6 +161,29 @@ public static class IEnumerableExtensions
         foreach (var item in source)
         {
             output.Add(await selector.Invoke(item, cancellationToken));
+        }
+        return output;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="selector"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static async Task<IEnumerable<TResult>> SelectManyAsync<TSource, TResult>(this IEnumerable<TSource> source,
+        Func<TSource, Task<IEnumerable<TResult>>> selector)
+    {
+        if (selector is null)
+            throw new ArgumentNullException(nameof(selector));
+
+        var output = new List<TResult>();
+        foreach (var item in source)
+        {
+            output.AddRange(await selector.Invoke(item));
         }
         return output;
     }
