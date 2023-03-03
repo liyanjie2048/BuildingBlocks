@@ -30,7 +30,7 @@
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" Version="2.12.4" />
+        <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
     </ItemGroup>
 
 </Project>
