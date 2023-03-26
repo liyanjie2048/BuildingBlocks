@@ -101,21 +101,41 @@ public static class ReflectionExtensions
 
         if (outputTypeInfo.IsValueType)
         {
+            var destType = outputType;
             if ("Nullable`1" == outputType.Name)
-                try
-                {
-                    return Convert.ChangeType(input, outputType.GenericTypeArguments[0]);
-                }
-                catch
-                {
-                    return null;
-                }
-            else
-                try
-                {
-                    return Convert.ChangeType(input, outputType);
-                }
-                catch { }
+                destType = outputType.GenericTypeArguments[0];
+
+            if (inputType == typeof(string))
+            {
+                var method = destType
+                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .Where(_ => _.Name == "Parse")
+                    .FirstOrDefault(_ =>
+                    {
+                        var parameters = _.GetParameters();
+                        return parameters.Length == 1 && parameters.Single().ParameterType == typeof(string);
+                    });
+                if (method is not null)
+                    try
+                    {
+                        return method.Invoke(null, new[] { input });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Parse [{input}] to [{destType.Name}] error in DoTranslate");
+                        Console.WriteLine(ex);
+                    }
+            }
+
+            try
+            {
+                return Convert.ChangeType(input, destType);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ChangeType [{input}] to [{destType.Name}] error in DoTranslate");
+                Console.WriteLine(ex);
+            }
         }
 
         if (outputTypeInfo.IsInterface)
