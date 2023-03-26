@@ -13,7 +13,7 @@ public class Score : ValueObject
     /// <summary>
     /// 评分数量
     /// </summary>
-    public int Count { get; set; }
+    public uint Count { get; set; }
 
     /// <summary>
     /// 平均分
