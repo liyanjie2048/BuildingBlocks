@@ -18,7 +18,7 @@ public class Score : ValueObject
     /// <summary>
     /// 平均分
     /// </summary>
-    public double Average => (double)Total / Count;
+    public float Average => (float)Total / Count;
 
     /// <summary>
     /// 
