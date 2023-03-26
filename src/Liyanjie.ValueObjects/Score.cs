@@ -18,9 +18,9 @@ public class Score : ValueObject
     /// <summary>
     /// 平均分
     /// </summary>
-    public double Average => Count > 0
+    public double? Average => Count > 0
         ? (double)Total / Count
-        : 0d;
+        : null;
 
     /// <summary>
     /// 
@@ -33,5 +33,5 @@ public class Score : ValueObject
     }
 
     public override string ToString() => Average.ToString();
-    public string ToString(string format) => Average.ToString(format);
+    public string? ToString(string format) => Average?.ToString(format);
 }
