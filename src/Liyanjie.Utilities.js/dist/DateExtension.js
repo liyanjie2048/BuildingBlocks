@@ -17,22 +17,26 @@ Date.prototype.format = function (format, weekDisplay) {
         "5": weekDisplay.fri || "星期五",
         "6": weekDisplay.sat || "星期六"
     };
-    if (/(y+)/.test(format)) {
-        format = format.replace(RegExp.$1, this.getFullYear().toString().substr(4 - RegExp.$1.length));
+    var match_y = format.match(/(y+)/);
+    if (match_y.length > 0) {
+        format = format.replace(match_y[1], this.getFullYear().toString().substring(4 - match_y[1].length));
     }
-    if (/(d{3,4})/.test(format)) {
-        format = format.replace(RegExp.$1, w[this.getDay().toString()]);
+    var match_d = format.match(/(d{3,4})/);
+    if (match_d.length > 0) {
+        format = format.replace(match_d[1], w[this.getDay().toString()]);
     }
     for (var k in o) {
-        if (new RegExp("(" + k + ")").test(format)) {
-            var value = RegExp.$1.length === 1
+        var match = format.match("(".concat(k, ")"));
+        if (match.length > 0) {
+            var value = match[1].length === 1
                 ? (o[k])
-                : ("00" + o[k]).substr(o[k].toString().length);
-            format = format.replace(RegExp.$1, value);
+                : ("00".concat(o[k])).substring(o[k].toString().length);
+            format = format.replace(match[1], value);
         }
     }
-    if (/(f{1,3})/.test(format)) {
-        format = format.replace(RegExp.$1, this.getMilliseconds().toString().substr(3 - RegExp.$1.length));
+    var match_f = format.match(/(f{1,3})/);
+    if (match_f.length > 0) {
+        format = format.replace(match_f[1], this.getMilliseconds().toString().substring(3 - match_f[1].length));
     }
     return format;
 };

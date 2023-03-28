@@ -1,30 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Guid = void 0;
+var uuid_1 = require("uuid");
 /**
  * Guid
  */
 var Guid = /** @class */ (function () {
     function Guid(input) {
-        this.array = [];
-        /**
-         * Guid对象的标记
-         */
-        this.isGuid = true;
-        if (input && typeof (input) === 'string') {
-            input = input.replace(/\{|\(|\)|\}|\-/g, '');
-            input = input.toLowerCase();
-            if (input.length === 32 && input.search(/[^0-9,a-f]/i) < 0) {
-                for (var i = 0; i < input.length; i++) {
-                    this.array.push(input[i]);
-                }
-            }
-        }
-        if (this.array.length === 0) {
-            for (var i = 0; i < 32; i++) {
-                this.array.push('0');
-            }
-        }
+        this._uuid = (0, uuid_1.NIL)();
+        if (input && typeof (input) === 'string')
+            this._uuid = input;
+        else
+            this._uuid = (0, uuid_1.NIL)();
     }
     /**
      * 返回一个值，该值指示 Guid 的两个实例是否表示同一个值
@@ -32,9 +19,10 @@ var Guid = /** @class */ (function () {
      * @returns
      */
     Guid.prototype.equals = function (other) {
-        if (other && other.isGuid)
-            return this.toString() == other.toString();
-        return false;
+        if (typeof other === 'string')
+            return this._uuid === other;
+        else
+            return this._uuid === (other === null || other === void 0 ? void 0 : other.toString());
     };
     ;
     /**
@@ -48,37 +36,44 @@ var Guid = /** @class */ (function () {
      * @returns
      */
     Guid.prototype.format = function (format) {
-        if (format === void 0) { format = 'N'; }
         if (format)
             switch (format) {
                 case 'N':
-                    return this.array.toString().replace(/,/g, '');
+                    return this._uuid.replace(/,/g, '');
                 case 'D':
-                    return (this.array.slice(0, 8) + "-" + this.array.slice(8, 12) + "-" + this.array.slice(12, 16) + "-" + this.array.slice(16, 20) + "-" + this.array.slice(20, 32)).replace(/,/g, '');
+                    return this._uuid;
                 case 'B':
-                    return "{" + this.format('D') + "}";
+                    return "{".concat(this._uuid, "}");
                 case 'P':
-                    return "(" + this.format('D') + ")";
+                    return "(".concat(this._uuid, ")");
                 default:
                     throw new Error("Parameter “format” must be one of N|D|B|P]");
             }
         else
-            return this.format('D');
+            return this._uuid;
+    };
+    Guid.isGuid = function (input) {
+        if (typeof input === 'string')
+            return (0, uuid_1.validate)(input);
+        else
+            return (0, uuid_1.validate)(input === null || input === void 0 ? void 0 : input.toString());
+    };
+    Guid.parse = function (input) {
+        if (this.isGuid(input))
+            return new Guid(input);
+        else
+            return undefined;
     };
     /**
      * 初始化 Guid 类的一个新实例
      */
     Guid.newGuid = function () {
-        var string = '';
-        for (var i = 0; i < 32; i++) {
-            string += Math.floor(Math.random() * 16.0).toString(16);
-        }
-        return new Guid(string);
+        return (0, uuid_1.v4)();
     };
     /**
      * Guid 类的默认实例，其值保证均为零
      */
-    Guid.empty = new Guid();
+    Guid.empty = (0, uuid_1.NIL)();
     return Guid;
 }());
 exports.Guid = Guid;

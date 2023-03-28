@@ -1,40 +1,28 @@
-﻿/**
+﻿import { NIL, v4, parse, validate } from 'uuid';
+
+/**
  * Guid
  */
 export class Guid {
-    private array: string[] = [];
+    private _uuid: string = NIL();
 
     constructor(input?: string) {
-        if (input && typeof (input) === 'string') {
-            input = input.replace(/\{|\(|\)|\}|\-/g, '');
-            input = input.toLowerCase();
-            if (input.length === 32 && input.search(/[^0-9,a-f]/i) < 0) {
-                for (let i = 0; i < input.length; i++) {
-                    this.array.push(input[i]);
-                }
-            }
-        }
-        if (this.array.length === 0) {
-            for (let i = 0; i < 32; i++) {
-                this.array.push('0');
-            }
-        }
+        if (input && typeof (input) === 'string')
+            this._uuid = input;
+        else
+            this._uuid = NIL();
     }
-
-    /**
-     * Guid对象的标记
-     */
-    isGuid: boolean = true;
 
     /**
      * 返回一个值，该值指示 Guid 的两个实例是否表示同一个值
      * @param other
      * @returns
      */
-    equals(other: Guid): boolean {
-        if (other && other.isGuid)
-            return this.toString() == other.toString();
-        return false;
+    equals(other: any): boolean {
+        if (typeof other === 'string')
+            return this._uuid === other;
+        else
+            return this._uuid === other?.toString();
     };
 
     /**
@@ -47,37 +35,47 @@ export class Guid {
      * @param format
      * @returns
      */
-    format(format: string = 'N'): string {
+    format(format?: string): string {
         if (format)
             switch (format) {
                 case 'N':
-                    return this.array.toString().replace(/,/g, '');
+                    return this._uuid.replace(/,/g, '');
                 case 'D':
-                    return `${this.array.slice(0, 8)}-${this.array.slice(8, 12)}-${this.array.slice(12, 16)}-${this.array.slice(16, 20)}-${this.array.slice(20, 32)}`.replace(/,/g, '');
+                    return this._uuid;
                 case 'B':
-                    return `{${this.format('D')}}`;
+                    return `{${this._uuid}}`;
                 case 'P':
-                    return `(${this.format('D')})`;
+                    return `(${this._uuid})`;
                 default:
                     throw new Error("Parameter “format” must be one of N|D|B|P]");
             }
         else
-            return this.format('D');
+            return this._uuid;
+    }
+
+    static isGuid(input: string | Guid): boolean {
+        if (typeof input === 'string')
+            return validate(input);
+        else
+            return validate(input?.toString());
+    }
+
+    static parse(input: string): Guid | undefined {
+        if (this.isGuid(input))
+            return new Guid(input);
+        else
+            return undefined;
     }
 
     /**
      * Guid 类的默认实例，其值保证均为零
      */
-    static empty: Guid = new Guid();
+    static empty: string = NIL();
 
     /**
      * 初始化 Guid 类的一个新实例
      */
-    static newGuid(): Guid {
-        let string = '';
-        for (let i = 0; i < 32; i++) {
-            string += Math.floor(Math.random() * 16.0).toString(16);
-        }
-        return new Guid(string);
+    static newGuid(): string {
+        return v4();
     }
 }
