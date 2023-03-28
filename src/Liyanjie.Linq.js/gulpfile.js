@@ -1,10 +1,8 @@
 ﻿const gulp = require('gulp');
-const plugins = require('gulp-load-plugins')();
-const
-    rename = plugins.rename,
-    minifyJs = plugins.uglify;
+const rename = require('gulp-rename');
+const minifyJs = require('gulp-uglify');
 
-function dist(cp) {
+exports.dist = (cp) => {
     gulp.src('./bundles/liyanjie.linq.umd.js')
         .pipe(rename('liyanjie.linq.js'))
         .pipe(gulp.dest('./dist'))
@@ -12,6 +10,4 @@ function dist(cp) {
         .pipe(minifyJs())
         .pipe(gulp.dest('./dist'));
     cp();
-}
-
-exports.dist = dist;
+};

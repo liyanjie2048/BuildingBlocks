@@ -1,17 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Guid = void 0;
-var uuid_1 = require("uuid");
+import { NIL, v4, validate } from 'uuid';
 /**
  * Guid
  */
-var Guid = /** @class */ (function () {
+export var Guid = /** @class */ (function () {
     function Guid(input) {
-        this._uuid = (0, uuid_1.NIL)();
-        if (input && typeof (input) === 'string')
+        this._uuid = NIL;
+        if (input && typeof (input) === 'string' && validate(input))
             this._uuid = input;
         else
-            this._uuid = (0, uuid_1.NIL)();
+            this._uuid = NIL;
     }
     /**
      * 返回一个值，该值指示 Guid 的两个实例是否表示同一个值
@@ -22,7 +19,7 @@ var Guid = /** @class */ (function () {
         if (typeof other === 'string')
             return this._uuid === other;
         else
-            return this._uuid === (other === null || other === void 0 ? void 0 : other.toString());
+            return this.format() === other.format();
     };
     ;
     /**
@@ -36,10 +33,10 @@ var Guid = /** @class */ (function () {
      * @returns
      */
     Guid.prototype.format = function (format) {
-        if (format)
+        if (format) {
             switch (format) {
                 case 'N':
-                    return this._uuid.replace(/,/g, '');
+                    return this._uuid.replace(/-/g, '');
                 case 'D':
                     return this._uuid;
                 case 'B':
@@ -49,17 +46,12 @@ var Guid = /** @class */ (function () {
                 default:
                     throw new Error("Parameter “format” must be one of N|D|B|P]");
             }
+        }
         else
             return this._uuid;
     };
-    Guid.isGuid = function (input) {
-        if (typeof input === 'string')
-            return (0, uuid_1.validate)(input);
-        else
-            return (0, uuid_1.validate)(input === null || input === void 0 ? void 0 : input.toString());
-    };
     Guid.parse = function (input) {
-        if (this.isGuid(input))
+        if (validate(input))
             return new Guid(input);
         else
             return undefined;
@@ -67,14 +59,24 @@ var Guid = /** @class */ (function () {
     /**
      * 初始化 Guid 类的一个新实例
      */
-    Guid.newGuid = function () {
-        return (0, uuid_1.v4)();
+    Guid.new = function () {
+        return new Guid(v4());
+    };
+    /**
+     * Guid 字符串：“xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”
+     * @returns
+     */
+    Guid.newStr = function () {
+        return v4();
     };
     /**
      * Guid 类的默认实例，其值保证均为零
      */
-    Guid.empty = (0, uuid_1.NIL)();
+    Guid.empty = new Guid();
+    /**
+     * Guid 空字符串：“00000000-0000-0000-0000-000000000000”
+     */
+    Guid.emptyStr = NIL;
     return Guid;
 }());
-exports.Guid = Guid;
 //# sourceMappingURL=Guid.js.map

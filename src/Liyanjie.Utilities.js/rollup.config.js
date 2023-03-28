@@ -7,5 +7,5 @@ exports.default = {
         name: "liyanjie.utilities",
         format: "umd"
     },
-    plugins: [typescript()]
+    plugins: [typescript()],
 };

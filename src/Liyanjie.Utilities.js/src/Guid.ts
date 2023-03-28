@@ -1,16 +1,16 @@
-﻿import { NIL, v4, parse, validate } from 'uuid';
+﻿import { NIL, v4, validate } from 'uuid';
 
 /**
  * Guid
  */
 export class Guid {
-    private _uuid: string = NIL();
+    private _uuid: string = NIL;
 
     constructor(input?: string) {
-        if (input && typeof (input) === 'string')
+        if (input && typeof (input) === 'string' && validate(input))
             this._uuid = input;
         else
-            this._uuid = NIL();
+            this._uuid = NIL;
     }
 
     /**
@@ -18,11 +18,11 @@ export class Guid {
      * @param other
      * @returns
      */
-    equals(other: any): boolean {
+    equals(other:Guid| string): boolean {
         if (typeof other === 'string')
             return this._uuid === other;
         else
-            return this._uuid === other?.toString();
+            return this.format() === other.format();
     };
 
     /**
@@ -36,10 +36,10 @@ export class Guid {
      * @returns
      */
     format(format?: string): string {
-        if (format)
+        if (format) {
             switch (format) {
                 case 'N':
-                    return this._uuid.replace(/,/g, '');
+                    return this._uuid.replace(/-/g, '');
                 case 'D':
                     return this._uuid;
                 case 'B':
@@ -49,19 +49,13 @@ export class Guid {
                 default:
                     throw new Error("Parameter “format” must be one of N|D|B|P]");
             }
+        }
         else
             return this._uuid;
     }
 
-    static isGuid(input: string | Guid): boolean {
-        if (typeof input === 'string')
-            return validate(input);
-        else
-            return validate(input?.toString());
-    }
-
     static parse(input: string): Guid | undefined {
-        if (this.isGuid(input))
+        if (validate(input))
             return new Guid(input);
         else
             return undefined;
@@ -70,12 +64,25 @@ export class Guid {
     /**
      * Guid 类的默认实例，其值保证均为零
      */
-    static empty: string = NIL();
+    static empty: Guid = new Guid();
+
+    /**
+     * Guid 空字符串：“00000000-0000-0000-0000-000000000000”
+     */
+    static emptyStr: string = NIL;
 
     /**
      * 初始化 Guid 类的一个新实例
      */
-    static newGuid(): string {
+    static new(): Guid {
+        return new Guid(v4());
+    }
+
+    /**
+     * Guid 字符串：“xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”
+     * @returns
+     */
+    static newStr(): string {
         return v4();
     }
 }

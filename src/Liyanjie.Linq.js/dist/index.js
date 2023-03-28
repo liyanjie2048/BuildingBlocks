@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,19 +13,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderedEnumerable = exports.NumberEnumerable = exports.GroupedEnumerable = exports.Enumerable = void 0;
 /**
  * 可枚举对象类
  */
 var Enumerable = /** @class */ (function () {
     /**
-     * 创建一个Enumerable对象，基于此对象可以使用JsLinq的各种方法
+     * 创建一个Enumerable对象，基于此对象可以使用LinqJs的各种方法
      * @param source 源数组
      */
     function Enumerable(source) {
@@ -38,7 +39,7 @@ var Enumerable = /** @class */ (function () {
             throw new Error('Array parameter can not be null or undefined!');
     };
     /**
-     * 创建一个Enumerable对象，基于此对象可以使用JsLinq的各种方法
+     * 创建一个Enumerable对象，基于此对象可以使用LinqJs的各种方法
      * @param source 源数组
      * @returns
      */
@@ -46,7 +47,7 @@ var Enumerable = /** @class */ (function () {
         return new Enumerable(source || []);
     };
     /**
-     * 创建一个Enumerable对象，基于此对象可以使用JsLinq的各种方法
+     * 创建一个Enumerable对象，基于此对象可以使用LinqJs的各种方法
      * @param source 源数组
      */
     Enumerable.from = function (source) {
@@ -78,9 +79,9 @@ var Enumerable = /** @class */ (function () {
      * @param predicate
      */
     Enumerable.prototype.some = function (predicate) {
-        if (predicate)
-            return this.source.some(predicate) === true;
-        return this.source.length > 0;
+        return predicate
+            ? this.source.some(predicate) === true
+            : this.source.length > 0;
     };
     /**
      * 向可枚举对象的末尾追加元素
@@ -122,25 +123,27 @@ var Enumerable = /** @class */ (function () {
      * @param comparer 元素对比器
      */
     Enumerable.prototype.contains = function (element, comparer) {
-        if (comparer)
-            return this.source.some(function (_) { return comparer(_, element); }) === true;
-        return this.source.indexOf(element) > -1;
+        return comparer
+            ? this.source.some(function (_) { return comparer(_, element); }) === true
+            : this.source.indexOf(element) > -1;
     };
     /**
      * 取可枚举对象中元素的数量
      * @param predicate 条件表达式
      */
     Enumerable.prototype.count = function (predicate) {
-        if (predicate)
-            return this.source.filter(predicate).length;
-        return this.source.length;
+        return predicate
+            ? this.source.filter(predicate).length
+            : this.source.length;
     };
     /**
      * 如果可枚举对象中元素数量为0，则返回包含默认值的新可枚举对象
      * @param defaultValue 默认值
      */
     Enumerable.prototype.defaultIfEmpty = function (defaultValue) {
-        return this.isEmpty() ? new Enumerable(defaultValue ? [defaultValue] : []) : this;
+        return this.isEmpty()
+            ? new Enumerable(defaultValue ? [defaultValue] : [])
+            : this;
     };
     /**
      * 对可枚举对象中的元素去重
@@ -149,10 +152,7 @@ var Enumerable = /** @class */ (function () {
     Enumerable.prototype.distinct = function (comparer) {
         comparer = comparer || (function (item1, item2) { return item1 === item2; });
         var result = [];
-        this.source.forEach(function (item) {
-            if (result.some(function (_) { return comparer(_, item); }) === false)
-                result.push(item);
-        });
+        this.source.forEach(function (item) { return (result.some(function (_) { return comparer(_, item); }) === false) && result.push(item); });
         return new Enumerable(result);
     };
     /**
@@ -160,9 +160,9 @@ var Enumerable = /** @class */ (function () {
      * @param index
      */
     Enumerable.prototype.elementAtOrDefault = function (index) {
-        if (this.source.length > index)
-            return this.source[index];
-        return null;
+        return this.source.length > index
+            ? this.source[index]
+            : null;
     };
     /**
      * 生成一个空的可枚举对象
@@ -179,10 +179,7 @@ var Enumerable = /** @class */ (function () {
         Enumerable._check(target);
         comparer = comparer || (function (item1, item2) { return item1 === item2; });
         var result = [];
-        this.source.forEach(function (item) {
-            if (target.some(function (_) { return comparer(_, item); }) === false)
-                result.push(item);
-        });
+        this.source.forEach(function (item) { return (target.some(function (_) { return comparer(_, item); }) === false) && result.push(item); });
         return new Enumerable(result);
     };
     /**
@@ -190,10 +187,12 @@ var Enumerable = /** @class */ (function () {
      * @param predicate 条件表达式
      */
     Enumerable.prototype.firstOrDefault = function (predicate) {
-        var source = predicate ? this.source.filter(predicate) : this.source;
-        if (source.length > 0)
-            return source[0];
-        return null;
+        var source = predicate
+            ? this.source.filter(predicate)
+            : this.source;
+        return source.length > 0
+            ? source[0]
+            : null;
     };
     /**
      * ForEach循环
@@ -253,10 +252,7 @@ var Enumerable = /** @class */ (function () {
         Enumerable._check(target);
         comparer = comparer || (function (item1, item2) { return item1 === item2; });
         var result = [];
-        this.source.forEach(function (item) {
-            if (target.some(function (_) { return comparer(_, item); }) === true)
-                result.push(item);
-        });
+        this.source.forEach(function (item) { return (target.some(function (_) { return comparer(_, item); }) === true) && result.push(item); });
         return new Enumerable(result);
     };
     /**取可枚举对象中的第一个元素，如果可枚举对象元素数量为0，则返回null
@@ -281,7 +277,9 @@ var Enumerable = /** @class */ (function () {
             var item1 = this_2.source[i];
             var key = keySelector(item1);
             var filteredTarget = target.filter(function (_) { return comparer(key, targetKeySelector(_)); });
-            var item2 = filteredTarget.length > 0 ? filteredTarget[0] : null;
+            var item2 = filteredTarget.length > 0
+                ? filteredTarget[0]
+                : null;
             var selected = resultSelector(item1, item2, key);
             selected && result.push(selected);
         };
@@ -296,28 +294,30 @@ var Enumerable = /** @class */ (function () {
      * @param predicate 条件表达式
      */
     Enumerable.prototype.lastOrDefault = function (predicate) {
-        var source = predicate ? this.source.filter(predicate) : this.source;
-        if (this.source.length > 0)
-            return this.source[this.source.length - 1];
-        return null;
+        var source = predicate
+            ? this.source.filter(predicate)
+            : this.source;
+        return this.source.length > 0
+            ? this.source[this.source.length - 1]
+            : null;
     };
     /**
      * 对可枚举对象中的元素的指定属性求最大值
      * @param selector 属性表达式
      */
     Enumerable.prototype.max = function (selector) {
-        if (this.source.length === 0)
-            return 0;
-        return selector(this.source.sort(function (item1, item2) { return selector(item2) - selector(item1); })[0]);
+        return this.source.length === 0
+            ? 0
+            : selector(this.source.sort(function (item1, item2) { return selector(item2) - selector(item1); })[0]);
     };
     /**
      * 对可枚举对象中的元素的指定属性求最小值
      * @param selector 属性表达式
      */
     Enumerable.prototype.min = function (selector) {
-        if (this.source.length === 0)
-            return 0;
-        return selector(this.source.sort(function (item1, item2) { return selector(item1) - selector(item2); })[0]);
+        return this.source.length === 0
+            ? 0
+            : selector(this.source.sort(function (item1, item2) { return selector(item1) - selector(item2); })[0]);
     };
     /**
      * 对可枚举对象中的元素进行排序（升序）
@@ -348,12 +348,9 @@ var Enumerable = /** @class */ (function () {
                 : group.push({ key: key, source: [item] });
         });
         keys = comparer ? keys.sort(comparer) : keys.sort();
-        if (descending)
-            keys = keys.reverse();
+        (descending) && (keys = keys.reverse());
         var result = [];
-        keys.forEach(function (item) {
-            result.push(new GroupedEnumerable(group.filter(function (_) { return keyEqualizer(item, _.key); })[0]));
-        });
+        keys.forEach(function (item) { return result.push(new GroupedEnumerable(group.filter(function (_) { return keyEqualizer(item, _.key); })[0])); });
         keys = null;
         group = null;
         return new OrderedEnumerable(result);
@@ -368,7 +365,7 @@ var Enumerable = /** @class */ (function () {
             elements[_i] = arguments[_i];
         }
         Enumerable._check(elements);
-        this.source = new (Array.bind.apply(Array, __spreadArray(__spreadArray([void 0], elements), this.source)))();
+        this.source = new (Array.bind.apply(Array, __spreadArray(__spreadArray([void 0], elements, false), this.source, false)))();
         return this;
     };
     /**
@@ -399,7 +396,7 @@ var Enumerable = /** @class */ (function () {
      * 对可枚举对象中的元素反向排序
      */
     Enumerable.prototype.reverse = function () {
-        return new Enumerable(new (Array.bind.apply(Array, __spreadArray([void 0], this.source)))().reverse());
+        return new Enumerable(new (Array.bind.apply(Array, __spreadArray([void 0], this.source, false)))().reverse());
     };
     /**
      * 遍历可枚举对象并生成一个新的可枚举对象
@@ -453,10 +450,7 @@ var Enumerable = /** @class */ (function () {
      */
     Enumerable.prototype.skip = function (count) {
         var result = [];
-        this.source.forEach(function (item, index) {
-            if (index >= count)
-                result.push(item);
-        });
+        this.source.forEach(function (item, index) { return (index >= count) && result.push(item); });
         return new Enumerable(result);
     };
     /**
@@ -469,17 +463,13 @@ var Enumerable = /** @class */ (function () {
         for (var i = 0; i < this.source.length; i++) {
             var item = this.source[i];
             if (!predicate(item, i)) {
-                if (!flag)
-                    flag = true;
+                (!flag) && (flag = true);
                 result.push(item);
             }
             else if (flag)
                 break;
         }
-        this.source.forEach(function (item, index) {
-            if (!predicate(item, index))
-                result.push(item);
-        });
+        this.source.forEach(function (item, index) { return (!predicate(item, index)) && result.push(item); });
         return new Enumerable(result);
     };
     /**
@@ -490,9 +480,7 @@ var Enumerable = /** @class */ (function () {
         if (this.source.length === 0)
             return 0;
         var sum = 0;
-        this.source.forEach(function (item) {
-            sum += selector(item);
-        });
+        this.source.forEach(function (item) { return sum += selector(item); });
         return sum;
     };
     /**
@@ -501,10 +489,7 @@ var Enumerable = /** @class */ (function () {
      */
     Enumerable.prototype.take = function (count) {
         var result = [];
-        this.source.forEach(function (item, index) {
-            if (index < count)
-                result.push(item);
-        });
+        this.source.forEach(function (item, index) { return (index < count) && result.push(item); });
         return new Enumerable(result);
     };
     /**
@@ -517,8 +502,7 @@ var Enumerable = /** @class */ (function () {
         for (var i = 0; i < this.source.length; i++) {
             var item = this.source[i];
             if (predicate(item, i)) {
-                if (!flag)
-                    flag = true;
+                (!flag) && (flag = true);
                 result.push(item);
             }
             else if (flag)
@@ -541,8 +525,7 @@ var Enumerable = /** @class */ (function () {
         var result = {};
         this.source.forEach(function (item) {
             var key = keySelector(item);
-            if (!result[key])
-                result[key] = valueSelector(item);
+            (!result[key]) && (result[key] = valueSelector(item));
         });
         return result;
     };
@@ -552,14 +535,11 @@ var Enumerable = /** @class */ (function () {
      * @param stringSelector 字符串选择器
      */
     Enumerable.prototype.toString = function (separator, stringSelector) {
-        if (separator === null || separator === undefined)
-            separator = ',';
+        (separator === null || separator === undefined) && (separator = ',');
         stringSelector = stringSelector || (function (item) { return item.toString(); });
         var result = '';
-        this.source.forEach(function (item) {
-            result += stringSelector(item) + separator;
-        });
-        return result.substr(0, result.length - separator.length);
+        this.source.forEach(function (item) { return result += stringSelector(item) + separator; });
+        return result.substring(0, result.length - separator.length);
     };
     /**
      * 连接可枚举对象与目标序列，并排除目标序列在当前可枚举对象中已存在的元素
@@ -569,11 +549,8 @@ var Enumerable = /** @class */ (function () {
     Enumerable.prototype.union = function (target, comparer) {
         Enumerable._check(target);
         comparer = comparer || (function (item1, item2) { return item1 === item2; });
-        var result = new (Array.bind.apply(Array, __spreadArray([void 0], this.source)))();
-        target.forEach(function (item) {
-            if (result.some(function (item2) { return comparer(item, item2); }) === false)
-                result.push(item);
-        });
+        var result = new (Array.bind.apply(Array, __spreadArray([void 0], this.source, false)))();
+        target.forEach(function (item) { return (result.some(function (item2) { return comparer(item, item2); }) === false) && result.push(item); });
         comparer = null;
         return new Enumerable(result);
     };
@@ -583,10 +560,7 @@ var Enumerable = /** @class */ (function () {
      */
     Enumerable.prototype.where = function (predicate) {
         var result = [];
-        this.source.forEach(function (item, index) {
-            if (predicate(item, index))
-                result.push(item);
-        });
+        this.source.forEach(function (item, index) { return (predicate(item, index)) && result.push(item); });
         return new Enumerable(result);
     };
     /**
@@ -599,14 +573,16 @@ var Enumerable = /** @class */ (function () {
         var result = [];
         for (var i = 0; i < this.source.length; i++) {
             var item1 = this.source[i];
-            var item2 = target.length > i ? target[i] : null;
+            var item2 = target.length > i
+                ? target[i]
+                : null;
             result.push(resultSelector(item1, item2, i));
         }
         return new Enumerable(result);
     };
     return Enumerable;
 }());
-exports.Enumerable = Enumerable;
+export { Enumerable };
 /**
  * 已分组的可枚举集合数据
  */
@@ -619,7 +595,7 @@ var GroupedEnumerable = /** @class */ (function (_super) {
     }
     return GroupedEnumerable;
 }(Enumerable));
-exports.GroupedEnumerable = GroupedEnumerable;
+export { GroupedEnumerable };
 /**
  * 数值型可枚举对象类
  */
@@ -639,43 +615,43 @@ var NumberEnumerable = /** @class */ (function (_super) {
      * @param index
      */
     NumberEnumerable.prototype.elementAtOrDefault = function (index) {
-        if (this.source.length > index)
-            return this.source[index];
-        return 0;
+        return this.source.length > index
+            ? this.source[index]
+            : 0;
     };
     /**
      * 取可枚举对象中第一个元素，如果可枚举对象元素数量为0，则返回0
      * @param predicate
      */
     NumberEnumerable.prototype.firstOrDefault = function (predicate) {
-        if (this.source.length > 0)
-            return this.source[0];
-        return 0;
+        return this.source.length > 0
+            ? this.source[0]
+            : 0;
     };
     /**
      * 取可枚举对象中的最后一个元素，如果可枚举对象元素数量为0，则返回0
      * @param predicate
      */
     NumberEnumerable.prototype.lastOrDefault = function (predicate) {
-        if (this.source.length > 0)
-            return this.source[this.source.length - 1];
-        return 0;
+        return this.source.length > 0
+            ? this.source[this.source.length - 1]
+            : 0;
     };
     /**
      * 对可枚举对象中的元素求最大值
      */
     NumberEnumerable.prototype.max = function () {
-        if (this.source.length === 0)
-            return 0;
-        return this.source.sort(function (item1, item2) { return item2 - item1; })[0];
+        return this.source.length === 0
+            ? 0
+            : this.source.sort(function (item1, item2) { return item2 - item1; })[0];
     };
     /**
      * 对可枚举对象中的元素求最小值
      */
     NumberEnumerable.prototype.min = function () {
-        if (this.source.length === 0)
-            return 0;
-        return this.source.sort(function (item1, item2) { return item1 - item2; })[0];
+        return this.source.length === 0
+            ? 0
+            : this.source.sort(function (item1, item2) { return item1 - item2; })[0];
     };
     /**
      * 对可枚举对象中元素求和
@@ -684,14 +660,12 @@ var NumberEnumerable = /** @class */ (function (_super) {
         if (this.source.length === 0)
             return 0;
         var sum = 0;
-        this.source.forEach(function (item) {
-            sum += item;
-        });
+        this.source.forEach(function (item) { return sum += item; });
         return sum;
     };
     return NumberEnumerable;
 }(Enumerable));
-exports.NumberEnumerable = NumberEnumerable;
+export { NumberEnumerable };
 /**
  * 已排序的可枚举数据集合
  */
@@ -725,13 +699,11 @@ var OrderedEnumerable = /** @class */ (function (_super) {
             var enumerable = descending
                 ? item.orderByDescending(keySelector, comparer, keyEqualizer)
                 : item.orderBy(keySelector, comparer, keyEqualizer);
-            enumerable.groupedSource.forEach(function (item2) {
-                result.push(new GroupedEnumerable({ key: item.key + ':' + item2.key, source: item2.source }));
-            });
+            enumerable.groupedSource.forEach(function (item2) { return result.push(new GroupedEnumerable({ key: item.key + ':' + item2.key, source: item2.source })); });
         });
         return new OrderedEnumerable(result);
     };
     return OrderedEnumerable;
 }(Enumerable));
-exports.OrderedEnumerable = OrderedEnumerable;
+export { OrderedEnumerable };
 //# sourceMappingURL=index.js.map

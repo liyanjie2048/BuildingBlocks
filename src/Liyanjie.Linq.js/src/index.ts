@@ -1,6 +1,4 @@
-﻿import { isArray, isString } from "util";
-
-/**
+﻿/**
  * 可枚举对象类
  */
 export class Enumerable<T> {
@@ -11,7 +9,7 @@ export class Enumerable<T> {
     source: T[];
 
     /**
-     * 创建一个Enumerable对象，基于此对象可以使用JsLinq的各种方法
+     * 创建一个Enumerable对象，基于此对象可以使用LinqJs的各种方法
      * @param source 源数组
      */
     constructor(source: T[]) {
@@ -25,7 +23,7 @@ export class Enumerable<T> {
     }
 
     /**
-     * 创建一个Enumerable对象，基于此对象可以使用JsLinq的各种方法
+     * 创建一个Enumerable对象，基于此对象可以使用LinqJs的各种方法
      * @param source 源数组
      * @returns 
      */
@@ -34,7 +32,7 @@ export class Enumerable<T> {
     }
 
     /**
-     * 创建一个Enumerable对象，基于此对象可以使用JsLinq的各种方法
+     * 创建一个Enumerable对象，基于此对象可以使用LinqJs的各种方法
      * @param source 源数组
      */
     static from<TSource>(source?: TSource[]): Enumerable<TSource> {
@@ -70,9 +68,9 @@ export class Enumerable<T> {
      * @param predicate
      */
     some(predicate?: (item: T) => boolean): boolean {
-        if (predicate)
-            return this.source.some(predicate) === true;
-        return this.source.length > 0;
+        return predicate
+            ? this.source.some(predicate) === true
+            : this.source.length > 0;
     }
 
     /**
@@ -108,9 +106,9 @@ export class Enumerable<T> {
      * @param comparer 元素对比器
      */
     contains(element: T, comparer?: (item1: T, item2: T) => boolean): boolean {
-        if (comparer)
-            return this.source.some(_ => comparer(_, element)) === true;
-        return this.source.indexOf(element) > -1;
+        return comparer
+            ? this.source.some(_ => comparer(_, element)) === true
+            : this.source.indexOf(element) > -1;
     }
 
     /**
@@ -118,9 +116,9 @@ export class Enumerable<T> {
      * @param predicate 条件表达式
      */
     count(predicate?: (item: T) => boolean): number {
-        if (predicate)
-            return this.source.filter(predicate).length;
-        return this.source.length;
+        return predicate
+            ? this.source.filter(predicate).length
+            : this.source.length;
     }
 
     /**
@@ -128,7 +126,9 @@ export class Enumerable<T> {
      * @param defaultValue 默认值
      */
     defaultIfEmpty(defaultValue?: T): Enumerable<T> {
-        return this.isEmpty() ? new Enumerable(defaultValue ? [defaultValue] : []) : this;
+        return this.isEmpty()
+            ? new Enumerable(defaultValue ? [defaultValue] : [])
+            : this;
     }
 
     /**
@@ -138,10 +138,7 @@ export class Enumerable<T> {
     distinct(comparer?: (item1: T, item2: T) => boolean): Enumerable<T> {
         comparer = comparer || ((item1, item2) => item1 === item2);
         let result: T[] = [];
-        this.source.forEach(item => {
-            if (result.some(_ => comparer(_, item)) === false)
-                result.push(item);
-        });
+        this.source.forEach(item => (result.some(_ => comparer(_, item)) === false) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -149,10 +146,10 @@ export class Enumerable<T> {
      * 返回可枚举对象中指定索引的元素，如果索引超出，返回null
      * @param index
      */
-    elementAtOrDefault(index: number): T {
-        if (this.source.length > index)
-            return this.source[index];
-        return null;
+    elementAtOrDefault(index: number): T | null {
+        return this.source.length > index
+            ? this.source[index]
+            : null;
     }
 
     /**
@@ -171,10 +168,7 @@ export class Enumerable<T> {
         Enumerable._check(target);
         comparer = comparer || ((item1, item2) => item1 === item2);
         let result: T[] = [];
-        this.source.forEach(item => {
-            if (target.some(_ => comparer(_, item)) === false)
-                result.push(item);
-        });
+        this.source.forEach(item => (target.some(_ => comparer(_, item)) === false) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -182,11 +176,13 @@ export class Enumerable<T> {
      * 取可枚举对象中满足条件的第一个元素，如果可枚举对象元素数量为0，则返回null
      * @param predicate 条件表达式
      */
-    firstOrDefault(predicate?: (item: T) => boolean): T {
-        let source = predicate ? this.source.filter(predicate) : this.source;
-        if (source.length > 0)
-            return source[0];
-        return null;
+    firstOrDefault(predicate?: (item: T) => boolean): T | null {
+        let source = predicate
+            ? this.source.filter(predicate)
+            : this.source;
+        return source.length > 0
+            ? source[0]
+            : null;
     }
 
     /**
@@ -246,10 +242,7 @@ export class Enumerable<T> {
         Enumerable._check(target);
         comparer = comparer || ((item1, item2) => item1 === item2);
         let result: T[] = [];
-        this.source.forEach(item => {
-            if (target.some(_ => comparer(_, item)) === true)
-                result.push(item);
-        });
+        this.source.forEach(item => (target.some(_ => comparer(_, item)) === true) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -276,7 +269,9 @@ export class Enumerable<T> {
             let item1 = this.source[i];
             let key = keySelector(item1);
             let filteredTarget = target.filter(_ => comparer(key, targetKeySelector(_)));
-            let item2 = filteredTarget.length > 0 ? filteredTarget[0] : null;
+            let item2 = filteredTarget.length > 0
+                ? filteredTarget[0]
+                : null;
             let selected = resultSelector(item1, item2, key);
             selected && result.push(selected);
         }
@@ -287,11 +282,13 @@ export class Enumerable<T> {
      * 取可枚举对象中满足条件的最后一个元素，如果可枚举对象元素数量为0，则返回null
      * @param predicate 条件表达式
      */
-    lastOrDefault(predicate?: (item: T) => boolean): T {
-        let source = predicate ? this.source.filter(predicate) : this.source;
-        if (this.source.length > 0)
-            return this.source[this.source.length - 1];
-        return null;
+    lastOrDefault(predicate?: (item: T) => boolean): T | null {
+        let source = predicate
+            ? this.source.filter(predicate)
+            : this.source;
+        return this.source.length > 0
+            ? this.source[this.source.length - 1]
+            : null;
     }
 
     /**
@@ -299,9 +296,9 @@ export class Enumerable<T> {
      * @param selector 属性表达式
      */
     max(selector: (item: T) => number): number {
-        if (this.source.length === 0)
-            return 0;
-        return selector(this.source.sort((item1, item2) => selector(item2) - selector(item1))[0]);
+        return this.source.length === 0
+            ? 0
+            : selector(this.source.sort((item1, item2) => selector(item2) - selector(item1))[0]);
     }
 
     /**
@@ -309,9 +306,9 @@ export class Enumerable<T> {
      * @param selector 属性表达式
      */
     min(selector: (item: T) => number): number {
-        if (this.source.length === 0)
-            return 0;
-        return selector(this.source.sort((item1, item2) => selector(item1) - selector(item2))[0]);
+        return this.source.length === 0
+            ? 0
+            : selector(this.source.sort((item1, item2) => selector(item1) - selector(item2))[0]);
     }
 
     /**
@@ -345,12 +342,9 @@ export class Enumerable<T> {
                 : group.push({ key: key, source: [item] });
         });
         keys = comparer ? keys.sort(comparer) : keys.sort();
-        if (descending)
-            keys = keys.reverse();
+        (descending) && (keys = keys.reverse());
         let result: GroupedEnumerable<T, any>[] = [];
-        keys.forEach(item => {
-            result.push(new GroupedEnumerable(group.filter(_ => keyEqualizer(item, _.key))[0]));
-        });
+        keys.forEach(item => result.push(new GroupedEnumerable(group.filter(_ => keyEqualizer(item, _.key))[0])));
         keys = null;
         group = null;
         return new OrderedEnumerable(result);
@@ -454,10 +448,7 @@ export class Enumerable<T> {
      */
     skip(count: number): Enumerable<T> {
         let result: T[] = [];
-        this.source.forEach((item, index) => {
-            if (index >= count)
-                result.push(item);
-        });
+        this.source.forEach((item, index) => (index >= count) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -467,20 +458,16 @@ export class Enumerable<T> {
      */
     skipWhile(predicate: (item: T, index?: number) => boolean) {
         let result: T[] = [];
-        let flag: boolean = false;
+        let flag = false;
         for (let i = 0; i < this.source.length; i++) {
             let item = this.source[i];
             if (!predicate(item, i)) {
-                if (!flag)
-                    flag = true;
+                (!flag) && (flag = true);
                 result.push(item);
             } else if (flag)
                 break;
         }
-        this.source.forEach((item, index) => {
-            if (!predicate(item, index))
-                result.push(item);
-        });
+        this.source.forEach((item, index) => (!predicate(item, index)) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -491,10 +478,8 @@ export class Enumerable<T> {
     sum(selector: (item: T) => number): number {
         if (this.source.length === 0)
             return 0;
-        let sum: number = 0;
-        this.source.forEach(item => {
-            sum += selector(item);
-        });
+        let sum = 0;
+        this.source.forEach(item => sum += selector(item));
         return sum;
     }
 
@@ -504,10 +489,7 @@ export class Enumerable<T> {
      */
     take(count: number): Enumerable<T> {
         let result: T[] = [];
-        this.source.forEach((item, index) => {
-            if (index < count)
-                result.push(item);
-        });
+        this.source.forEach((item, index) => (index < count) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -521,8 +503,7 @@ export class Enumerable<T> {
         for (let i = 0; i < this.source.length; i++) {
             let item = this.source[i];
             if (predicate(item, i)) {
-                if (!flag)
-                    flag = true;
+                (!flag) && (flag = true);
                 result.push(item);
             } else if (flag)
                 break;
@@ -546,8 +527,7 @@ export class Enumerable<T> {
         let result: { [key: string]: TValue } = {};
         this.source.forEach(item => {
             let key = keySelector(item);
-            if (!result[key])
-                result[key] = valueSelector(item);
+            (!result[key]) && (result[key] = valueSelector(item));
         });
         return result;
     }
@@ -558,14 +538,11 @@ export class Enumerable<T> {
      * @param stringSelector 字符串选择器
      */
     toString(separator?: string, stringSelector?: (item: T) => string): string {
-        if (separator === null || separator === undefined)
-            separator = ',';
+        (separator === null || separator === undefined) && (separator = ',');
         stringSelector = stringSelector || (item => item.toString());
         let result: string = '';
-        this.source.forEach(item => {
-            result += stringSelector(item) + separator;
-        });
-        return result.substr(0, result.length - separator.length);
+        this.source.forEach(item => result += stringSelector(item) + separator);
+        return result.substring(0, result.length - separator.length);
     }
 
     /**
@@ -577,10 +554,7 @@ export class Enumerable<T> {
         Enumerable._check(target);
         comparer = comparer || ((item1, item2) => item1 === item2);
         let result: T[] = new Array(...this.source);
-        target.forEach(item => {
-            if (result.some(item2 => comparer(item, item2)) === false)
-                result.push(item);
-        });
+        target.forEach(item => (result.some(item2 => comparer(item, item2)) === false) && result.push(item));
         comparer = null;
         return new Enumerable(result);
     }
@@ -591,10 +565,7 @@ export class Enumerable<T> {
      */
     where(predicate: (item: T, index?: number) => boolean): Enumerable<T> {
         let result: T[] = [];
-        this.source.forEach((item, index) => {
-            if (predicate(item, index))
-                result.push(item);
-        });
+        this.source.forEach((item, index) => (predicate(item, index)) && result.push(item));
         return new Enumerable(result);
     }
 
@@ -608,7 +579,9 @@ export class Enumerable<T> {
         let result: TResult[] = [];
         for (let i = 0; i < this.source.length; i++) {
             let item1 = this.source[i];
-            let item2 = target.length > i ? target[i] : null;
+            let item2 = target.length > i
+                ? target[i]
+                : null;
             result.push(resultSelector(item1, item2, i));
         }
         return new Enumerable(result);
@@ -637,7 +610,7 @@ export class NumberEnumerable extends Enumerable<number> {
      * 对可枚举对象求平均值
      */
     average(): number {
-        return this.sum() / this.source.length
+        return this.sum() / this.source.length;
     }
 
     /**
@@ -645,9 +618,9 @@ export class NumberEnumerable extends Enumerable<number> {
      * @param index
      */
     elementAtOrDefault(index: number): number {
-        if (this.source.length > index)
-            return this.source[index];
-        return 0;
+        return this.source.length > index
+            ? this.source[index]
+            : 0;
     }
 
     /**
@@ -655,9 +628,9 @@ export class NumberEnumerable extends Enumerable<number> {
      * @param predicate
      */
     firstOrDefault(predicate?: (item: number) => boolean): number {
-        if (this.source.length > 0)
-            return this.source[0];
-        return 0;
+        return this.source.length > 0
+            ? this.source[0]
+            : 0;
     }
 
     /**
@@ -665,27 +638,27 @@ export class NumberEnumerable extends Enumerable<number> {
      * @param predicate
      */
     lastOrDefault(predicate?: (item: number) => boolean): number {
-        if (this.source.length > 0)
-            return this.source[this.source.length - 1];
-        return 0;
+        return this.source.length > 0
+            ? this.source[this.source.length - 1]
+            : 0;
     }
 
     /**
      * 对可枚举对象中的元素求最大值
      */
     max(): number {
-        if (this.source.length === 0)
-            return 0;
-        return this.source.sort((item1, item2) => item2 - item1)[0];
+        return this.source.length === 0
+            ? 0
+            : this.source.sort((item1, item2) => item2 - item1)[0];
     }
 
     /**
      * 对可枚举对象中的元素求最小值
      */
     min(): number {
-        if (this.source.length === 0)
-            return 0;
-        return this.source.sort((item1, item2) => item1 - item2)[0];
+        return this.source.length === 0
+            ? 0
+            : this.source.sort((item1, item2) => item1 - item2)[0];
     }
 
     /**
@@ -695,9 +668,7 @@ export class NumberEnumerable extends Enumerable<number> {
         if (this.source.length === 0)
             return 0;
         let sum: number = 0;
-        this.source.forEach(item => {
-            sum += item;
-        });
+        this.source.forEach(item => sum += item);
         return sum;
     }
 }
@@ -738,9 +709,7 @@ export class OrderedEnumerable<T> extends Enumerable<T> {
             let enumerable = descending
                 ? item.orderByDescending(keySelector, comparer, keyEqualizer)
                 : item.orderBy(keySelector, comparer, keyEqualizer);
-            enumerable.groupedSource.forEach(item2 => {
-                result.push(new GroupedEnumerable({ key: item.key + ':' + item2.key, source: item2.source }));
-            });
+            enumerable.groupedSource.forEach(item2 => result.push(new GroupedEnumerable({ key: item.key + ':' + item2.key, source: item2.source })));
         });
         return new OrderedEnumerable(result);
     }

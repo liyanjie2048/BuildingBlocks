@@ -1,14 +1,11 @@
-﻿import typescript from "rollup-plugin-typescript";
+﻿const typescript = require('@rollup/plugin-typescript');
 
-let config = {
+exports.default = {
     input: "./src/index.ts",
     output: {
         file: "bundles/liyanjie.linq.umd.js",
         name: "liyanjie.linq",
         format: "umd"
     },
-    plugins: [
-        typescript()
-    ]
+    plugins: [typescript()]
 };
-export default config;

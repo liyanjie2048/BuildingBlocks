@@ -1,42 +1,41 @@
 {
-  "name": "liyanjie.linq.js",
-  "version": "1.0.0",
-  "author": {
-    "email": "liyanjie8712@outlook.com",
-    "name": "liyanjie8712",
-    "url": "http://Liyanjie.net"
-  },
-  "keywords": [
-    "liyanjie",
-    "linq"
-  ],
-  "description": "Linq implements in Javascript like C#",
-  "license": "None",
-  "repository": "https://github.com/liyanjie8712/BuildingBlocks",
-  "devDependencies": {
-    "@types/node": "^11.15.20",
-    "gulp": "^4.0.2",
-    "gulp-load-plugins": "^1.6.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-uglify": "^3.0.2",
-    "rollup": "^1.32.1",
-    "rollup-plugin-typescript": "^1.0.1",
-    "tslib": "^1.13.0",
-    "typescript": "^3.9.7"
-  },
-  "files": [
-    "bundles/**/*",
-    "dist/**/*",
-    "package.json",
-    "README.md"
-  ],
-  "main": "dist/src/index.js",
-  "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "dist": "npm run gulp dist",
-    "gulp": "gulp",
-    "rollup": "rollup",
-    "tsc": "tsc"
-  },
-  "typings": "dist/src/index.d.ts"
+    "name": "liyanjie.linq.js",
+    "version": "1.0.0",
+    "author": {
+        "email": "liyanjie8712@outlook.com",
+        "name": "liyanjie8712",
+        "url": "http://Liyanjie.net"
+    },
+    "keywords": [
+        "liyanjie",
+        "linq"
+    ],
+    "description": "Linq implements in Javascript like C#",
+    "license": "None",
+    "repository": "https://github.com/liyanjie8712/BuildingBlocks",
+    "devDependencies": {
+        "@rollup/plugin-typescript": "^11.0.0",
+        "@types/node": "^18.15.10",
+        "gulp": "^4.0.2",
+        "gulp-rename": "^2.0.0",
+        "gulp-uglify": "^3.0.2",
+        "rollup": "^3.20.2",
+        "tslib": "^2.5.0",
+        "typescript": "^5.0.2"
+    },
+    "files": [
+        "bundles/**/*",
+        "dist/**/*",
+        "package.json",
+        "README.md"
+    ],
+    "main": "dist/src/index.js",
+    "scripts": {
+        "build": "rollup -c rollup.config.js",
+        "dist": "npm run gulp dist",
+        "gulp": "gulp",
+        "rollup": "rollup",
+        "tsc": "tsc"
+    },
+    "typings": "dist/src/index.d.ts"
 }
