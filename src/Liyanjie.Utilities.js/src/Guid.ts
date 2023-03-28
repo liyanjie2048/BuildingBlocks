@@ -74,7 +74,7 @@ export class Guid {
     /**
      * 初始化 Guid 类的一个新实例
      */
-    static new(): Guid {
+    static newGuid(): Guid {
         return new Guid(v4());
     }
 
@@ -82,7 +82,7 @@ export class Guid {
      * Guid 字符串：“xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”
      * @returns
      */
-    static newStr(): string {
+    static newGuidStr(): string {
         return v4();
     }
 }

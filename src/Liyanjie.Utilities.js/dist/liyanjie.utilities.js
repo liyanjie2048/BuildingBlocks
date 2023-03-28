@@ -387,14 +387,14 @@
         /**
          * 初始化 Guid 类的一个新实例
          */
-        Guid.new = function () {
+        Guid.newGuid = function () {
             return new Guid(uuid.v4());
         };
         /**
          * Guid 字符串：“xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”
          * @returns
          */
-        Guid.newStr = function () {
+        Guid.newGuidStr = function () {
             return uuid.v4();
         };
         /**
