@@ -17,27 +17,21 @@ Date.prototype.format = function (format, weekDisplay) {
         "5": weekDisplay.fri || "星期五",
         "6": weekDisplay.sat || "星期六"
     };
-    var match_y = format.match(/(y+)/);
-    if (match_y.length > 0) {
-        format = format.replace(match_y[1], this.getFullYear().toString().substring(4 - match_y[1].length));
-    }
-    var match_d = format.match(/(d{3,4})/);
-    if (match_d.length > 0) {
-        format = format.replace(match_d[1], w[this.getDay().toString()]);
-    }
+    var match_y = format.match(/(y+)/); //年
+    (match_y) && (format = format.replace(match_y[0], this.getFullYear().toString().substring(4 - match_y[0].length)));
+    var match_d = format.match(/(d{3,4})/); //星期
+    (match_d) && (format = format.replace(match_d[0], w[this.getDay().toString()]));
     for (var k in o) {
         var match = format.match("(".concat(k, ")"));
-        if (match.length > 0) {
-            var value = match[1].length === 1
+        if (match) {
+            var value = match[0].length === 1
                 ? (o[k])
                 : ("00".concat(o[k])).substring(o[k].toString().length);
-            format = format.replace(match[1], value);
+            format = format.replace(match[0], value);
         }
     }
-    var match_f = format.match(/(f{1,3})/);
-    if (match_f.length > 0) {
-        format = format.replace(match_f[1], this.getMilliseconds().toString().substring(3 - match_f[1].length));
-    }
+    var match_f = format.match(/(f{1,3})/); //毫秒
+    (match_f) && (format = format.replace(match_f[0], this.getMilliseconds().toString().substring(3 - match_f[0].length)));
     return format;
 };
 Date.prototype.addMillionSeconds = function (millionSeconds) {

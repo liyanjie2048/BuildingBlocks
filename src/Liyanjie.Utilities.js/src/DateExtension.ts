@@ -36,27 +36,21 @@ Date.prototype.format = function (format?: string, weekDisplay: WeekDisplay = {}
         "5": weekDisplay.fri || "星期五",
         "6": weekDisplay.sat || "星期六"
     };
-    const match_y = format.match(/(y+)/);
-    if (match_y.length > 0) {
-        format =  format.replace(match_y[1], (<Date>this).getFullYear().toString().substring(4 - match_y[1].length));
-    }
-    const match_d = format.match(/(d{3,4})/);
-    if (match_d.length>0) {
-        format = format.replace(match_d[1], w[(<Date>this).getDay().toString()]);
-    }
+    const match_y = format.match(/(y+)/);//年
+    (match_y) && (format = format.replace(match_y[0], (<Date>this).getFullYear().toString().substring(4 - match_y[0].length)));
+    const match_d = format.match(/(d{3,4})/);//星期
+    (match_d) && (format = format.replace(match_d[0], w[(<Date>this).getDay().toString()]));
     for (let k in o) {
         const match = format.match(`(${k})`);
-        if (match.length>0) {
-            let value = match[1].length === 1
+        if (match) {
+            let value = match[0].length === 1
                 ? (o[k])
                 : (`00${o[k]}`).substring(o[k].toString().length);
-            format = format.replace(match[1], value);
+            format = format.replace(match[0], value);
         }
     }
-    const match_f = format.match(/(f{1,3})/);
-    if (match_f.length>0) {
-        format = format.replace(match_f[1], (<Date>this).getMilliseconds().toString().substring(3 - match_f[1].length));
-    }
+    const match_f = format.match(/(f{1,3})/);//毫秒
+    (match_f) && (format = format.replace(match_f[0], (<Date>this).getMilliseconds().toString().substring(3 - match_f[0].length)));
     return format;
 };
 Date.prototype.addMillionSeconds = function (millionSeconds: number) {
