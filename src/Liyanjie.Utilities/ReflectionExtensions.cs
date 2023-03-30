@@ -64,6 +64,11 @@ public static class ReflectionExtensions
         if (translated.TryGetValue((outputType, inputType, input), out object output))
             return output;
 
+        if (outputType == typeof(string))
+            return inputType == typeof(string)
+                ? (string)input
+                : input?.ToString();
+
         if (outputType.IsInstanceOfType(input))
             return input;
 
@@ -80,24 +85,8 @@ public static class ReflectionExtensions
         if (outputTypeInfo.IsEnum && (inputType == typeof(short) || inputType == typeof(ushort) || inputType == typeof(int) || inputType == typeof(uint) || inputType == typeof(long) || inputType == typeof(ulong)))
             return Enum.ToObject(outputType, input);
 
-        var typeofIEnumerable = typeof(IEnumerable);
-        if (typeofIEnumerable.IsAssignableFrom(outputType) && typeofIEnumerable.IsAssignableFrom(inputType))
-        {
-            var outputElementType = outputType.HasElementType
-                ? outputType.GetElementType()
-                : outputType.IsConstructedGenericType
-                    ? outputType.GenericTypeArguments[0]
-                    : null;
-            var inputArray = Enumerable.ToArray((input as IEnumerable).Cast<object>());
-            var outputArray = Array.CreateInstance(outputElementType ?? typeof(object), inputArray.Length);
-            inputArray.Select(_ => outputElementType is null ? _ : DoTranslate(outputElementType, _, translated))
-                .ToArray()
-                .CopyTo(outputArray, 0);
-            return outputArray;
-        }
-
-        if (outputType == typeof(string))
-            return input?.ToString();
+        if (outputTypeInfo.IsEnum && inputType == typeof(string))
+            return Enum.Parse(outputType, (string)input);
 
         if (outputTypeInfo.IsValueType)
         {
@@ -136,6 +125,22 @@ public static class ReflectionExtensions
                 Console.WriteLine($"ChangeType [{input}] to [{destType.Name}] error in DoTranslate");
                 Console.WriteLine(ex);
             }
+        }
+
+        var typeofIEnumerable = typeof(IEnumerable);
+        if (typeofIEnumerable.IsAssignableFrom(outputType) && typeofIEnumerable.IsAssignableFrom(inputType))
+        {
+            var outputElementType = outputType.HasElementType
+                ? outputType.GetElementType()
+                : outputType.IsConstructedGenericType
+                    ? outputType.GenericTypeArguments[0]
+                    : null;
+            var inputArray = Enumerable.ToArray((input as IEnumerable).Cast<object>());
+            var outputArray = Array.CreateInstance(outputElementType ?? typeof(object), inputArray.Length);
+            inputArray.Select(_ => outputElementType is null ? _ : DoTranslate(outputElementType, _, translated))
+                .ToArray()
+                .CopyTo(outputArray, 0);
+            return outputArray;
         }
 
         if (outputTypeInfo.IsInterface)
