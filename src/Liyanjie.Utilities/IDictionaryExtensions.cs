@@ -106,10 +106,10 @@ public static class IDictionaryExtensions
                 .ToDictionary(_ => _.Key, _ => _.Value);
             var subDictionaries = dictionary
                 .Where(_ => _.Key.IndexOf('.') > 0)
-                .GroupBy(_ => _.Key.Substring(_.Key.IndexOf('.')));
+                .GroupBy(_ => _.Key[.._.Key.IndexOf('.')]);
             foreach (var item in subDictionaries)
             {
-                var subDictionary = item.ToDictionary(_ => _.Key.Substring(item.Key.Length + 1), _ => _.Value);
+                var subDictionary = item.ToDictionary(_ => _.Key[(item.Key.Length + 1)..], _ => _.Value);
                 newDictionary[item.Key] = PreProcessDictionary(subDictionary);
             }
 
