@@ -5,13 +5,6 @@
 /// </summary>
 public class PinyinHelper
 {
-    static string GetAbsolutePath(string path)
-    {
-        return Path.IsPathRooted(path)
-            ? path
-            : Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path));
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -54,6 +47,13 @@ public class PinyinHelper
             .ToArray();
     }
 
+    static string GetAbsolutePath(string path)
+    {
+        return Path.IsPathRooted(path)
+            ? path
+            : Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path));
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -69,7 +69,7 @@ public class PinyinHelper
                 .Where(_ => !string.IsNullOrWhiteSpace(_));
             var version = data.First().Split(':')[1].Trim();
             var charsData = data.Where(_ => !_.StartsWith("#"))
-                .Select(_ => _.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+                .Select(_ => _.Split(' ', StringSplitOptions.RemoveEmptyEntries));
             foreach (var array in charsData)
             {
                 var @char = array[3][0];
@@ -126,13 +126,13 @@ public class PinyinHelper
                 .Where(_ => !string.IsNullOrWhiteSpace(_));
             var version = data.First().Split(':')[1].Trim();
             var wordsData = data.Where(_ => !_.StartsWith("#"))
-                .Select(_ => _.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries));
+                .Select(_ => _.Split(':', StringSplitOptions.RemoveEmptyEntries));
             foreach (var array in wordsData)
             {
                 var word = array[0];
                 if (chineseWords.ContainsKey(word))
                     continue;
-                chineseWords.Add(word, array[1].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+                chineseWords.Add(word, array[1].Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries));
             }
             return (version, chineseWords);
         });
