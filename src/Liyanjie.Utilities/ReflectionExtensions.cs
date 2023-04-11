@@ -122,7 +122,7 @@ public static class ReflectionExtensions
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ChangeType [{input}] to [{destType.Name}] error in DoTranslate");
+                Console.WriteLine($"ChangeType [{input}({inputType})] to [{destType.Name}] error in DoTranslate");
                 Console.WriteLine(ex);
             }
         }
