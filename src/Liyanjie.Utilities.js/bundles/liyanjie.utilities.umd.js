@@ -192,7 +192,7 @@
         }
     }
     Number.prototype.toCn = function (outputType) {
-        if (outputType === void 0) { outputType = 'Normal'; }
+        if (outputType === void 0) { outputType = 'number'; }
         outputType = outputType.toLowerCase();
         var number = this;
         var numberString = this.toString();
@@ -212,16 +212,16 @@
                 var l = number;
                 for (var i = 12; i >= 0; i--) {
                     var level = Math.pow(10000, i);
-                    console.log('level=' + level);
+                    //console.log('level=' + level);
                     if (number >= level) {
                         l = number % level;
                         number = Math.trunc(number / level);
-                        console.log('l=' + l + ',number=' + number);
+                        //console.log('l=' + l + ',number=' + number);
                         if (number > 19) {
                             var j = 1000;
                             while (number % (j * 10) >= 1) {
                                 var tmp = Math.trunc(number / j);
-                                console.log(',tmp=' + number);
+                                //console.log(',tmp=' + number);
                                 if (tmp != 0) {
                                     sb += __toCnNumber(tmp, currency);
                                     if (j > 1)

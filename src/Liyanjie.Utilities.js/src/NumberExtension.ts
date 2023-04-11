@@ -116,9 +116,9 @@ function __toCnNumber(number: number, uppercase: boolean): string {
             break;
     }
 };
-Number.prototype.toCn = function (outputType: string = 'Normal') {
+Number.prototype.toCn = function (outputType: string = 'number') {
     outputType = outputType.toLowerCase();
-    let number = <number>this;
+    let number = this as number;
     let numberString = this.toString();
     let s = '';
     if (numberString[0] == '-') {
@@ -138,16 +138,16 @@ Number.prototype.toCn = function (outputType: string = 'Normal') {
                 let l = number;
                 for (let i = 12; i >= 0; i--) {
                     let level = Math.pow(10000, i);
-                    console.log('level=' + level);
+                    //console.log('level=' + level);
                     if (number >= level) {
                         l = number % level;
                         number = Math.trunc(number / level);
-                        console.log('l=' + l + ',number=' + number);
+                        //console.log('l=' + l + ',number=' + number);
                         if (number > 19) {
                             let j = 1000;
                             while (number % (j * 10) >= 1) {
                                 let tmp = Math.trunc(number / j);
-                                console.log(',tmp=' + number);
+                                //console.log(',tmp=' + number);
                                 if (tmp != 0) {
                                     sb += __toCnNumber(tmp, currency);
                                     if (j > 1)
