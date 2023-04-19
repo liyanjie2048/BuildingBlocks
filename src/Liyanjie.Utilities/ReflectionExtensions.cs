@@ -170,7 +170,7 @@ public static class ReflectionExtensions
         return output;
     }
 
-    public static void UpdateFrom(this object value, object model)
+    public static void UpdateFrom(this object model, object value)
     {
         if (value is null)
             return;
