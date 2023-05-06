@@ -80,10 +80,10 @@ export declare class Enumerable<T> {
      */
     distinct(comparer?: (item1: T, item2: T) => boolean): Enumerable<T>;
     /**
-     * 返回可枚举对象中指定索引的元素，如果索引超出，返回null
+     * 返回可枚举对象中指定索引的元素，如果索引超出，返回undefined
      * @param index
      */
-    elementAtOrDefault(index: number): T | null;
+    elementAtOrDefault(index: number): T | undefined;
     /**
      * 生成一个空的可枚举对象
      */
@@ -95,10 +95,10 @@ export declare class Enumerable<T> {
      */
     except(target: T[], comparer?: (item1: T, item2: T) => boolean): Enumerable<T>;
     /**
-     * 取可枚举对象中满足条件的第一个元素，如果可枚举对象元素数量为0，则返回null
+     * 取可枚举对象中满足条件的第一个元素，如果可枚举对象元素数量为0，则返回undefined
      * @param predicate 条件表达式
      */
-    firstOrDefault(predicate?: (item: T) => boolean): T | null;
+    firstOrDefault(predicate?: (item: T) => boolean): T | undefined;
     /**
      * ForEach循环
      * @param callbackFn 回掉函数
@@ -125,7 +125,7 @@ export declare class Enumerable<T> {
      * @param comparer 元素对比器
      */
     intersect(target: T[], comparer?: (item1: T, item2: T) => boolean): Enumerable<T>;
-    /**取可枚举对象中的第一个元素，如果可枚举对象元素数量为0，则返回null
+    /**取可枚举对象中的第一个元素，如果可枚举对象元素数量为0，则返回undefined
      * 判断可枚举对象是否包含元素
      */
     isEmpty(): boolean;
@@ -137,12 +137,12 @@ export declare class Enumerable<T> {
      * @param resultSelector 结果选择器
      * @param comparer 属性对比器
      */
-    join<TTarget, TKey, TResult>(target: TTarget[], keySelector: (item: T) => TKey, targetKeySelector: (item: TTarget) => TKey, resultSelector: (item1: T, item2: TTarget, key?: TKey) => TResult, comparer?: (item1: TKey, item2: TKey) => boolean): Enumerable<TResult>;
+    join<TTarget, TKey, TResult>(target: TTarget[], keySelector: (item: T) => TKey, targetKeySelector: (item: TTarget) => TKey, resultSelector: (item1: T, item2?: TTarget, key?: TKey) => TResult, comparer?: (item1: TKey, item2: TKey) => boolean): Enumerable<TResult>;
     /**
-     * 取可枚举对象中满足条件的最后一个元素，如果可枚举对象元素数量为0，则返回null
+     * 取可枚举对象中满足条件的最后一个元素，如果可枚举对象元素数量为0，则返回undefined
      * @param predicate 条件表达式
      */
-    lastOrDefault(predicate?: (item: T) => boolean): T | null;
+    lastOrDefault(predicate?: (item: T) => boolean): T | undefined;
     /**
      * 对可枚举对象中的元素的指定属性求最大值
      * @param selector 属性表达式
@@ -202,7 +202,7 @@ export declare class Enumerable<T> {
      * @param target 目标序列
      * @param comparer 元素对比器
      */
-    sequenceEqual(target: T[], comparer?: (item1: T, item2: T) => boolean): boolean;
+    sequenceEqual(target: T[], comparer?: (item1: T, item2?: T) => boolean): boolean;
     /**
      * 跳过指定数量的元素取剩下的元素
      * @param count 数量
@@ -262,7 +262,7 @@ export declare class Enumerable<T> {
      * @param target
      * @param resultSelector
      */
-    zip<TTarget, TResult>(target: TTarget[], resultSelector: (item: T, item2: TTarget, index?: number) => TResult): Enumerable<TResult>;
+    zip<TTarget, TResult>(target: TTarget[], resultSelector: (item: T, item2?: TTarget, index?: number) => TResult): Enumerable<TResult>;
 }
 /**
  * 已分组的可枚举集合数据

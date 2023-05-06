@@ -3,9 +3,9 @@
 exports.default = {
     input: "./src/index.ts",
     output: {
-        file: "bundles/liyanjie.linq.umd.js",
+        file: "./bundles/liyanjie.linq.umd.js",
         name: "liyanjie.linq",
-        format: "umd"
+        format: "umd",
     },
     plugins: [typescript()]
 };

@@ -14,14 +14,14 @@
     "license": "None",
     "repository": "https://github.com/liyanjie8712/BuildingBlocks",
     "devDependencies": {
-        "@rollup/plugin-typescript": "^11.0.0",
-        "@types/node": "^18.15.10",
+        "@rollup/plugin-typescript": "^11.1.0",
+        "@types/node": "^18.16.5",
         "gulp": "^4.0.2",
         "gulp-rename": "^2.0.0",
         "gulp-uglify": "^3.0.2",
-        "rollup": "^3.20.2",
+        "rollup": "^3.21.5",
         "tslib": "^2.5.0",
-        "typescript": "^5.0.2"
+        "typescript": "^5.0.4"
     },
     "files": [
         "bundles/**/*",

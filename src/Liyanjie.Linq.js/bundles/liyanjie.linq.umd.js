@@ -179,13 +179,13 @@
             return new Enumerable(result);
         };
         /**
-         * 返回可枚举对象中指定索引的元素，如果索引超出，返回null
+         * 返回可枚举对象中指定索引的元素，如果索引超出，返回undefined
          * @param index
          */
         Enumerable.prototype.elementAtOrDefault = function (index) {
             return this.source.length > index
                 ? this.source[index]
-                : null;
+                : undefined;
         };
         /**
          * 生成一个空的可枚举对象
@@ -206,7 +206,7 @@
             return new Enumerable(result);
         };
         /**
-         * 取可枚举对象中满足条件的第一个元素，如果可枚举对象元素数量为0，则返回null
+         * 取可枚举对象中满足条件的第一个元素，如果可枚举对象元素数量为0，则返回undefined
          * @param predicate 条件表达式
          */
         Enumerable.prototype.firstOrDefault = function (predicate) {
@@ -215,7 +215,7 @@
                 : this.source;
             return source.length > 0
                 ? source[0]
-                : null;
+                : undefined;
         };
         /**
          * ForEach循环
@@ -278,7 +278,7 @@
             this.source.forEach(function (item) { return (target.some(function (_) { return comparer(_, item); }) === true) && result.push(item); });
             return new Enumerable(result);
         };
-        /**取可枚举对象中的第一个元素，如果可枚举对象元素数量为0，则返回null
+        /**取可枚举对象中的第一个元素，如果可枚举对象元素数量为0，则返回undefined
          * 判断可枚举对象是否包含元素
          */
         Enumerable.prototype.isEmpty = function () {
@@ -302,7 +302,7 @@
                 var filteredTarget = target.filter(function (_) { return comparer(key, targetKeySelector(_)); });
                 var item2 = filteredTarget.length > 0
                     ? filteredTarget[0]
-                    : null;
+                    : undefined;
                 var selected = resultSelector(item1, item2, key);
                 selected && result.push(selected);
             };
@@ -313,7 +313,7 @@
             return new Enumerable(result);
         };
         /**
-         * 取可枚举对象中满足条件的最后一个元素，如果可枚举对象元素数量为0，则返回null
+         * 取可枚举对象中满足条件的最后一个元素，如果可枚举对象元素数量为0，则返回undefined
          * @param predicate 条件表达式
          */
         Enumerable.prototype.lastOrDefault = function (predicate) {
@@ -322,7 +322,7 @@
                 : this.source;
             return this.source.length > 0
                 ? this.source[this.source.length - 1]
-                : null;
+                : undefined;
         };
         /**
          * 对可枚举对象中的元素的指定属性求最大值
@@ -374,8 +374,8 @@
             (descending) && (keys = keys.reverse());
             var result = [];
             keys.forEach(function (item) { return result.push(new GroupedEnumerable(group.filter(function (_) { return keyEqualizer(item, _.key); })[0])); });
-            keys = null;
-            group = null;
+            keys = undefined;
+            group = undefined;
             return new OrderedEnumerable(result);
         };
         /**
@@ -458,13 +458,13 @@
             var result = true;
             for (var i = 0; i < this.source.length; i++) {
                 var item1 = this.source[i];
-                var item2 = target.length > i ? target[i] : null;
+                var item2 = target.length > i ? target[i] : undefined;
                 if (!comparer(item1, item2)) {
                     result = false;
                     break;
                 }
             }
-            comparer = null;
+            comparer = undefined;
             return result;
         };
         /**
@@ -574,7 +574,7 @@
             comparer = comparer || (function (item1, item2) { return item1 === item2; });
             var result = new (Array.bind.apply(Array, __spreadArray([void 0], this.source, false)))();
             target.forEach(function (item) { return (result.some(function (item2) { return comparer(item, item2); }) === false) && result.push(item); });
-            comparer = null;
+            comparer = undefined;
             return new Enumerable(result);
         };
         /**
@@ -598,7 +598,7 @@
                 var item1 = this.source[i];
                 var item2 = target.length > i
                     ? target[i]
-                    : null;
+                    : undefined;
                 result.push(resultSelector(item1, item2, i));
             }
             return new Enumerable(result);
