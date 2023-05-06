@@ -17,7 +17,6 @@
         "dist",
         "node_modules",
         "gulpfile.js",
-        "rollup.config.js",
-        "test.ts"
+        "rollup.config.js"
     ]
 }

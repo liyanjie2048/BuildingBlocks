@@ -3,10 +3,12 @@
 /**
  * Guid
  */
-export class Guid {
+export class Guid
+{
     private _uuid: string = NIL;
 
-    constructor(input?: string) {
+    constructor(input?: string)
+    {
         if (input && typeof (input) === 'string' && validate(input))
             this._uuid = input;
         else
@@ -18,7 +20,8 @@ export class Guid {
      * @param other
      * @returns
      */
-    equals(other:Guid| string): boolean {
+    equals(other: Guid | string): boolean
+    {
         if (typeof other === 'string')
             return this._uuid === other;
         else
@@ -35,9 +38,12 @@ export class Guid {
      * @param format
      * @returns
      */
-    format(format?: string): string {
-        if (format) {
-            switch (format) {
+    format(format?: string): string
+    {
+        if (format)
+        {
+            switch (format)
+            {
                 case 'N':
                     return this._uuid.replace(/-/g, '');
                 case 'D':
@@ -54,7 +60,8 @@ export class Guid {
             return this._uuid;
     }
 
-    static parse(input: string): Guid | undefined {
+    static parse(input: string): Guid | undefined
+    {
         if (validate(input))
             return new Guid(input);
         else
@@ -74,7 +81,8 @@ export class Guid {
     /**
      * 初始化 Guid 类的一个新实例
      */
-    static newGuid(): Guid {
+    static newGuid(): Guid
+    {
         return new Guid(v4());
     }
 
@@ -82,7 +90,8 @@ export class Guid {
      * Guid 字符串：“xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”
      * @returns
      */
-    static newGuidStr(): string {
+    static newGuidStr(): string
+    {
         return v4();
     }
 }

@@ -29,7 +29,7 @@
         "package.json",
         "README.md"
     ],
-    "main": "dist/src/index.js",
+    "main": "dist/index.js",
     "scripts": {
         "build": "rollup -c rollup.config.js",
         "dist": "npm run gulp dist",
@@ -37,5 +37,5 @@
         "rollup": "rollup",
         "tsc": "tsc"
     },
-    "typings": "dist/src/index.d.ts"
+    "typings": "dist/index.d.ts"
 }
