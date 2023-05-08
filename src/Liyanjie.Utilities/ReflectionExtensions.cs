@@ -1,4 +1,6 @@
-﻿namespace System.Reflection;
+﻿using System.Diagnostics;
+
+namespace System.Reflection;
 
 /// <summary>
 /// 
@@ -105,15 +107,19 @@ public static class ReflectionExtensions
                         return parameters.Length == 1 && parameters.Single().ParameterType == typeof(string);
                     });
                 if (method is not null)
+                {
                     try
                     {
                         return method.Invoke(null, new[] { input });
                     }
                     catch (Exception ex)
                     {
+                        var caller = new StackTrace().GetFrame(1).GetMethod();
+                        Console.Write("ClassName:" + caller.ReflectedType.Name + "\nMethodName:" + caller.Name);
                         Console.WriteLine($"Parse [{input}] to [{destType.Name}] error in DoTranslate");
                         Console.WriteLine(ex);
                     }
+                }
             }
 
             try
