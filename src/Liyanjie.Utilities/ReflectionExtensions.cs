@@ -1,12 +1,42 @@
-﻿using System.Diagnostics;
-
-namespace System.Reflection;
+﻿namespace System.Reflection;
 
 /// <summary>
 /// 
 /// </summary>
 public static class ReflectionExtensions
 {
+    public static Dictionary<(Type, Type), Func<object, object?>> Translations = new()
+    {
+        [(typeof(string), typeof(byte))] = input => byte.Parse((string)input),
+        [(typeof(string), typeof(byte?))] = input => byte.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(short))] = input => short.Parse((string)input),
+        [(typeof(string), typeof(short?))] = input => short.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(ushort))] = input => ushort.Parse((string)input),
+        [(typeof(string), typeof(ushort?))] = input => ushort.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(int))] = input => int.Parse((string)input),
+        [(typeof(string), typeof(int?))] = input => int.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(uint))] = input => uint.Parse((string)input),
+        [(typeof(string), typeof(uint?))] = input => uint.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(long))] = input => long.Parse((string)input),
+        [(typeof(string), typeof(long?))] = input => long.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(ulong))] = input => ulong.Parse((string)input),
+        [(typeof(string), typeof(ulong?))] = input => ulong.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(float))] = input => float.Parse((string)input),
+        [(typeof(string), typeof(float?))] = input => float.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(double))] = input => double.Parse((string)input),
+        [(typeof(string), typeof(double?))] = input => double.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(decimal))] = input => decimal.Parse((string)input),
+        [(typeof(string), typeof(decimal?))] = input => decimal.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(DateTime))] = input => DateTime.Parse((string)input),
+        [(typeof(string), typeof(DateTime?))] = input => DateTime.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(DateTimeOffset))] = input => DateTimeOffset.Parse((string)input),
+        [(typeof(string), typeof(DateTimeOffset?))] = input => DateTimeOffset.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(TimeSpan))] = input => TimeSpan.Parse((string)input),
+        [(typeof(string), typeof(TimeSpan?))] = input => TimeSpan.TryParse((string)input, out var value) ? value : null,
+        [(typeof(string), typeof(Guid))] = input => Guid.Parse((string)input),
+        [(typeof(string), typeof(Guid?))] = input => Guid.TryParse((string)input, out var value) ? value : null,
+    };
+
     /// <summary>
     /// 
     /// </summary>
@@ -67,9 +97,7 @@ public static class ReflectionExtensions
             return output;
 
         if (outputType == typeof(string))
-            return inputType == typeof(string)
-                ? (string)input
-                : input?.ToString();
+            return inputType == typeof(string) ? input : input?.ToString();
 
         if (outputType.IsInstanceOfType(input))
             return input;
@@ -77,14 +105,17 @@ public static class ReflectionExtensions
         if (outputType.IsAssignableFrom(inputType))
             return input;
 
+        if (Translations.ContainsKey((inputType, outputType)))
+            return Translations[(inputType, outputType)].Invoke(input);
+
         var inputTypeInfo = inputType.GetTypeInfo();
 
-        if (inputTypeInfo.IsEnum && (inputType == typeof(short) || inputType == typeof(ushort) || inputType == typeof(int) || inputType == typeof(uint) || inputType == typeof(long) || inputType == typeof(ulong)))
+        if (inputTypeInfo.IsEnum && (outputType == typeof(byte) || outputType == typeof(short) || outputType == typeof(ushort) || outputType == typeof(int) || outputType == typeof(uint) || outputType == typeof(long) || outputType == typeof(ulong)))
             return Convert.ChangeType(Enum.Format(inputType, input, "D"), outputType);
 
         var outputTypeInfo = outputType.GetTypeInfo();
 
-        if (outputTypeInfo.IsEnum && (inputType == typeof(short) || inputType == typeof(ushort) || inputType == typeof(int) || inputType == typeof(uint) || inputType == typeof(long) || inputType == typeof(ulong)))
+        if (outputTypeInfo.IsEnum && (inputType == typeof(byte) || inputType == typeof(short) || inputType == typeof(ushort) || inputType == typeof(int) || inputType == typeof(uint) || inputType == typeof(long) || inputType == typeof(ulong)))
             return Enum.ToObject(outputType, input);
 
         if (outputTypeInfo.IsEnum && inputType == typeof(string))
@@ -108,29 +139,11 @@ public static class ReflectionExtensions
                     });
                 if (method is not null)
                 {
-                    try
-                    {
-                        return method.Invoke(null, new[] { input });
-                    }
-                    catch (Exception ex)
-                    {
-                        var caller = new StackTrace().GetFrame(1).GetMethod();
-                        Console.Write("ClassName:" + caller.ReflectedType.Name + "\nMethodName:" + caller.Name);
-                        Console.WriteLine($"Parse [{input}] to [{destType.Name}] error in DoTranslate");
-                        Console.WriteLine(ex);
-                    }
+                    return method.Invoke(null, new[] { input });
                 }
             }
 
-            try
-            {
-                return Convert.ChangeType(input, destType);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"ChangeType [{input}({inputType})] to [{destType.Name}] error in DoTranslate");
-                Console.WriteLine(ex);
-            }
+            return Convert.ChangeType(input, destType);
         }
 
         var typeofIEnumerable = typeof(IEnumerable);
