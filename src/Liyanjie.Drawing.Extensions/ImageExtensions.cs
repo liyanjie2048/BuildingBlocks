@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace System.Drawing;
+﻿namespace System.Drawing;
 
 /// <summary>
 /// 
@@ -15,8 +13,7 @@ public static class ImageExtensions
     /// <param name="image"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static string ToBase64String(this Image image,
-        ImageFormat? format = default)
+    public static string ToBase64String(this Image image, ImageFormat? format = default)
     {
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.RawFormat);
@@ -40,9 +37,9 @@ public static class ImageExtensions
         return image;
     }
 
-    public static string ToDataUrl(this Image image)
+    public static string ToDataUrl(this Image image, ImageFormat? imageFormat = default)
     {
-        return $"data:{image.RawFormat.ToMIMEType()};base64,{ToBase64String(image)}";
+        return $"data:{(imageFormat ?? image.RawFormat).ToMIMEType()};base64,{ToBase64String(image, imageFormat)}";
     }
 
     public static Image FromDataUrl(this Image image, string imageDataUrl)
