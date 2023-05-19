@@ -1,22 +1,60 @@
-﻿namespace System.Drawing;
+﻿using System.Text.RegularExpressions;
+
+namespace System.Drawing;
 
 /// <summary>
 /// 
 /// </summary>
 public static class ImageExtensions
 {
+    readonly static Regex _regex_Base64 = new(@"^data\:(?<MIME>[\w-]+\/[\w-]+)\;base64\,(?<DATA>.+)");
+
     /// <summary>
     /// 将图片转码为base64字符串
     /// </summary>
     /// <param name="image"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static string Encode(this Image image,
+    public static string ToBase64String(this Image image,
         ImageFormat? format = default)
     {
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.RawFormat);
         return Convert.ToBase64String(memory.ToArray());
+    }
+
+    /// <summary>
+    /// 从base64字符串中获取图片
+    /// </summary>
+    /// <param name="image"></param>
+    /// <param name="imageBase64String"></param>
+    /// <returns></returns>
+    public static Image FromBase64String(this Image image, string imageBase64String)
+    {
+        try
+        {
+            image = Image.FromStream(new MemoryStream(Convert.FromBase64String(imageBase64String)));
+        }
+        catch (Exception) { }
+
+        return image;
+    }
+
+    public static string ToDataUrl(this Image image)
+    {
+        return $"data:{image.RawFormat.ToMIMEType()};base64,{ToBase64String(image)}";
+    }
+
+    public static Image FromDataUrl(this Image image, string imageDataUrl)
+    {
+        var match = _regex_Base64.Match(imageDataUrl);
+        if (match.Success)
+        {
+            var data = match.Groups["DATA"].Value;
+            return image.FromBase64String(data);
+        }
+
+        return image;
     }
 
     /// <summary>
