@@ -5,7 +5,10 @@
 /// </summary>
 public static class ImageExtensions
 {
-    readonly static Regex _regex_Base64 = new(@"^data\:(?<MIME>[\w-]+\/[\w-]+)\;base64\,(?<DATA>.+)");
+    /// <summary>
+    /// 
+    /// </summary>
+    public readonly static Regex Regex_DataUrl = new(@"^data\:(?<MIME>[\w-]+\/[\w-]+)\;base64\,(?<DATA>.+)");
 
     /// <summary>
     /// 将图片转码为base64字符串
@@ -15,6 +18,9 @@ public static class ImageExtensions
     /// <returns></returns>
     public static string ToBase64String(this Image image, ImageFormat? format = default)
     {
+        if (image is null)
+            throw new ArgumentNullException(nameof(image));
+
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.RawFormat);
         return Convert.ToBase64String(memory.ToArray());
@@ -28,6 +34,9 @@ public static class ImageExtensions
     /// <returns></returns>
     public static Image FromBase64String(this Image image, string imageBase64String)
     {
+        if (string.IsNullOrWhiteSpace(imageBase64String))
+            return image;
+
         try
         {
             image = Image.FromStream(new MemoryStream(Convert.FromBase64String(imageBase64String)));
@@ -39,12 +48,18 @@ public static class ImageExtensions
 
     public static string ToDataUrl(this Image image, ImageFormat? imageFormat = default)
     {
+        if (image is null)
+            throw new ArgumentNullException(nameof(image));
+
         return $"data:{(imageFormat ?? image.RawFormat).ToMIMEType()};base64,{ToBase64String(image, imageFormat)}";
     }
 
     public static Image FromDataUrl(this Image image, string imageDataUrl)
     {
-        var match = _regex_Base64.Match(imageDataUrl);
+        if (string.IsNullOrWhiteSpace(imageDataUrl))
+            return image;
+
+        var match = Regex_DataUrl.Match(imageDataUrl);
         if (match.Success)
         {
             var data = match.Groups["DATA"].Value;
@@ -59,8 +74,7 @@ public static class ImageExtensions
     /// </summary>
     /// <param name="image"></param>
     /// <param name="opacity"></param>
-    public static Image SetOpacity(this Image image,
-        float opacity)
+    public static Image SetOpacity(this Image image, float opacity)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
@@ -93,9 +107,11 @@ public static class ImageExtensions
     /// <param name="image"></param>
     /// <param name="color"></param>
     /// <returns></returns>
-    public static Image Clear(this Image image,
-        Color color)
+    public static Image Clear(this Image image, Color color)
     {
+        if (image is null)
+            throw new ArgumentNullException(nameof(image));
+
         using var graphics = Graphics.FromImage(image);
         graphics.Clear(color);
 
@@ -117,9 +133,6 @@ public static class ImageExtensions
         int width,
         int height)
     {
-        if (startX >= image.Width || startY >= image.Height || width <= 0 || height <= 0)
-            throw new ArgumentException();
-
         if (startX < 0)
             startX = 0;
         if (startY < 0)
@@ -138,8 +151,7 @@ public static class ImageExtensions
     /// <param name="image"></param>
     /// <param name="rectangle"></param>
     /// <returns></returns>
-    public static Image Crop(this Image image,
-        Rectangle rectangle)
+    public static Image Crop(this Image image, Rectangle rectangle)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
@@ -245,10 +257,8 @@ public static class ImageExtensions
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
-        if (images is null)
-            throw new ArgumentNullException(nameof(images));
 
-        if (images.Length == 0)
+        if (images is null || images.Length == 0)
             return image;
 
         using var graphics = Graphics.FromImage(image);
@@ -275,8 +285,9 @@ public static class ImageExtensions
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
-        if (images is null)
-            throw new ArgumentNullException(nameof(images));
+
+        if (images is null || images.Length == 0)
+            return image;
 
         using var memory = new MemoryStream();
         using var gif = new GIFWriter(memory, repeat: repeat);
@@ -310,7 +321,7 @@ public static class ImageExtensions
             throw new ArgumentNullException(nameof(image));
 
         if (image2 is null)
-            return (Image)image.Clone();
+            return image;
 
         if (direction)
         {
@@ -343,14 +354,9 @@ public static class ImageExtensions
     /// <param name="format"></param>
     public static void CompressSave(this Image image,
         string path,
-        long quality,
+        byte quality,
         ImageFormat? format = default)
     {
-        if (quality < 0)
-            quality = 0;
-        if (quality > 100)
-            quality = 100;
-
         var imageCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(_ => _.FormatID == GetFormat(Path.GetExtension(path)).Guid);
         if (imageCodecInfo != null)
         {
