@@ -5,10 +5,7 @@
 /// </summary>
 public static class ImageExtensions
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public readonly static Regex Pattern_DataUrl = new(@"^data\:(?<MIME>[\w-]+\/[\w-]+)\;base64\,(?<DATA>.+)");
+    readonly static Regex _regex_Base64 = new(@"^data\:(?<MIME>[\w-]+\/[\w-]+)\;base64\,(?<DATA>.+)");
 
     /// <summary>
     /// 将图片转码为base64字符串
@@ -18,9 +15,6 @@ public static class ImageExtensions
     /// <returns></returns>
     public static string ToBase64String(this Image image, ImageFormat? format = default)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
-
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.RawFormat);
         return Convert.ToBase64String(memory.ToArray());
@@ -34,9 +28,6 @@ public static class ImageExtensions
     /// <returns></returns>
     public static Image FromBase64String(this Image image, string imageBase64String)
     {
-        if (string.IsNullOrWhiteSpace(imageBase64String))
-            return image;
-
         try
         {
             image = Image.FromStream(new MemoryStream(Convert.FromBase64String(imageBase64String)));
@@ -48,18 +39,12 @@ public static class ImageExtensions
 
     public static string ToDataUrl(this Image image, ImageFormat? imageFormat = default)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
-
         return $"data:{(imageFormat ?? image.RawFormat).ToMIMEType()};base64,{ToBase64String(image, imageFormat)}";
     }
 
     public static Image FromDataUrl(this Image image, string imageDataUrl)
     {
-        if (string.IsNullOrWhiteSpace(imageDataUrl))
-            return image;
-
-        var match = Pattern_DataUrl.Match(imageDataUrl);
+        var match = _regex_Base64.Match(imageDataUrl);
         if (match.Success)
         {
             var data = match.Groups["DATA"].Value;
@@ -74,7 +59,8 @@ public static class ImageExtensions
     /// </summary>
     /// <param name="image"></param>
     /// <param name="opacity"></param>
-    public static Image SetOpacity(this Image image, float opacity)
+    public static Image SetOpacity(this Image image,
+        float opacity)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
@@ -107,11 +93,9 @@ public static class ImageExtensions
     /// <param name="image"></param>
     /// <param name="color"></param>
     /// <returns></returns>
-    public static Image Clear(this Image image, Color color)
+    public static Image Clear(this Image image,
+        Color color)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
-
         using var graphics = Graphics.FromImage(image);
         graphics.Clear(color);
 
@@ -133,8 +117,8 @@ public static class ImageExtensions
         int width,
         int height)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        if (startX >= image.Width || startY >= image.Height || width <= 0 || height <= 0)
+            throw new ArgumentException();
 
         if (startX < 0)
             startX = 0;
@@ -174,8 +158,8 @@ public static class ImageExtensions
     /// <param name="coverSize">Ture：在同时指定宽和高并且等比缩放的情况下，将裁剪图片以满足宽高比</param>
     /// <returns></returns>
     public static Image Resize(this Image image,
-        uint? width,
-        uint? height,
+        int? width,
+        int? height,
         bool zoom = true,
         bool coverSize = false)
     {
@@ -199,8 +183,8 @@ public static class ImageExtensions
             {
                 if (coverSize)
                 {
-                    w = (int)width.Value;
-                    h = (int)height.Value;
+                    w = width.Value;
+                    h = height.Value;
                     if (wW > hH)
                     {
                         var _width = (int)(w * hH);
@@ -216,31 +200,31 @@ public static class ImageExtensions
                 {
                     if (wW > hH)
                     {
-                        w = (int)width.Value;
+                        w = width.Value;
                         h = (int)(image.Height / wW);
                     }
                     else
                     {
                         w = (int)(image.Width / hH);
-                        h = (int)height.Value;
+                        h = height.Value;
                     }
                 }
             }
             else
             {
-                w = (int)width.Value;
-                h = (int)height.Value;
+                w = width.Value;
+                h = height.Value;
             }
         }
         else if (width.HasValue)
         {
-            w = (int)width.Value;
+            w = width.Value;
             h = zoom ? (int)(image.Height / ((double)image.Width / width.Value)) : image.Height;
         }
         else if (height.HasValue)
         {
             w = zoom ? (int)(image.Width / ((double)image.Height / height.Value)) : image.Width;
-            h = (int)height.Value;
+            h = height.Value;
         }
 
         var output = new Bitmap(w, h);
@@ -256,12 +240,15 @@ public static class ImageExtensions
     /// <param name="image">底图</param>
     /// <param name="images">图片集合</param>
     /// <returns></returns>
-    public static Image Combine(this Image image, params (Point Point, Size Size, Image Image)[] images)
+    public static Image Combine(this Image image,
+        params (Point Point, Size Size, Image Image)[] images)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
+        if (images is null)
+            throw new ArgumentNullException(nameof(images));
 
-        if (images is null || images.Length == 0)
+        if (images.Length == 0)
             return image;
 
         using var graphics = Graphics.FromImage(image);
@@ -282,15 +269,14 @@ public static class ImageExtensions
     /// <param name="images"></param>
     /// <returns></returns>
     public static Image CombineToGif(this Image image,
-        uint delay = 0,
+        int delay = 0,
         int repeat = -1,
-        params (Point Point, Size Size, Image Image, uint Delay)[] images)
+        params (Point Point, Size Size, Image Image, int Delay)[] images)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
-
-        if (images is null || images.Length == 0)
-            return image;
+        if (images is null)
+            throw new ArgumentNullException(nameof(images));
 
         using var memory = new MemoryStream();
         using var gif = new GIFWriter(memory, repeat: repeat);
@@ -324,7 +310,7 @@ public static class ImageExtensions
             throw new ArgumentNullException(nameof(image));
 
         if (image2 is null)
-            return image;
+            return (Image)image.Clone();
 
         if (direction)
         {
@@ -357,14 +343,16 @@ public static class ImageExtensions
     /// <param name="format"></param>
     public static void CompressSave(this Image image,
         string path,
-        byte quality,
+        long quality,
         ImageFormat? format = default)
     {
-        if (image is null)
-            return;
+        if (quality < 0)
+            quality = 0;
+        if (quality > 100)
+            quality = 100;
 
         var imageCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(_ => _.FormatID == GetFormat(Path.GetExtension(path)).Guid);
-        if (imageCodecInfo is not null)
+        if (imageCodecInfo != null)
         {
             using var encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(Imaging.Encoder.Quality, quality);

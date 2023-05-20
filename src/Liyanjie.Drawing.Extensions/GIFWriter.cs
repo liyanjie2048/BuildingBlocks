@@ -12,7 +12,7 @@ public class GIFWriter : IDisposable
 
     public GIFWriter(
         Stream outStream,
-        uint defaultFrameDelay = 500,
+        int defaultFrameDelay = 500,
         int repeat = 0)
     {
         if (outStream is null)
@@ -21,14 +21,17 @@ public class GIFWriter : IDisposable
         if (defaultFrameDelay <= 0)
             throw new ArgumentOutOfRangeException(nameof(defaultFrameDelay));
 
+        if (repeat < -1)
+            repeat = -1;
+
         _writer = new BinaryWriter(outStream);
         DefaultFrameDelay = defaultFrameDelay;
-        Repeat = repeat < -1 ? -1 : repeat;
+        Repeat = repeat;
     }
 
     public int DefaultWidth { get; set; }
     public int DefaultHeight { get; set; }
-    public uint DefaultFrameDelay { get; set; }
+    public int DefaultFrameDelay { get; set; }
     public int Repeat { get; }
 
     public void Dispose()
@@ -40,7 +43,7 @@ public class GIFWriter : IDisposable
 
     public void WriteFrame(
         Image image,
-        uint delay = 0)
+        int delay = 0)
     {
         lock (_syncLock)
         {
@@ -101,7 +104,7 @@ public class GIFWriter : IDisposable
     static void WriteGraphicControlBlock(
         Stream sourceGif,
         BinaryWriter writer,
-        uint frameDelay)
+        int frameDelay)
     {
         sourceGif.Position = 781;
         var blockhead = new byte[8];
