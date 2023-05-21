@@ -354,14 +354,14 @@ public static class ImageExtensions
     /// <param name="format"></param>
     public static void CompressSave(this Image image,
         string path,
-        byte quality,
+        int quality,
         ImageFormat? format = default)
     {
         var imageCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(_ => _.FormatID == GetFormat(Path.GetExtension(path)).Guid);
         if (imageCodecInfo != null)
         {
             using var encoderParameters = new EncoderParameters(1);
-            encoderParameters.Param[0] = new EncoderParameter(Imaging.Encoder.Quality, quality);
+            encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, quality < 0 ? 0 : quality > 100 ? 100 : quality);
             image.Save(path, imageCodecInfo, encoderParameters);
         }
         else
@@ -374,6 +374,7 @@ public static class ImageExtensions
         {
             ".bmp" => ImageFormat.Bmp,
             ".emf" => ImageFormat.Emf,
+            ".exif" => ImageFormat.Exif,
             ".gif" => ImageFormat.Gif,
             ".ico" or ".icon" => ImageFormat.Icon,
             ".jpg" or ".jpeg" => ImageFormat.Jpeg,
