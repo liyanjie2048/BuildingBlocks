@@ -8,7 +8,7 @@ public static class ImageExtensions
     /// <summary>
     /// 
     /// </summary>
-    public readonly static Regex Regex_DataUrl = new(@"^data\:(?<MIME>[\w-]+\/[\w-]+)\;base64\,(?<DATA>.+)");
+    public readonly static Regex Regex_ImageDataUrl = new(@"^data\:(?<MIME>image\/(bmp|emf|exif|gif|icon|jpeg|png|tiff|wmf))\;base64\,(?<DATA>.+)");
 
     /// <summary>
     /// 将图片转码为base64字符串
@@ -59,7 +59,7 @@ public static class ImageExtensions
         if (string.IsNullOrWhiteSpace(imageDataUrl))
             return image;
 
-        var match = Regex_DataUrl.Match(imageDataUrl);
+        var match = Regex_ImageDataUrl.Match(imageDataUrl);
         if (match.Success)
         {
             var data = match.Groups["DATA"].Value;
