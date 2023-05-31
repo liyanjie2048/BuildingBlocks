@@ -9,7 +9,7 @@ public class School<TType> : ValueObject
     /// <summary>
     /// 类型
     /// </summary>
-    public TType Type { get; set; }
+    public TType? Type { get; set; }
 
     /// <summary>
     /// 名称
@@ -32,6 +32,6 @@ public class School<TType> : ValueObject
         yield return Name;
     }
 
-    public override string ToString() => Type.ToString();
+    public override string? ToString() => Type?.ToString();
 }
 public class School : School<string> { }

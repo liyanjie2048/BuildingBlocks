@@ -13,14 +13,18 @@ public class Score : ValueObject
     /// <summary>
     /// 评分数量
     /// </summary>
-    public uint Count { get; set; }
+    public int Count { get; set; }
 
     /// <summary>
     /// 平均分
     /// </summary>
-    public double? Average => Count > 0
-        ? (double)Total / Count
-        : null;
+    public double? Average => Count > 0 ? (double)Total / Count : null;
+
+    public void Add(int score)
+    {
+        Total += score;
+        Count++;
+    }
 
     /// <summary>
     /// 
