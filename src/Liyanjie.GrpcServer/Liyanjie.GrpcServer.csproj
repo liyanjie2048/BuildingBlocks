@@ -30,9 +30,9 @@
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core" Version="2.38.1" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="Grpc.Core" Version="2.46.6" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
     </ItemGroup>
 
 </Project>

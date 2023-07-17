@@ -76,9 +76,6 @@ public class QQWryHelper
         //存储文本内容 
         readonly byte[] buf;
 
-        //存储3字节 
-        readonly byte[] b3;
-
         //存储4字节 
         readonly byte[] b4;
 
@@ -90,7 +87,6 @@ public class QQWryHelper
         public QQWry(string ipfile)
         {
             buf = new byte[100];
-            b3 = new byte[3];
             b4 = new byte[4];
             lock (this)
             {
@@ -127,14 +123,11 @@ public class QQWryHelper
             {
                 local = GetIPLocation(offset);
             }
-            if (local is null)
+            local ??= new IPLocation
             {
-                local = new IPLocation
-                {
-                    Area = unArea,
-                    ISP = unISP
-                };
-            }
+                Area = unArea,
+                ISP = unISP
+            };
             return local;
         }
 
@@ -218,7 +211,7 @@ public class QQWryHelper
             ipFile.Position = offset;
 
             var i = 0;
-            for (buf[i] = (byte)ipFile.ReadByte(); buf[i] != (byte)(0); buf[++i] = (byte)ipFile.ReadByte()) ;
+            for (buf[i] = (byte)ipFile.ReadByte(); buf[i] != 0; buf[++i] = (byte)ipFile.ReadByte()) ;
             return (i > 0)
                 ? Encoding.GetEncoding("GBK").GetString(buf, 0, i)
                 : string.Empty;
@@ -278,12 +271,8 @@ public class QQWryHelper
             ipFile.Position = offset;
             ipFile.Read(ip, 0, ip.Length);
 
-            var tmp = ip[0];
-            ip[0] = ip[3];
-            ip[3] = tmp;
-            tmp = ip[1];
-            ip[1] = ip[2];
-            ip[2] = tmp;
+            (ip[0], ip[3]) = (ip[3], ip[0]);
+            (ip[1], ip[2]) = (ip[2], ip[1]);
         }
 
         /// <summary> 

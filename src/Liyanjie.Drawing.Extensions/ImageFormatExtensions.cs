@@ -2,7 +2,12 @@
 
 public static class ImageFormatExtensions
 {
-    public static string ToMIMEType(this ImageFormat imageFormat)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="imageFormat"></param>
+    /// <returns></returns>
+    public static string GetMIMEType(this ImageFormat imageFormat)
     {
         return imageFormat switch
         {

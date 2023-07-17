@@ -6,11 +6,6 @@
 public static class ImageExtensions
 {
     /// <summary>
-    /// 
-    /// </summary>
-    public readonly static Regex Regex_ImageDataUrl = new(@"^data\:(?<MIME>image\/(bmp|emf|exif|gif|icon|jpeg|png|tiff|wmf))\;base64\,(?<DATA>.+)");
-
-    /// <summary>
     /// 将图片转码为base64字符串
     /// </summary>
     /// <param name="image"></param>
@@ -26,47 +21,12 @@ public static class ImageExtensions
         return Convert.ToBase64String(memory.ToArray());
     }
 
-    /// <summary>
-    /// 从base64字符串中获取图片
-    /// </summary>
-    /// <param name="image"></param>
-    /// <param name="imageBase64String"></param>
-    /// <returns></returns>
-    public static Image FromBase64String(this Image image, string imageBase64String)
-    {
-        if (string.IsNullOrWhiteSpace(imageBase64String))
-            return image;
-
-        try
-        {
-            image = Image.FromStream(new MemoryStream(Convert.FromBase64String(imageBase64String)));
-        }
-        catch (Exception) { }
-
-        return image;
-    }
-
     public static string ToDataUrl(this Image image, ImageFormat? imageFormat = default)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
 
-        return $"data:{(imageFormat ?? image.RawFormat).ToMIMEType()};base64,{ToBase64String(image, imageFormat)}";
-    }
-
-    public static Image FromDataUrl(this Image image, string imageDataUrl)
-    {
-        if (string.IsNullOrWhiteSpace(imageDataUrl))
-            return image;
-
-        var match = Regex_ImageDataUrl.Match(imageDataUrl);
-        if (match.Success)
-        {
-            var data = match.Groups["DATA"].Value;
-            return image.FromBase64String(data);
-        }
-
-        return image;
+        return $"data:{(imageFormat ?? image.RawFormat).GetMIMEType()};base64,{ToBase64String(image, imageFormat)}";
     }
 
     /// <summary>
@@ -80,23 +40,30 @@ public static class ImageExtensions
             throw new ArgumentNullException(nameof(image));
 
         if (opacity < 0 || opacity > 1)
-            throw new ArgumentOutOfRangeException("不透明度必须为0~1之间的浮点数");
+            throw new ArgumentOutOfRangeException(nameof(opacity), "不透明度必须为0~1之间的浮点数");
 
         var colorMatrix = new ColorMatrix(new[]
         {
             new float[] { 1, 0, 0, 0, 0 },
             new float[] { 0, 1, 0, 0, 0 },
             new float[] { 0, 0, 1, 0, 0 },
-            new float[] { 0, 0, 0, opacity > 1 ? 1 : opacity < 0 ? 0 : opacity, 0 },
+            new float[] { 0, 0, 0, opacity, 0 },
             new float[] { 0, 0, 0, 0, 1 }
         });
         var imageAttributes = new ImageAttributes();
         imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-        var output = new Bitmap(image.Width, image.Height);
+        var bitmap = new Bitmap(image);
 
-        using var graphics = Graphics.FromImage(output);
-        graphics.DrawImage(image, new Rectangle(new Point(0, 0), new Size(image.Width, image.Height)), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, imageAttributes);
+        var output = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb);
+        for (int x = 0; x < image.Width; x++)
+        {
+            for (int y = 0; y < image.Height; y++)
+            {
+                var color = bitmap.GetPixel(x, y);
+                output.SetPixel(x, y, Color.FromArgb((int)(0xFF * opacity), color.R, color.G, color.B));
+            }
+        }
 
         return output;
     }
@@ -156,8 +123,18 @@ public static class ImageExtensions
         if (image is null)
             throw new ArgumentNullException(nameof(image));
 
-        using var output = new Bitmap(image);
-        return output.Clone(rectangle, image.PixelFormat);
+        if (image.RawFormat.Guid == ImageFormat.Gif.Guid)
+        {
+            var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value);
+            var frames = GetGifFrames(image).Select(_ => (Image: _.Image.Crop(rectangle), _.DelayByMilliseconds)).ToArray();
+
+            return frames[0].Image.CombineToGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
+        }
+        else
+        {
+            using var output = new Bitmap(image);
+            return output.Clone(rectangle, image.PixelFormat);
+        }
     }
 
     /// <summary>
@@ -239,33 +216,53 @@ public static class ImageExtensions
             h = height.Value;
         }
 
-        var output = new Bitmap(w, h);
-        using var graphics = Graphics.FromImage(output);
-        graphics.DrawImage(image, 0, 0, w, h);
+        if (image.RawFormat.Guid == ImageFormat.Gif.Guid)
+        {
+            var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value);
+            var frames = GetGifFrames(image).Select(_ => (Image: _Resize(_.Image, w, h), _.DelayByMilliseconds)).ToArray();
 
-        return output;
+            return frames[0].Image.CombineToGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
+        }
+        else
+        {
+            var output = new Bitmap(w, h);
+            using var graphics = Graphics.FromImage(output);
+            graphics.DrawImage(image, 0, 0, w, h);
+
+            return _Resize(image, w, h);
+        }
+
+        static Image _Resize(Image image, int width, int height)
+        {
+            var output = new Bitmap(width, height);
+            using var graphics = Graphics.FromImage(output);
+            graphics.DrawImage(image, 0, 0, width, height);
+
+            return output;
+        }
     }
 
     /// <summary>
-    /// 组合多张图片
+    /// 组合图片
     /// </summary>
     /// <param name="image">底图</param>
-    /// <param name="images">图片集合</param>
+    /// <param name="image2">图片</param>
+    /// <param name="point">位置</param>
+    /// <param name="size">大小</param>
     /// <returns></returns>
     public static Image Combine(this Image image,
-        params (Point Point, Size Size, Image Image)[] images)
+        Image image2,
+        Point point,
+        Size size)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
 
-        if (images is null || images.Length == 0)
+        if (image2 is null)
             return image;
 
         using var graphics = Graphics.FromImage(image);
-        foreach (var item in images)
-        {
-            graphics.DrawImage(item.Image, new Rectangle(item.Point, item.Size));
-        }
+        graphics.DrawImage(image2, new Rectangle(point, size));
 
         return image;
     }
@@ -274,14 +271,14 @@ public static class ImageExtensions
     /// 
     /// </summary>
     /// <param name="image"></param>
-    /// <param name="delay"></param>
-    /// <param name="repeat"></param>
+    /// <param name="delayByMilliseconds"></param>
+    /// <param name="repeatCount"></param>
     /// <param name="images"></param>
     /// <returns></returns>
     public static Image CombineToGif(this Image image,
-        int delay = 0,
-        int repeat = -1,
-        params (Point Point, Size Size, Image Image, int Delay)[] images)
+        int delayByMilliseconds = 0,
+        ushort repeatCount = 0,
+        params (Image Image, int DelayByMilliseconds)[] images)
     {
         if (image is null)
             throw new ArgumentNullException(nameof(image));
@@ -290,17 +287,12 @@ public static class ImageExtensions
             return image;
 
         using var memory = new MemoryStream();
-        using var gif = new GIFWriter(memory, repeat: repeat);
-        gif.WriteFrame(image, delay);
+        using var gif = new GIFWriter(memory, repeatCount: repeatCount);
+        gif.WriteFrame(image, delayByMilliseconds);
 
-        foreach (var item in images)
+        foreach (var (Image, DelayByMilliseconds) in images)
         {
-            using var _image = new Bitmap(image.Width, image.Height);
-            using var _graphics = Graphics.FromImage(_image);
-            _graphics.Clear(Color.Transparent);
-            _graphics.DrawImage(item.Image, new Rectangle(item.Point, item.Size));
-
-            gif.WriteFrame(_image, item.Delay);
+            gif.WriteFrame(Image, DelayByMilliseconds);
         }
 
         return Image.FromStream(memory);
@@ -357,15 +349,47 @@ public static class ImageExtensions
         int quality,
         ImageFormat? format = default)
     {
-        var imageCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(_ => _.FormatID == GetFormat(Path.GetExtension(path)).Guid);
-        if (imageCodecInfo != null)
+        var format_ = format ?? GetFormat(Path.GetExtension(path)) ?? image.RawFormat;
+        var imageCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(_ => _.FormatID == format_.Guid);
+        if (imageCodecInfo is null)
+        {
+            image.Save(path, format_);
+        }
+        else
         {
             using var encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, quality < 0 ? 0 : quality > 100 ? 100 : quality);
             image.Save(path, imageCodecInfo, encoderParameters);
         }
-        else
-            image.Save(path, format ?? image.RawFormat);
+    }
+
+    static List<(Image Image, int DelayByMilliseconds)> GetGifFrames(Image image)
+    {
+        var output = new List<(Image Image, int DelayByMilliseconds)>();
+
+        var property = image.GetPropertyItem(0x5100)!;
+        var frameDimension = new FrameDimension(image.FrameDimensionsList[0]);
+        for (int i = 0; i < image.GetFrameCount(frameDimension); i++)
+        {
+            image.SelectActiveFrame(frameDimension, i);
+
+            var bitmap = new Bitmap(image.Width, image.Height);
+            var graphics = Graphics.FromImage(bitmap);
+            graphics.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height));
+
+            var bytes = new[]
+            {
+                property.Value![i * 4],
+                property.Value![1 + i * 4],
+                property.Value![2 + i * 4],
+                property.Value![3 + i * 4]
+            };
+            var delay = BitConverter.ToInt32(bytes) * 10;
+
+            output.Add((bitmap, delay));
+        }
+
+        return output;
     }
 
     static ImageFormat GetFormat(string extension)
@@ -376,10 +400,10 @@ public static class ImageExtensions
             ".emf" => ImageFormat.Emf,
             ".exif" => ImageFormat.Exif,
             ".gif" => ImageFormat.Gif,
-            ".ico" or ".icon" => ImageFormat.Icon,
-            ".jpg" or ".jpeg" => ImageFormat.Jpeg,
+            ".icon" or ".ico" => ImageFormat.Icon,
+            ".jpeg" or ".jpg" => ImageFormat.Jpeg,
             ".png" => ImageFormat.Png,
-            ".tif" or ".tiff" => ImageFormat.Tiff,
+            ".tiff" or ".tif" => ImageFormat.Tiff,
             ".wmf" => ImageFormat.Wmf,
             _ => ImageFormat.Jpeg,
         };
