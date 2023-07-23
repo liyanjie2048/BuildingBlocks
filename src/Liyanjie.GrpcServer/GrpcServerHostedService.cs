@@ -5,7 +5,7 @@
 /// </summary>
 public class GrpcServerHostedService : IHostedService
 {
-    readonly Grpc.Core.Server server;
+    readonly Grpc.Core.Server _server;
 
     /// <summary>
     /// 
@@ -16,19 +16,19 @@ public class GrpcServerHostedService : IHostedService
         IServiceProvider serviceProvider,
         IOptions<GrpcServerOptions> options)
     {
-        this.server = options.Value.CreateServer(serviceProvider);
+        this._server = options.Value.CreateServer(serviceProvider);
     }
 
     /// <inheritdoc/>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        server.Start();
+        _server.Start();
         await Task.CompletedTask;
     }
 
     /// <inheritdoc/>
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        await server.ShutdownAsync();
+        await _server.ShutdownAsync();
     }
 }

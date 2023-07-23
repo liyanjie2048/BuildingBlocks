@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;</TargetFrameworks>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
         <Description>MongoDB.Driver Extensions</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie8712@outlook.com</Authors>
@@ -31,6 +31,10 @@
 
     <ItemGroup>
         <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="NewFolder\" />
     </ItemGroup>
 
 </Project>

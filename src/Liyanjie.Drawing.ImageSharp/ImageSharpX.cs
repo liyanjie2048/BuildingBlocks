@@ -1,4 +1,4 @@
-﻿namespace SixLabors.ImageSharp;
+﻿namespace Liyanjie.Drawing.ImageSharp;
 
 public class ImageSharpX
 {

@@ -1,4 +1,4 @@
-﻿namespace SkiaSharp;
+﻿namespace Liyanjie.Drawing.SkiaSharp;
 
 public static class SKEncodedImageFormatExtensions
 {

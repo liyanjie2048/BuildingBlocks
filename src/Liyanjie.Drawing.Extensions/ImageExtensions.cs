@@ -287,7 +287,7 @@ public static class ImageExtensions
             return image;
 
         using var memory = new MemoryStream();
-        using var gif = new GIFWriter(memory, repeatCount: repeatCount);
+        using var gif = new GifWriter(memory, repeatCount: repeatCount);
         gif.WriteFrame(image, delayByMilliseconds);
 
         foreach (var (Image, DelayByMilliseconds) in images)

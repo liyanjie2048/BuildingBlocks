@@ -1,6 +1,6 @@
 ﻿namespace System.Drawing;
 
-public class GIFWriter : IDisposable
+public class GifWriter : IDisposable
 {
     const long _sourceGlobalColorInfoPosition = 10;
     const long _sourceImageBlockPosition = 789;
@@ -10,7 +10,7 @@ public class GIFWriter : IDisposable
 
     bool _firstFrame = true;
 
-    public GIFWriter(
+    public GifWriter(
         Stream output,
         int defaultFrameDelay = 500,
         ushort repeatCount = 0)

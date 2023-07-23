@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
-		<Description>Liyanjie.SkiaSharp.Extensions</Description>
+		<Description>Liyanjie.Drawing.SkiaSharp</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie8712@outlook.com</Authors>
 		<Company>Liyanjie.net</Company>
@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<DocumentationFile>bin\Release\Liyanjie.SkiaSharp.Extensions.xml</DocumentationFile>
+		<DocumentationFile>bin\Release\Liyanjie.Drawing.SkiaSharp.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

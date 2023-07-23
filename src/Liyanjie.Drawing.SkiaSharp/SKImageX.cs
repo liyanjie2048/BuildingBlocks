@@ -1,4 +1,4 @@
-﻿namespace SkiaSharp;
+﻿namespace Liyanjie.Drawing.SkiaSharp;
 
 public class SKImageX
 {

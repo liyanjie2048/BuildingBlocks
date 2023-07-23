@@ -64,9 +64,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.QQWry", "src\Liyan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Pinyin.Jieba", "src\Liyanjie.Pinyin.Jieba\Liyanjie.Pinyin.Jieba.csproj", "{0771FA8B-EA2D-4FF8-815A-CBAF7BF32F27}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.SkiaSharp.Extensions", "src\Liyanjie.SkiaSharp.Extensions\Liyanjie.SkiaSharp.Extensions.csproj", "{93154ADC-5C20-44F1-BE8D-DF87DC5886E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Drawing.SkiaSharp", "src\Liyanjie.Drawing.SkiaSharp\Liyanjie.Drawing.SkiaSharp.csproj", "{93154ADC-5C20-44F1-BE8D-DF87DC5886E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.ImageSharp.Extensions", "src\Liyanjie.ImageSharp.Extensions\Liyanjie.ImageSharp.Extensions.csproj", "{C3D4E26C-0150-439E-B365-CB5DE75C2474}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Drawing.ImageSharp", "src\Liyanjie.Drawing.ImageSharp\Liyanjie.Drawing.ImageSharp.csproj", "{C3D4E26C-0150-439E-B365-CB5DE75C2474}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
