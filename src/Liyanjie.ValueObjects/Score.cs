@@ -8,17 +8,17 @@ public class Score : ValueObject
     /// <summary>
     /// 评分
     /// </summary>
-    public int Total { get; set; }
+    public double Total { get; set; }
 
     /// <summary>
     /// 评分数量
     /// </summary>
-    public int Count { get; set; }
+    public uint Count { get; set; }
 
     /// <summary>
     /// 平均分
     /// </summary>
-    public double? Average => Count > 0 ? (double)Total / Count : null;
+    public double Average => Count == 0 ? 0 : Total / Count;
 
     public void Add(int score)
     {
@@ -37,5 +37,5 @@ public class Score : ValueObject
     }
 
     public override string ToString() => Average.ToString();
-    public string? ToString(string format) => Average?.ToString(format);
+    public string ToString(string format) => Average.ToString(format);
 }
