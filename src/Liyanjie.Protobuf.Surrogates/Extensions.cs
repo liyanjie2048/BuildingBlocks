@@ -5,7 +5,6 @@ public static class Extensions
     public static void AddDateTimeOffsetSurrogate(this RuntimeTypeModel model)
     {
         model.Add(typeof(DateTimeOffset), true).SetSurrogate(typeof(DateTimeOffsetValue));
-
     }
 
 #if NET6_0_OR_GREATER
