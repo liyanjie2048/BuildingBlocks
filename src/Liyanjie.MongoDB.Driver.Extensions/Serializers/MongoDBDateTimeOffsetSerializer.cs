@@ -1,4 +1,4 @@
-﻿namespace MongoDB.Bson.Serialization.Serializers;
+﻿namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
 
 public class MongoDBDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>
 {

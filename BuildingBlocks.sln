@@ -68,6 +68,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Drawing.SkiaSharp"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Drawing.ImageSharp", "src\Liyanjie.Drawing.ImageSharp\Liyanjie.Drawing.ImageSharp.csproj", "{C3D4E26C-0150-439E-B365-CB5DE75C2474}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.ValueObjects.Protobuf", "src\Liyanjie.ValueObjects.Protobuf\Liyanjie.ValueObjects.Protobuf.csproj", "{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liyanjie.Protobuf.Surrogates", "src\Liyanjie.Protobuf.Surrogates\Liyanjie.Protobuf.Surrogates.csproj", "{24C5A023-B0E1-458C-9DDF-F83A65F87441}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,6 +182,14 @@ Global
 		{C3D4E26C-0150-439E-B365-CB5DE75C2474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D4E26C-0150-439E-B365-CB5DE75C2474}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3D4E26C-0150-439E-B365-CB5DE75C2474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24C5A023-B0E1-458C-9DDF-F83A65F87441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24C5A023-B0E1-458C-9DDF-F83A65F87441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24C5A023-B0E1-458C-9DDF-F83A65F87441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24C5A023-B0E1-458C-9DDF-F83A65F87441}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -209,6 +221,8 @@ Global
 		{0771FA8B-EA2D-4FF8-815A-CBAF7BF32F27} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{93154ADC-5C20-44F1-BE8D-DF87DC5886E3} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{C3D4E26C-0150-439E-B365-CB5DE75C2474} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
+		{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
+		{24C5A023-B0E1-458C-9DDF-F83A65F87441} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8F8E1D8-848B-4EE7-B1FD-9200F7EF1AD2}

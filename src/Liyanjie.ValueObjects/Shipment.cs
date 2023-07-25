@@ -31,6 +31,6 @@ public class Shipment<TIdentity> : ValueObject
 /// <summary>
 /// 
 /// </summary>
-public class Delivery : Shipment<string>
+public class Shipment : Shipment<string>
 {
 }
