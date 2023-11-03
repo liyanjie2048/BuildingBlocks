@@ -1,3 +1,0 @@
-﻿# Liyanjie.Utilities.js
-
-

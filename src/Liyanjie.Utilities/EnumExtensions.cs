@@ -17,7 +17,7 @@ public static class EnumExtensions
         var flags = type.GetTypeInfo().GetCustomAttribute<FlagsAttribute>();
 
         if (flags is null)
-            return Description_(type, Enum.GetName(type, @enum));
+            return GetDescription(type, Enum.GetName(type, @enum));
         else
         {
             var values = Enum.GetValues(type);
@@ -27,22 +27,22 @@ public static class EnumExtensions
             string? output = null;
             foreach (var value in values)
             {
-                if ((int)value == 0)
+                if (0.Equals(value))
                 {
                     if (@enum.Equals(value))
                     {
-                        output = $"{output}{separator}{Description_(type, Enum.GetName(type, value))}";
+                        output = $"{output}{separator}{GetDescription(type, Enum.GetName(type, value))}";
                         break;
                     }
                 }
                 else if (@enum.HasFlag((Enum)value))
-                    output = $"{output}{separator}{Description_(type, Enum.GetName(type, value))}";
+                    output = $"{output}{separator}{GetDescription(type, Enum.GetName(type, value))}";
             }
 
             return output?.TrimStart(separator);
         }
 
-        string? Description_(Type enumType, string enumName)
+        static string? GetDescription(Type enumType, string enumName)
         {
             if (string.IsNullOrWhiteSpace(enumName))
                 return null;
