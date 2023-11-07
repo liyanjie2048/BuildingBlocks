@@ -96,6 +96,9 @@ public static class ReflectionExtensions
         if (translated.TryGetValue((outputType, inputType, input), out object output))
             return output;
 
+        if (Translations.ContainsKey((inputType, outputType)))
+            return Translations[(inputType, outputType)].Invoke(input);
+
         if (outputType == typeof(string))
             return inputType == typeof(string) ? input : input?.ToString();
 
@@ -105,16 +108,11 @@ public static class ReflectionExtensions
         if (outputType.IsAssignableFrom(inputType))
             return input;
 
-        if (Translations.ContainsKey((inputType, outputType)))
-            return Translations[(inputType, outputType)].Invoke(input);
-
         var inputTypeInfo = inputType.GetTypeInfo();
-
         if (inputTypeInfo.IsEnum && (outputType == typeof(byte) || outputType == typeof(short) || outputType == typeof(ushort) || outputType == typeof(int) || outputType == typeof(uint) || outputType == typeof(long) || outputType == typeof(ulong)))
             return Convert.ChangeType(Enum.Format(inputType, input, "D"), outputType);
 
         var outputTypeInfo = outputType.GetTypeInfo();
-
         if (outputTypeInfo.IsEnum && (inputType == typeof(byte) || inputType == typeof(short) || inputType == typeof(ushort) || inputType == typeof(int) || inputType == typeof(uint) || inputType == typeof(long) || inputType == typeof(ulong)))
             return Enum.ToObject(outputType, input);
 
@@ -124,11 +122,14 @@ public static class ReflectionExtensions
         if (outputTypeInfo.IsValueType)
         {
             var destType = outputType;
-            if ("Nullable`1" == outputType.Name)
-                destType = outputType.GenericTypeArguments[0];
+            if (destType.IsGenericType && destType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                destType = destType.GenericTypeArguments[0];
 
             if (inputType == typeof(string))
             {
+                if (destType.IsEnum)
+                    return Enum.Parse(destType, (string)input);
+
                 var method = destType
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .Where(_ => _.Name == "Parse")
@@ -138,9 +139,7 @@ public static class ReflectionExtensions
                         return parameters.Length == 1 && parameters.Single().ParameterType == typeof(string);
                     });
                 if (method is not null)
-                {
                     return method.Invoke(null, new[] { input });
-                }
             }
 
             return Convert.ChangeType(input, destType);
