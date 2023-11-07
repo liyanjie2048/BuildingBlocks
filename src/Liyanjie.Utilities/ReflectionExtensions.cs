@@ -78,7 +78,7 @@ public static class ReflectionExtensions
 
     static TOutput? DoTranslate<TOutput>(this object? input)
     {
-        var translated = new Dictionary<(Type, Type, object), object>();
+        var translated = new Dictionary<(Type, Type, object?), object?>();
         var output = (TOutput?)DoTranslate(typeof(TOutput), input, translated);
 
         translated.Clear();
@@ -86,14 +86,14 @@ public static class ReflectionExtensions
         return output;
     }
 
-    static object? DoTranslate(Type outputType, object? input, Dictionary<(Type, Type, object), object> translated)
+    static object? DoTranslate(Type outputType, object? input, Dictionary<(Type, Type, object?), object?> translated)
     {
         if (input is null)
             return null;
 
         var inputType = input.GetType();
 
-        if (translated.TryGetValue((outputType, inputType, input), out object output))
+        if (translated.TryGetValue((outputType, inputType, input), out object? output))
             return output;
 
         if (Translations.ContainsKey((inputType, outputType)))
