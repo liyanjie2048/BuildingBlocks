@@ -3,16 +3,10 @@
 /// <summary>
 /// 敏感数据
 /// </summary>
-/// <typeparam name="TValue"></typeparam>
 /// <typeparam name="TStatus"></typeparam>
-public class Sensitive<TValue, TStatus> : ValueObject
+public class Sensitive<TStatus> : ValueObject
 {
-    public TValue? Value { get; set; }
-
-    /// <summary>
-    /// 变更时间
-    /// </summary>
-    public DateTimeOffset ChangeTime { get; set; } = DateTimeOffset.Now;
+    public string? Value { get; set; }
 
     /// <summary>
     /// 
@@ -34,4 +28,4 @@ public class Sensitive<TValue, TStatus> : ValueObject
 /// <summary>
 /// 
 /// </summary>
-public class Sensitive : Sensitive<string, bool> { }
+public class Sensitive : Sensitive<bool> { }
