@@ -36,6 +36,10 @@ public static class ReflectionExtensions
         [(typeof(string), typeof(Guid))] = input => Guid.Parse((string)input),
         [(typeof(string), typeof(Guid?))] = input => Guid.TryParse((string)input, out var value) ? value : null,
     };
+    public static void RegisterTranslation<TInput, TOutput>(Func<object, object?> func)
+    {
+        ReflectionExtensions.Translations.Add((typeof(TInput), typeof(TOutput)), func);
+    }
 
     /// <summary>
     /// 
