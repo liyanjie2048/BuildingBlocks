@@ -13,6 +13,7 @@ public static class Extensions
         model.Add(typeof(Licence), false).Add(nameof(Licence.Type), nameof(Licence.Number), nameof(Licence.Name), nameof(Licence.Pictures), nameof(Licence.IsIdentified));
         model.Add(typeof(Name), false).Add(nameof(Name.GivenName), nameof(Name.MiddleName), nameof(Name.FamilyName));
         model.Add(typeof(Operator), false).Add(nameof(Operator.Status), nameof(Operator.Identity));
+        model.Add(typeof(Sensitive), false).Add(nameof(Sensitive.Value), nameof(Sensitive.ChangeTime), nameof(Sensitive.Status));
         model.Add(typeof(School), false).Add(nameof(School.Type), nameof(School.Name), nameof(School.AdmissionDate), nameof(School.GraduatedDate));
         model.Add(typeof(Score), false).Add(nameof(Score.Total), nameof(Score.Count));
         model.Add(typeof(Shipment), false).Add(nameof(Shipment.Identity), nameof(Shipment.TrackingNumber));
@@ -41,6 +42,10 @@ public static class Extensions
     public static void AddValueObject_Range<TValue>(this RuntimeTypeModel model) where TValue : struct, IEquatable<TValue>
     {
         model.Add(typeof(Range<TValue>), false).Add(nameof(Range<TValue>.From), nameof(Range<TValue>.To));
+    }
+    public static void AddValueObject_Sensitive<TValue, TStatus>(this RuntimeTypeModel model)
+    {
+        model.Add(typeof(Sensitive<TValue, TStatus>), false).Add(nameof(Sensitive.Value), nameof(Sensitive.ChangeTime), nameof(Sensitive.Status));
     }
     public static void AddValueObject_School<TType>(this RuntimeTypeModel model)
     {
