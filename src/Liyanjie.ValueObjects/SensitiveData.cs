@@ -13,6 +13,12 @@ public class SensitiveData : ValueObject
     /// </summary>
     public bool? Status { get; set; }
 
+    public void Modify(string? modification)
+    {
+        Modification = modification;
+        Status = null;
+    }
+
     public void Audit(bool? status)
     {
         Status = status;
