@@ -6,11 +6,11 @@
         <TargetFrameworks>net6.0;</TargetFrameworks>
         <Description>AspNetCore 扩展</Description>
         <Copyright>© Liyanjie.net</Copyright>
-        <Authors>liyanjie8712@outlook.com</Authors>
+        <Authors>liyanjie2048@outlook.com</Authors>
         <Company>Liyanjie.net</Company>
-        <RepositoryUrl>https://github.com/liyanjie8712/BuildingBlocks</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/liyanjie8712/BuildingBlocks</PackageProjectUrl>
         <RepositoryType>Git</RepositoryType>
+        <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
         <PackageIcon>liyanjie.net.256.png</PackageIcon>
         <PackageIconUrl />
         <Nullable>enable</Nullable>
@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <Target Name="MovePackage" AfterTargets="Pack">
-        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\_Packages\" />
+        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
     </Target>
 
 </Project>

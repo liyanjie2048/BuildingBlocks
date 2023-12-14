@@ -73,9 +73,10 @@ public partial class Form : System.Windows.Forms.Form
 
     private void ToolStripMenuItem_Open_Click(object? sender, EventArgs e)
     {
-        if (sender is ToolStripMenuItem item)
-            _ = Process.Start("explorer", item.Tag.ToString() ?? string.Empty);
+        if (sender is ToolStripMenuItem item && item.Tag is string url)
+            Process.Start("explorer", url);
     }
+
     private void ToolStripMenuItem_Restart_Click(object sender, EventArgs e)
     {
         HostManager.Stop();

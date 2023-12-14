@@ -34,8 +34,7 @@ sealed class MyLogger : ILogger
         if (!IsEnabled(logLevel))
             return;
 
-        if (formatter is null)
-            throw new ArgumentNullException(nameof(formatter));
+        ArgumentNullException.ThrowIfNull(formatter);
 
         var message = formatter(state, exception);
 
@@ -48,7 +47,17 @@ sealed class MyLogger : ILogger
         return logLevel != LogLevel.None;
     }
 
-    public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TState"></typeparam>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    public IDisposable BeginScope<TState>(TState state)
+#if NET8_0_OR_GREATER
+        where TState : notnull
+#endif
+        => NullScope.Instance;
 
     static void WriteMessage(
         MyLoggerProcessor queueProcessor,

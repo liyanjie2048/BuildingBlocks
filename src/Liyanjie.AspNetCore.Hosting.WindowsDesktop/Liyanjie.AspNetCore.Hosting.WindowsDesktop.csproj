@@ -1,27 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <IsPackable>true</IsPackable>
-        <TargetFrameworks>net6.0-windows;</TargetFrameworks>
-        <UseWindowsForms>true</UseWindowsForms>
-        <ApplicationIcon>icon.ico</ApplicationIcon>
-        <Description>Liyanjie.AspNetCore.Hosting.WindowsDesktop</Description>
-        <Copyright>© Liyanjie.net</Copyright>
-        <Authors>liyanjie8712@outlook.com</Authors>
-        <Company>Liyanjie.net</Company>
-        <RepositoryUrl>https://github.com/liyanjie8712/BuildingBlocks</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/liyanjie8712/BuildingBlocks</PackageProjectUrl>
-        <RepositoryType>Git</RepositoryType>
-        <AssemblyName>Host</AssemblyName>
-        <PackageId>Liyanjie.AspNetCore.Hosting.WindowsDesktop</PackageId>
-        <PackageIcon>liyanjie.net.256.png</PackageIcon>
-        <PackageIconUrl />
-        <EnableDefaultContentItems>false</EnableDefaultContentItems>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<IsPackable>true</IsPackable>
+		<TargetFrameworks>net6.0-windows;net8.0-windows;</TargetFrameworks>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ApplicationIcon>icon.ico</ApplicationIcon>
+		<Description>Liyanjie.AspNetCore.Hosting.WindowsDesktop</Description>
+		<Copyright>© Liyanjie.net</Copyright>
+		<Authors>liyanjie2048@outlook.com</Authors>
+		<Company>Liyanjie.net</Company>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
+		<AssemblyName>Host</AssemblyName>
+		<PackageId>Liyanjie.AspNetCore.Hosting.WindowsDesktop</PackageId>
+		<PackageIcon>liyanjie.net.256.png</PackageIcon>
+		<PackageIconUrl />
+		<EnableDefaultContentItems>false</EnableDefaultContentItems>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-    <ItemGroup>
+	<ItemGroup>
+		<None Remove="Host\net6.0-windows\Host.deps.json" />
+		<None Remove="Host\net6.0-windows\Host.dll" />
+		<None Remove="Host\net6.0-windows\Host.exe" />
+		<None Remove="Host\net6.0-windows\Host.pdb" />
+		<None Remove="Host\net6.0-windows\Host.runtimeconfig.json" />
+		<None Remove="Host\net6.0-windows\Host.staticwebassets.runtime.json" />
+		<None Remove="Host\net6.0-windows\wwwroot\index.html" />
+		<None Remove="Host\net8.0-windows\Host.deps.json" />
+		<None Remove="Host\net8.0-windows\Host.dll" />
+		<None Remove="Host\net8.0-windows\Host.exe" />
+		<None Remove="Host\net8.0-windows\Host.pdb" />
+		<None Remove="Host\net8.0-windows\Host.runtimeconfig.json" />
+		<None Remove="Host\net8.0-windows\Host.staticwebassets.runtime.json" />
+		<None Remove="Host\net8.0-windows\wwwroot\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="Host\net6.0-windows\Host.deps.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
@@ -40,28 +57,40 @@
 		<Content Include="Host\net6.0-windows\Host.staticwebassets.runtime.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Host\net6.0-windows\ref\Host.dll">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
 		<Content Include="Host\net6.0-windows\wwwroot\index.html">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-    </ItemGroup>
+		<Content Include="Host\net8.0-windows\Host.deps.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Host\net8.0-windows\Host.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Host\net8.0-windows\Host.exe">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Host\net8.0-windows\Host.pdb">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Host\net8.0-windows\Host.runtimeconfig.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Host\net8.0-windows\Host.staticwebassets.runtime.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Host\net8.0-windows\wwwroot\index.html">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-    <ItemGroup>
-        <None Include="..\..\liyanjie.net.256.png">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </None>
-        <None Include="App.config">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="wwwroot\index.html">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\liyanjie.net.256.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="App.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

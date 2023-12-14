@@ -4,11 +4,11 @@
         <TargetFrameworks>netstandard2.1;</TargetFrameworks>
         <Description>扩展方法合集（Chinese）</Description>
         <Copyright>© Liyanjie.net</Copyright>
-        <Authors>liyanjie8712@outlook.com</Authors>
+        <Authors>liyanjie2048@outlook.com</Authors>
         <Company>Liyanjie.net</Company>
-        <RepositoryUrl>https://github.com/liyanjie8712/BuildingBlocks</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/liyanjie8712/BuildingBlocks</PackageProjectUrl>
         <RepositoryType>Git</RepositoryType>
+        <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
         <PackageIcon>liyanjie.net.256.png</PackageIcon>
         <PackageIconUrl />
         <Nullable>enable</Nullable>
@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <Target Name="MovePackage" AfterTargets="Pack">
-        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\_Packages\" />
+        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
     </Target>
 
 </Project>
