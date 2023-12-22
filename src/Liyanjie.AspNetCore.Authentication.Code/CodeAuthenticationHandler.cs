@@ -3,22 +3,26 @@
 /// <summary>
 /// 
 /// </summary>
-public class CodeAuthenticationHandler : AuthenticationHandler<CodeAuthenticationOptions>
+/// <param name="options"></param>
+/// <param name="logger"></param>
+/// <param name="encoder"></param>
+#if NET6_0
+/// <param name="clock"></param>
+#endif
+public class CodeAuthenticationHandler(
+    IOptionsMonitor<CodeAuthenticationOptions> options,
+    ILoggerFactory logger,
+    UrlEncoder encoder
+#if NET6_0
+   , ISystemClock clock
+#endif
+    )
+    : AuthenticationHandler<CodeAuthenticationOptions>(options, logger, encoder
+#if NET6_0
+        , clock
+#endif
+        )
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="options"></param>
-    /// <param name="logger"></param>
-    /// <param name="encoder"></param>
-    /// <param name="clock"></param>
-    public CodeAuthenticationHandler(
-        IOptionsMonitor<CodeAuthenticationOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    { }
 
     /// <summary>
     /// 

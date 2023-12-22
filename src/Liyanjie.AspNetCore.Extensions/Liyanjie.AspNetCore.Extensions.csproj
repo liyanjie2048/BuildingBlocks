@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <IsPackable>True</IsPackable>
-        <TargetFrameworks>net6.0;</TargetFrameworks>
+        <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
         <Description>AspNetCore 扩展</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
