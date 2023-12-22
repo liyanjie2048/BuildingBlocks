@@ -93,4 +93,8 @@
 		</None>
 	</ItemGroup>
 
+	<Target Name="MovePackage" AfterTargets="Pack">
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
+	</Target>
+
 </Project>
