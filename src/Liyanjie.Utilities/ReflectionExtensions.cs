@@ -212,14 +212,19 @@ public static class ReflectionExtensions
 
             var value_ = property_value.GetValue(value);
 
+            //同为值类型
             if (property_model.PropertyType.IsValueType && property_value.PropertyType == property_model.PropertyType)
                 property_model.SetValue(model, value_);
+
+            //同为字符串
             else if (property_model.PropertyType == typeof(string) && property_value.PropertyType == typeof(string))
                 property_model.SetValue(model, value_);
+
+            //目标为字符串，值为集合
             else if (property_model.PropertyType == typeof(string) && typeof(IEnumerable).IsAssignableFrom(property_value.PropertyType))
-            {
                 property_model.SetValue(model, value_ is null ? null : string.Join(",", Enumerable.Cast<string>((IEnumerable)value_)));
-            }
+
+            //目标为集合
             else if (property_model.PropertyType != typeof(string) && typeof(IEnumerable).IsAssignableFrom(property_model.PropertyType))
             {
                 if (value_ is null)
@@ -243,17 +248,31 @@ public static class ReflectionExtensions
                     property_model.SetValue(model, outputArray);
                 }
             }
+
+            //目标为类
             else if (property_model.PropertyType != typeof(string) && property_model.PropertyType.IsClass)
             {
-                if (property_value.PropertyType != typeof(string) && property_value.PropertyType.IsClass)
+                if (value_ is null)
+                    property_model.SetValue(model, null);
+                else if (property_value.PropertyType != typeof(string) && property_value.PropertyType.IsClass)
                 {
-                    var value_model = property_model.GetValue(model) ?? Activator.CreateInstance(property_model.PropertyType);
-                    value_.UpdateFrom(value_model);
-                    property_model.SetValue(model, value_model);
+                    try
+                    {
+                        var value_model = property_model.GetValue(model) ?? Activator.CreateInstance(property_model.PropertyType);
+                        value_model.UpdateFrom(value_);
+                        property_model.SetValue(model, value_model);
+                    }
+                    catch (Exception) { }
                 }
             }
             else
-                property_model.SetValue(model, Convert.ChangeType(value_, property_model.PropertyType));
+            {
+                try
+                {
+                    property_model.SetValue(model, Convert.ChangeType(value_, property_model.PropertyType));
+                }
+                catch (Exception) { }
+            }
         }
     }
 }
