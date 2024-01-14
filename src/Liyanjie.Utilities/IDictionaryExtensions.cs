@@ -11,10 +11,10 @@ public static class IDictionaryExtensions
     /// <typeparam name="TModel"></typeparam>
     /// <param name="dictionary"></param>
     /// <returns></returns>
-    public static TModel BuildModel<TModel>(this IDictionary<string, object> dictionary)
+    public static TModel? BuildModel<TModel>(this IDictionary<string, object> dictionary)
         where TModel : new()
     {
-        return (TModel)dictionary.BuildModel(typeof(TModel));
+        return (TModel?)dictionary.BuildModel(typeof(TModel));
     }
 
     /// <summary>
@@ -23,7 +23,7 @@ public static class IDictionaryExtensions
     /// <param name="dictionary"></param>
     /// <param name="modelType"></param>
     /// <returns></returns>
-    public static object BuildModel(this IDictionary<string, object> dictionary, Type modelType)
+    public static object? BuildModel(this IDictionary<string, object> dictionary, Type modelType)
     {
         var output = Activator.CreateInstance(modelType);
 
@@ -37,13 +37,13 @@ public static class IDictionaryExtensions
     /// </summary>
     /// <param name="dictionary"></param>
     /// <param name="model"></param>
-    public static void UpdateModel(this IDictionary<string, object> dictionary, object model)
+    public static void UpdateModel(this IDictionary<string, object> dictionary, object? model)
     {
         if (dictionary is null || dictionary.Count == 0)
             return;
 
         if (model is null)
-            throw new ArgumentNullException(nameof(model));
+            return;
 
         dictionary = dictionary.ToDictionary(_ => _.Key.ToLower(), _ => _.Value);
         dictionary = PreProcessDictionary(dictionary);

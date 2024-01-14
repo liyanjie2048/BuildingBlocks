@@ -6,6 +6,27 @@
 public static class StringExtensions
 {
     /// <summary>
+    /// 计算长度（英文计1长度，Unicode计2长度）
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static int GetLength(this string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return 0;
+
+        var length = 0;
+        foreach (var c in input)
+        {
+            var len = Encoding.UTF8.GetByteCount(new[] { c });
+            if (len > 1)
+                len = 2;
+            length += len;
+        }
+        return length;
+    }
+
+    /// <summary>
     /// Encode
     /// </summary>
     /// <param name="input"></param>
@@ -196,7 +217,7 @@ public static class StringExtensions
     /// <param name="radix"></param>
     /// <param name="radixCodes"></param>
     /// <returns></returns>
-    public static long GetLong(this string input, int radix = 62, string radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+    public static long GetLong(this string input, int radix = 62, string radixCodes = RadixHelper.RadixCodes)
         => RadixHelper.GetLong(input, radix, radixCodes);
 
     /// <summary>
@@ -204,12 +225,12 @@ public static class StringExtensions
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public static string? ToCamelCase(this string input)
+    public static string ToCamelCase(this string input)
     {
-        if (input is null)
-            return default;
+        if (string.IsNullOrEmpty(input))
+            return input;
 
-        if (input.Length < 2)
+        if (input.Length <= 2)
             return input.ToLower();
 
         var i = 0;
@@ -243,9 +264,10 @@ public static class StringExtensions
     /// <returns></returns>
     public static string ClearHTML(this string input)
     {
-        var output = input ?? string.Empty;
-        if (string.IsNullOrEmpty(output))
-            return string.Empty;
+        if (string.IsNullOrEmpty(input))
+            return input;
+
+        var output = input;
         output = Regex.Replace(output, @"(<script[^>]*>[.\n]*?</script>)+?", string.Empty, RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"(<[^>]*>)+?", string.Empty, RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"([\r\n])[\s]+", string.Empty, RegexOptions.IgnoreCase);
@@ -280,12 +302,12 @@ public static class StringExtensions
     public static string Substring(this string input, int startIndex, int length, string endWith)
     {
         if (string.IsNullOrEmpty(input))
-            return string.Empty;
+            return input;
 
         if (input.Length <= length)
             return input;
 
-        return input.Substring(startIndex, length) + endWith ?? string.Empty;
+        return $"{input[startIndex..(startIndex + length)]}{endWith}";
     }
 
     /// <summary>
@@ -296,6 +318,9 @@ public static class StringExtensions
     /// <returns></returns>
     public static string Random(this string input, int? length = null)
     {
+        if (string.IsNullOrEmpty(input))
+            return input;
+
         var chars = input
             .ToCharArray()
             .OrderBy(_ => Guid.NewGuid())

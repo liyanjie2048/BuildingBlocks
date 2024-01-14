@@ -1,7 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net6.0;net8.0;</TargetFrameworks>
+        <Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<VersionSuffix>20240114</VersionSuffix>
         <Description>扩展方法合集</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
@@ -10,8 +14,6 @@
         <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
         <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
         <PackageIcon>liyanjie.net.256.png</PackageIcon>
-        <PackageIconUrl />
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">

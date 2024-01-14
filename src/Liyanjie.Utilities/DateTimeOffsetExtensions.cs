@@ -34,4 +34,16 @@ public static class DateTimeOffsetExtensions
     {
         return input.DateTime.WeekOfYear(culture, firstDayOfWeek);
     }
+
+#if NET6_0_OR_GREATER
+    public static DateOnly ToDateOnly(this DateTimeOffset input)
+    {
+        return DateOnly.FromDateTime(input.DateTime);
+    }
+
+    public static TimeOnly ToTimeOnly(this DateTimeOffset input)
+    {
+        return TimeOnly.FromDateTime(input.DateTime);
+    }
+#endif
 }

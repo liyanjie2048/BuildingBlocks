@@ -157,7 +157,7 @@ public static class ReflectionExtensions
                 : outputType.IsConstructedGenericType
                     ? outputType.GenericTypeArguments[0]
                     : null;
-            var inputArray = Enumerable.ToArray((input as IEnumerable).Cast<object>());
+            var inputArray = Enumerable.ToArray((input as IEnumerable)!.Cast<object>());
             var outputArray = Array.CreateInstance(outputElementType ?? typeof(object), inputArray.Length);
             inputArray.Select(_ => outputElementType is null ? _ : DoTranslate(outputElementType, _, translated))
                 .ToArray()
@@ -259,7 +259,7 @@ public static class ReflectionExtensions
                     try
                     {
                         var value_model = property_model.GetValue(model) ?? Activator.CreateInstance(property_model.PropertyType);
-                        value_model.UpdateFrom(value_);
+                        value_model?.UpdateFrom(value_);
                         property_model.SetValue(model, value_model);
                     }
                     catch (Exception) { }

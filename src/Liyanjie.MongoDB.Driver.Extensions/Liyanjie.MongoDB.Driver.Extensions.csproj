@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;</TargetFrameworks>
-        <Description>MongoDB.Driver Extensions</Description>
+        <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<VersionSuffix>20240114</VersionSuffix>
+        <Description>Extensions for MongoDB.Driver</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
         <Company>Liyanjie.net</Company>
@@ -10,8 +13,6 @@
         <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
         <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
         <PackageIcon>liyanjie.net.256.png</PackageIcon>
-        <PackageIconUrl />
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">

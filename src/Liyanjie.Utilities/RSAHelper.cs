@@ -26,7 +26,7 @@ public static class RSAHelper
     internal static RSAParameters DeserializeRSAParameters(Stream xmlDocStream)
     {
         using var xmlReader = XmlReader.Create(xmlDocStream);
-        return (RSAParameters)new XmlSerializer(typeof(RSAParameters)).Deserialize(xmlReader);
+        return (RSAParameters)new XmlSerializer(typeof(RSAParameters)).Deserialize(xmlReader)!;
     }
 
     /// <summary>

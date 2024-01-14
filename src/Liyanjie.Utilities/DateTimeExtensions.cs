@@ -27,4 +27,16 @@ public static class DateTimeExtensions
     {
         return culture.Calendar.GetWeekOfYear(input, culture.DateTimeFormat.CalendarWeekRule, firstDayOfWeek);
     }
+
+#if NET6_0_OR_GREATER
+    public static DateOnly ToDateOnly(this DateTime input)
+    {
+        return DateOnly.FromDateTime(input);
+    }
+
+    public static TimeOnly ToTimeOnly(this DateTime input)
+    {
+        return TimeOnly.FromDateTime(input);
+    }
+#endif
 }

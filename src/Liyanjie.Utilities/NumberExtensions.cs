@@ -29,40 +29,40 @@ public static class NumberExtensions
     public static bool Is2PowN(this long input)
         => Is2PowN_(input);
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="input"></param>
-    /// <param name="radix"></param>
-    /// <param name="radixCodes"></param>
-    /// <returns></returns>
-    public static string ToString(this short input, int radix = 62, string radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
-        => RadixHelper.ToString(input, radix, radixCodes);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="input"></param>
-    /// <param name="radix"></param>
-    /// <param name="radixCodes"></param>
-    /// <returns></returns>
-    public static string ToString(this int input, int radix = 62, string radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
-        => RadixHelper.ToString(input, radix, radixCodes);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="input"></param>
-    /// <param name="radix"></param>
-    /// <param name="radixCodes"></param>
-    /// <returns></returns>
-    public static string ToString(this long input, int radix = 62, string radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
-        => RadixHelper.ToString(input, radix, radixCodes);
-
     static bool Is2PowN_(long input)
     {
         return input >= 1 && (input & (input - 1)) == 0;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="radix"></param>
+    /// <param name="radixCodes"></param>
+    /// <returns></returns>
+    public static string ToString(this short input, int radix = 62, string? radixCodes = RadixHelper.RadixCodes)
+        => RadixHelper.ToString(input, radix, radixCodes);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="radix"></param>
+    /// <param name="radixCodes"></param>
+    /// <returns></returns>
+    public static string ToString(this int input, int radix = 62, string? radixCodes = RadixHelper.RadixCodes)
+        => RadixHelper.ToString(input, radix, radixCodes);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="radix"></param>
+    /// <param name="radixCodes"></param>
+    /// <returns></returns>
+    public static string ToString(this long input, int radix = 62, string? radixCodes = RadixHelper.RadixCodes)
+        => RadixHelper.ToString(input, radix, radixCodes);
 
     /// <summary>
     /// 获取一个非负整型的所有正约数
@@ -94,7 +94,7 @@ public static class NumberExtensions
             throw new ArgumentOutOfRangeException(nameof(number), $"{nameof(number)} 必须为非负整型！");
 
         if (number < 2)
-            return new List<long> { 1 };
+            return [1];
 
         var divisors = new List<long>(2);
 

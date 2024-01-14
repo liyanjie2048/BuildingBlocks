@@ -4,8 +4,8 @@ public class MongoDBDateOnlySerializer : StructSerializerBase<DateOnly>
 {
     public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateOnly value)
     {
-        var dateDime = value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-        context.Writer.WriteDateTime(BsonUtils.ToMillisecondsSinceEpoch(dateDime));
+        var dateTime = value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local);
+        context.Writer.WriteDateTime(BsonUtils.ToMillisecondsSinceEpoch(dateTime.ToUniversalTime()));
     }
 
     public override DateOnly Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)

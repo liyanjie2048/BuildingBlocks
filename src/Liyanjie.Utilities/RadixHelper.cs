@@ -6,14 +6,23 @@
 public static class RadixHelper
 {
     /// <summary>
-    /// 将 long 型数字转换为 x 进制字符串
+    /// 
+    /// </summary>
+    public const string RadixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    /// <summary>
+    /// 将 long 型数字转换为 radix 进制字符串
     /// </summary>
     /// <param name="number"></param>
     /// <param name="radix"></param>
     /// <param name="radixCodes"></param>
     /// <returns></returns>
-    public static string ToString(long number, int radix = 62, string radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+    public static string ToString(long number, int radix = 62, string? radixCodes = RadixCodes)
     {
+        var radixCodesIsNullOrWhiteSpace = string.IsNullOrWhiteSpace(radixCodes);
+        if (!radixCodesIsNullOrWhiteSpace && radixCodes!.Length < radix)
+            throw new ArgumentException($"不满足 {radix} 进制所需长度", nameof(radixCodes));
+
         var result = string.Empty;
         var fu = false;
 
@@ -32,7 +41,7 @@ public static class RadixHelper
             number -= tmp;
             number /= radix;
 
-            if (string.IsNullOrWhiteSpace(radixCodes))
+            if (radixCodesIsNullOrWhiteSpace)
             {
                 tmp += 48;
                 if (tmp > 57)
@@ -45,7 +54,7 @@ public static class RadixHelper
         }
         tmp = number % radix;
 
-        if (string.IsNullOrWhiteSpace(radixCodes))
+        if (radixCodesIsNullOrWhiteSpace)
         {
             tmp += 48;
             if (tmp > 57)
@@ -58,7 +67,7 @@ public static class RadixHelper
 
         foreach (var item in list)
         {
-            result = (string.IsNullOrWhiteSpace(radixCodes) ? ((char)item).ToString() : radixCodes[(int)item].ToString()) + result;
+            result = (radixCodesIsNullOrWhiteSpace ? ((char)item).ToString() : radixCodes![(int)item].ToString()) + result;
         }
 
         if (fu)
@@ -74,10 +83,12 @@ public static class RadixHelper
     /// <param name="radix">进制</param>
     /// <param name="radixCodes"></param>
     /// <returns></returns>
-    public static long GetLong(string input, int radix = 62, string radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+    public static long GetLong(string input, int radix = 62, string? radixCodes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
     {
         if (string.IsNullOrWhiteSpace(input))
             throw new ArgumentException($"Parameter '{nameof(input)}' can't be Null nor Empty nor WhiteSpace", nameof(input));
+
+        var radixCodesIsNullOrWhiteSpace = string.IsNullOrWhiteSpace(radixCodes);
 
         var result = 0L;
         var fu = false;
@@ -96,7 +107,7 @@ public static class RadixHelper
         for (int i = 0; i < array.Count; i++)
         {
             long num;
-            if (string.IsNullOrWhiteSpace(radixCodes))
+            if (radixCodesIsNullOrWhiteSpace)
             {
                 num = array[i];
 
@@ -109,7 +120,7 @@ public static class RadixHelper
             }
             else
             {
-                num = radixCodes.IndexOf(array[i]);
+                num = radixCodes!.IndexOf(array[i]);
                 if (num < 0)
                     throw new Exception($"{array[i]} is not in {nameof(radixCodes)}");
             }

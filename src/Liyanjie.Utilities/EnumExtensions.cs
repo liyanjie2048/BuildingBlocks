@@ -42,7 +42,7 @@ public static class EnumExtensions
             return output?.TrimStart(separator);
         }
 
-        static string? GetDescription(Type enumType, string enumName)
+        static string? GetDescription(Type enumType, string? enumName)
         {
             if (string.IsNullOrWhiteSpace(enumName))
                 return null;

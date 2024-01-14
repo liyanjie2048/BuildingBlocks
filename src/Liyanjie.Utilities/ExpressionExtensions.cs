@@ -65,32 +65,29 @@ public static class ExpressionExtensions
         Expression<Func<T, bool>> concat)
         => Expression.Lambda<Func<T, bool>>(Expression.OrElse(source.Body, ReplaceParameters(concat.Body, GetMappings(concat.Parameters, source.Parameters))), source.Parameters);
 
-    static IDictionary<ParameterExpression, ParameterExpression> GetMappings(
+    static Dictionary<ParameterExpression, ParameterExpression> GetMappings(
         ReadOnlyCollection<ParameterExpression> parameters1,
         ReadOnlyCollection<ParameterExpression> parameters2,
         Func<ParameterExpression, int, KeyValuePair<ParameterExpression, ParameterExpression>>? map = null)
     {
-        map ??= ((_, i) => new KeyValuePair<ParameterExpression, ParameterExpression>(_, parameters2[i]));
+        map ??= ((_, i) => new(_, parameters2[i]));
         return parameters1
             .Select(map)
             .ToDictionary(_ => _.Key, _ => _.Value);
     }
 
-    static Expression ReplaceParameters(Expression expression,
-        IDictionary<ParameterExpression,
-            ParameterExpression> mappings)
+    static Expression ReplaceParameters(
+        Expression expression,
+        Dictionary<ParameterExpression, ParameterExpression> mappings)
     {
         return new ExpressionVisitor(mappings).Visit(expression);
     }
 
-    sealed class ExpressionVisitor : Expressions.ExpressionVisitor
+    sealed class ExpressionVisitor(
+        Dictionary<ParameterExpression, ParameterExpression> mappings)
+        : Expressions.ExpressionVisitor
     {
-        readonly IDictionary<ParameterExpression, ParameterExpression> mappings;
-
-        public ExpressionVisitor(IDictionary<ParameterExpression, ParameterExpression> mappings)
-        {
-            this.mappings = mappings ?? new Dictionary<ParameterExpression, ParameterExpression>();
-        }
+        readonly Dictionary<ParameterExpression, ParameterExpression> mappings = mappings ?? [];
 
         protected override Expression VisitParameter(ParameterExpression node)
         {

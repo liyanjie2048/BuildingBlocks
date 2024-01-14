@@ -68,6 +68,6 @@ public abstract class ValueObject
 
     public static bool operator !=(ValueObject? a, ValueObject? b)
     {
-        return !(a is null ? b is null : b is not null && a.Equals(b));
+        return !(a == b);
     }
 }

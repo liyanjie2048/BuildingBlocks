@@ -4,6 +4,8 @@
         <OutputType>Library</OutputType>
         <IsPackable>True</IsPackable>
         <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
         <Description>AspNetCore 扩展</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
@@ -12,8 +14,6 @@
         <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
         <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
         <PackageIcon>liyanjie.net.256.png</PackageIcon>
-        <PackageIconUrl />
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
