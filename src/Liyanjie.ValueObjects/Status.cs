@@ -9,7 +9,7 @@ public class Status<TStatus> : ValueObject
     /// <summary>
     /// 值
     /// </summary>
-    public TStatus? Value { get; set; }
+    public TStatus Value { get; set; } = default!;
 
     /// <summary>
     /// 变更时间
@@ -30,7 +30,7 @@ public class Status<TStatus> : ValueObject
         yield return Value;
     }
 
-    public override string? ToString() => Value?.ToString();
+    public static implicit operator TStatus(Status<TStatus> status) => status.Value;
 
     /// <summary>
     /// 

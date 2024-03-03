@@ -13,12 +13,14 @@ public class Contact<TType, TName> : ValueObject
     /// <summary>
     /// 姓名
     /// </summary>
-    public TName? Name { get; set; }
+    [DisallowNull]
+    public TName Name { get; set; } = default!;
 
     /// <summary>
     /// 号码
     /// </summary>
-    public string? Number { get; set; }
+    [DisallowNull]
+    public string Number { get; set; } = default!;
 
     /// <summary>
     /// 

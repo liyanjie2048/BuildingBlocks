@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<VersionSuffix>20240114</VersionSuffix>
+		<VersionSuffix>240303</VersionSuffix>
         <Description>常用值对象</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>

@@ -25,5 +25,5 @@ public class Geolocation : ValueObject
         yield return Latitude;
     }
 
-    public override string ToString() => $"{Longitude:0.000000},{Latitude:0.000000}";
+    public override string ToString() => $"{Longitude:0.0000000},{Latitude:0.0000000}";
 }

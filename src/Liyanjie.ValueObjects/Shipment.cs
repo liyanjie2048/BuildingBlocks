@@ -8,7 +8,8 @@ public class Shipment<TIdentity> : ValueObject
     /// <summary>
     /// 标识
     /// </summary>
-    public TIdentity? Identity { get; set; }
+    [DisallowNull]
+    public TIdentity Identity { get; set; } = default!;
 
     /// <summary>
     /// 运单号码
@@ -31,6 +32,4 @@ public class Shipment<TIdentity> : ValueObject
 /// <summary>
 /// 
 /// </summary>
-public class Shipment : Shipment<string>
-{
-}
+public class Shipment : Shipment<string> { }

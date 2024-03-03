@@ -1,6 +1,7 @@
 ﻿namespace Liyanjie.ValueObjects;
 
-public class Range<TValue> : ValueObject where TValue : struct, IEquatable<TValue>
+public class Range<TValue> : ValueObject
+    where TValue : struct, IEquatable<TValue>
 {
     public TValue From { get; set; }
 

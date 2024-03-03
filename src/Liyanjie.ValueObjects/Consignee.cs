@@ -8,12 +8,14 @@ public class Consignee : ValueObject
     /// <summary>
     /// 地址
     /// </summary>
-    public Address? Address { get; set; }
+    [DisallowNull]
+    public Address Address { get; set; } = default!;
 
     /// <summary>
     /// 电话
     /// </summary>
-    public Contact? Contact { get; set; }
+    [DisallowNull]
+    public Contact Contact { get; set; } = default!;
 
     /// <summary>
     /// 
@@ -24,6 +26,4 @@ public class Consignee : ValueObject
         yield return Address;
         yield return Contact;
     }
-
-    public override string ToString() => $"{Contact} {Address}";
 }

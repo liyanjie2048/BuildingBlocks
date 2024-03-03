@@ -4,6 +4,7 @@
 		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<VersionSuffix>240303</VersionSuffix>
 		<Description>常用值对象的Protobuf CodeFirst RuntimeTypeModel</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>

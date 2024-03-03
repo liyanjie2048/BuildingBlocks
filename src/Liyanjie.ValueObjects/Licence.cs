@@ -13,7 +13,8 @@ public class Licence<TType> : ValueObject
     /// <summary>
     /// 号码
     /// </summary>        
-    public string? Number { get; set; }
+    [DisallowNull]
+    public string Number { get; set; } = default!;
 
     /// <summary>
     /// 姓名
@@ -24,11 +25,6 @@ public class Licence<TType> : ValueObject
     /// 照片
     /// </summary>
     public string[]? Pictures { get; set; }
-
-    /// <summary>
-    /// 认证状态
-    /// </summary>
-    public Status<bool> IsIdentified { get; set; } = new();
 
     /// <summary>
     /// 

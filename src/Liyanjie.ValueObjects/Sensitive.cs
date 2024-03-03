@@ -3,18 +3,22 @@
 /// <summary>
 /// 敏感数据
 /// </summary>
-public class SensitiveData : ValueObject
+public class Sensitive<TData> : ValueObject
 {
-    public string? Origin { get; set; }
-    public string? Modification { get; set; }
+    public TData? Origin { get; set; }
+    public TData? Modification { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
-    public bool? Status { get; set; }
+    public bool? Status { get; set; } = false;
 
-    public void Modify(string? modification)
+    public void Modify(TData? modification)
     {
+        if ((Origin is null && modification is null)
+            || Origin?.Equals(modification) == true)
+            return;
+
         Modification = modification;
         Status = null;
     }
@@ -23,7 +27,9 @@ public class SensitiveData : ValueObject
     {
         Status = status;
         if (true == status)
+        {
             Origin = Modification;
+        }
     }
 
     /// <summary>
@@ -34,5 +40,7 @@ public class SensitiveData : ValueObject
     {
         yield return Origin;
         yield return Modification;
+        yield return Status;
     }
 }
+public class Sensitive : Sensitive<string> { }

@@ -4,7 +4,7 @@
         <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<VersionSuffix>20240114</VersionSuffix>
+		<VersionSuffix>240303</VersionSuffix>
         <Description>Extensions for MongoDB.Driver</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
@@ -31,7 +31,7 @@
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" Version="2.23.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
     </ItemGroup>
 
 </Project>

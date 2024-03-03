@@ -10,10 +10,10 @@ public static class Extensions
         model.Add(typeof(Geolocation), false).Add(nameof(Geolocation.Longitude), nameof(Geolocation.Latitude));
         model.Add(typeof(Identity), false).Add(nameof(Identity.Type), nameof(Identity.Value));
         model.Add(typeof(Job), false).Add(nameof(Job.Industry), nameof(Job.Company), nameof(Job.Position), nameof(Job.Address));
-        model.Add(typeof(Licence), false).Add(nameof(Licence.Type), nameof(Licence.Number), nameof(Licence.Name), nameof(Licence.Pictures), nameof(Licence.IsIdentified));
+        model.Add(typeof(Licence), false).Add(nameof(Licence.Type), nameof(Licence.Number), nameof(Licence.Name), nameof(Licence.Pictures));
         model.Add(typeof(Name), false).Add(nameof(Name.GivenName), nameof(Name.MiddleName), nameof(Name.FamilyName));
         model.Add(typeof(Operator), false).Add(nameof(Operator.Status), nameof(Operator.Identity));
-        model.Add(typeof(SensitiveData), false).Add(nameof(SensitiveData.Origin), nameof(SensitiveData.Modification), nameof(SensitiveData.Status));
+        model.Add(typeof(Sensitive), false).Add(nameof(Sensitive.Origin), nameof(Sensitive.Modification), nameof(Sensitive.Status));
         model.Add(typeof(School), false).Add(nameof(School.Type), nameof(School.Name), nameof(School.AdmissionDate), nameof(School.GraduatedDate));
         model.Add(typeof(Score), false).Add(nameof(Score.Total), nameof(Score.Count));
         model.Add(typeof(Shipment), false).Add(nameof(Shipment.Identity), nameof(Shipment.TrackingNumber));
@@ -33,7 +33,7 @@ public static class Extensions
     }
     public static void AddValueObject_Licence<TType>(this RuntimeTypeModel model)
     {
-        model.Add(typeof(Licence<TType>), false).Add(nameof(Licence.Type), nameof(Licence.Number), nameof(Licence.Name), nameof(Licence.Pictures), nameof(Licence.IsIdentified));
+        model.Add(typeof(Licence<TType>), false).Add(nameof(Licence.Type), nameof(Licence.Number), nameof(Licence.Name), nameof(Licence.Pictures));
     }
     public static void AddValueObject_Operator<TStatus, TIdentity>(this RuntimeTypeModel model)
     {
@@ -46,6 +46,10 @@ public static class Extensions
     public static void AddValueObject_School<TType>(this RuntimeTypeModel model)
     {
         model.Add(typeof(School<TType>), false).Add(nameof(School.Type), nameof(School.Name), nameof(School.AdmissionDate), nameof(School.GraduatedDate));
+    }
+    public static void AddValueObject_Sensitive<TData>(this RuntimeTypeModel model)
+    {
+        model.Add(typeof(Sensitive<TData>), false).Add(nameof(Sensitive.Origin), nameof(Sensitive.Modification), nameof(Sensitive.Status));
     }
     public static void AddValueObject_Shipment<TIdentity>(this RuntimeTypeModel model)
     {

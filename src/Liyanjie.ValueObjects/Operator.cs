@@ -18,6 +18,11 @@ public class Operator<TStatus, TIdentity> : ValueObject
     public TIdentity? Identity { get; set; }
 
     /// <summary>
+    /// 姓名
+    /// </summary>
+    public string? Name { get; set; }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>

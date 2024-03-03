@@ -8,12 +8,13 @@ public class Identity<TType, TValue> : ValueObject
     /// <summary>
     /// 类型
     /// </summary>
-    public TType? Type { get; set; }
+    [DisallowNull]
+    public TType Type { get; set; } = default!;
 
     /// <summary>
     /// 标识
     /// </summary>
-    public TValue? Value { get; set; }
+    public TValue Value { get; set; } = default!;
 
     /// <summary>
     /// 
@@ -24,8 +25,6 @@ public class Identity<TType, TValue> : ValueObject
         yield return Type;
         yield return Value;
     }
-
-    public override string? ToString() => Type?.ToString();
 
     /// <summary>
     /// 
@@ -43,6 +42,4 @@ public class Identity<TType, TValue> : ValueObject
 /// <summary>
 /// 
 /// </summary>
-public class Identity : Identity<string, string>
-{
-}
+public class Identity : Identity<string, string> { }

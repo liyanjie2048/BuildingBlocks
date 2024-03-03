@@ -8,7 +8,8 @@ public class Address : ValueObject
     /// <summary>
     /// 行政区划代码
     /// </summary>
-    public string? ADCode { get; set; }
+    [DisallowNull]
+    public string ADCode { get; set; } = default!;
 
     /// <summary>
     /// 行政区划名称
@@ -30,5 +31,5 @@ public class Address : ValueObject
         yield return Detail;
     }
 
-    public override string ToString() => $"{ADCode} {Detail}";
+    public override string ToString() => Detail!;
 }
