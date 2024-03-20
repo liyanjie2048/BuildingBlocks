@@ -5,6 +5,16 @@
 /// </summary>
 public static class ImageExtensions
 {
+    static void ThrowIfNull(this Image image)
+    {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if (image is null)
+            throw new ArgumentNullException(nameof(image));
+#endif
+    }
+
     /// <summary>
     /// 将图片转码为base64字符串
     /// </summary>
@@ -13,12 +23,7 @@ public static class ImageExtensions
     /// <returns></returns>
     public static string ToBase64String(this Image image, ImageFormat? format = default)
     {
-#if NET6_0_OR_GREATER
-        ArgumentNullException.ThrowIfNull(image);
-#else
-        if(image is null)
-            throw new ArgumentNullException(nameof(image));
-#endif
+        image.ThrowIfNull();
 
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.RawFormat);
@@ -27,12 +32,7 @@ public static class ImageExtensions
 
     public static string ToDataUrl(this Image image, ImageFormat? imageFormat = default)
     {
-#if NET6_0_OR_GREATER
-        ArgumentNullException.ThrowIfNull(image);
-#else
-        if(image is null)
-            throw new ArgumentNullException(nameof(image));
-#endif
+        image.ThrowIfNull();
 
         return $"data:{(imageFormat ?? image.RawFormat).GetMIMEType()};base64,{ToBase64String(image, imageFormat)}";
     }
@@ -44,12 +44,7 @@ public static class ImageExtensions
     /// <param name="opacity"></param>
     public static Image SetOpacity(this Image image, float opacity)
     {
-#if NET6_0_OR_GREATER
-        ArgumentNullException.ThrowIfNull(image);
-#else
-        if(image is null)
-            throw new ArgumentNullException(nameof(image));
-#endif
+        image.ThrowIfNull();
 
         if (opacity < 0 || opacity > 1)
             throw new ArgumentOutOfRangeException(nameof(opacity), "不透明度必须为0~1之间的浮点数");
@@ -88,12 +83,7 @@ public static class ImageExtensions
     /// <returns></returns>
     public static Image Clear(this Image image, Color color)
     {
-#if NET6_0_OR_GREATER
-        ArgumentNullException.ThrowIfNull(image);
-#else
-        if(image is null)
-            throw new ArgumentNullException(nameof(image));
-#endif
+        image.ThrowIfNull();
 
         using var graphics = Graphics.FromImage(image);
         graphics.Clear(color);
@@ -136,12 +126,7 @@ public static class ImageExtensions
     /// <returns></returns>
     public static Image Crop(this Image image, Rectangle rectangle)
     {
-#if NET6_0_OR_GREATER
-        ArgumentNullException.ThrowIfNull(image);
-#else
-        if(image is null)
-            throw new ArgumentNullException(nameof(image));
-#endif
+        image.ThrowIfNull();
 
         if (image.RawFormat.Guid == ImageFormat.Gif.Guid)
         {
@@ -172,12 +157,7 @@ public static class ImageExtensions
         bool zoom = true,
         bool coverSize = false)
     {
-#if NET6_0_OR_GREATER
-        ArgumentNullException.ThrowIfNull(image);
-#else
-        if(image is null)
-            throw new ArgumentNullException(nameof(image));
-#endif
+        image.ThrowIfNull();
 
         width = width == 0 ? null : width;
         height = height == 0 ? null : height;
@@ -279,8 +259,7 @@ public static class ImageExtensions
         Point point,
         Size size)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (image2 is null)
             return image;
@@ -304,8 +283,7 @@ public static class ImageExtensions
         ushort repeatCount = 0,
         params (Image Image, int DelayByMilliseconds)[] images)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (images is null || images.Length == 0)
             return image;
@@ -333,8 +311,7 @@ public static class ImageExtensions
         Image image2,
         bool direction = false)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (image2 is null)
             return image;
@@ -373,6 +350,9 @@ public static class ImageExtensions
         int quality,
         ImageFormat? format = default)
     {
+        if (image is null)
+            return;
+
         var format_ = format ?? GetFormat(Path.GetExtension(path)) ?? image.RawFormat;
         var imageCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(_ => _.FormatID == format_.Guid);
         if (imageCodecInfo is null)

@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-public static class IDictionaryExtensions
+public static class DictionaryExtensions
 {
     /// <summary>
     /// 
@@ -11,7 +11,7 @@ public static class IDictionaryExtensions
     /// <typeparam name="TModel"></typeparam>
     /// <param name="dictionary"></param>
     /// <returns></returns>
-    public static TModel? BuildModel<TModel>(this IDictionary<string, object> dictionary)
+    public static TModel? BuildModel<TModel>(this IDictionary<string, object?> dictionary)
         where TModel : new()
     {
         return (TModel?)dictionary.BuildModel(typeof(TModel));
@@ -23,7 +23,7 @@ public static class IDictionaryExtensions
     /// <param name="dictionary"></param>
     /// <param name="modelType"></param>
     /// <returns></returns>
-    public static object? BuildModel(this IDictionary<string, object> dictionary, Type modelType)
+    public static object? BuildModel(this IDictionary<string, object?> dictionary, Type modelType)
     {
         var output = Activator.CreateInstance(modelType);
 
@@ -37,7 +37,7 @@ public static class IDictionaryExtensions
     /// </summary>
     /// <param name="dictionary"></param>
     /// <param name="model"></param>
-    public static void UpdateModel(this IDictionary<string, object> dictionary, object? model)
+    public static void UpdateModel(this IDictionary<string, object?> dictionary, object? model)
     {
         if (dictionary is null || dictionary.Count == 0)
             return;
@@ -55,8 +55,9 @@ public static class IDictionaryExtensions
 
             if (!dictionary.TryGetValue(property.Name.ToLower(), out var objectValue))
                 continue;
-
-            if (property.PropertyType == objectValue.GetType())
+            if (objectValue is null)
+                property.SetValue(model, default);
+            else if (property.PropertyType == objectValue.GetType())
                 property.SetValue(model, objectValue);
             else if (property.PropertyType == typeof(string) && objectValue is IEnumerable enumerable)
                 property.SetValue(model, string.Join(",", Enumerable.Cast<string>(enumerable)));
@@ -80,7 +81,7 @@ public static class IDictionaryExtensions
             }
             else if (property.PropertyType != typeof(string) && property.PropertyType.IsClass)
             {
-                if (objectValue is IDictionary<string, object> dic)
+                if (objectValue is IDictionary<string, object?> dic)
                 {
                     var value_model = property.GetValue(model);
                     if (value_model is null)
@@ -97,7 +98,7 @@ public static class IDictionaryExtensions
         }
     }
 
-    static IDictionary<string, object> PreProcessDictionary(IDictionary<string, object> dictionary)
+    static IDictionary<string, object?> PreProcessDictionary(IDictionary<string, object?> dictionary)
     {
         if (dictionary.Keys.Any(_ => _.IndexOf('.') > 0))
         {

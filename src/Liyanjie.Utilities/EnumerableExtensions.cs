@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-public static class IEnumerableExtensions
+public static class EnumerableExtensions
 {
 #if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
 

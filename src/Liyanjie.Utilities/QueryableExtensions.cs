@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-public static class IQueryableExtensions
+public static class QueryableExtensions
 {
     /// <summary>
     /// 

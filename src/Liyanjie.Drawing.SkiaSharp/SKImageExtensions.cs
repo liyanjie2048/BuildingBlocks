@@ -5,6 +5,16 @@
 /// </summary>
 public static class SKImageExtensions
 {
+    static void ThrowIfNull(this SKImage image)
+    {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if (image is null)
+            throw new ArgumentNullException(nameof(image));
+#endif
+    }
+
     /// <summary>
     /// 将图片转码为base64字符串
     /// </summary>
@@ -14,8 +24,7 @@ public static class SKImageExtensions
     public static string ToBase64String(this SKImage image,
         (SKEncodedImageFormat Format, int Quality)? format = default)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         var (Format, Quality) = format ?? (SKEncodedImageFormat.Png, 100);
         return Convert.ToBase64String(image.Encode(Format, Quality).ToArray());
@@ -24,8 +33,7 @@ public static class SKImageExtensions
     public static string ToDataUrl(this SKImage image,
         (SKEncodedImageFormat Format, int Quality)? format = default)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         var format_ = format ?? (SKEncodedImageFormat.Png, 100);
         return $"data:{format_.Format.GetMIMEType()};base64,{ToBase64String(image, format_)}";
@@ -38,8 +46,7 @@ public static class SKImageExtensions
     /// <param name="opacity"></param>
     public static SKImage SetOpacity(this SKImage image, float opacity)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (opacity < 0 || opacity > 1)
             throw new ArgumentOutOfRangeException(nameof(opacity), "不透明度必须为0~1之间的浮点数");
@@ -65,8 +72,7 @@ public static class SKImageExtensions
     /// <returns></returns>
     public static SKImage Clear(this SKImage image, SKColor color)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         using var bitmap = SKBitmap.FromImage(image);
         for (int x = 0; x < image.Width; x++)
@@ -115,8 +121,7 @@ public static class SKImageExtensions
     /// <returns></returns>
     public static SKImage Crop(this SKImage image, SKRect rect)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         using var bitmap = new SKBitmap((int)rect.Width, (int)rect.Height);
         using var canvas = new SKCanvas(bitmap);
@@ -145,8 +150,7 @@ public static class SKImageExtensions
         bool zoom = true,
         bool cover = false)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         width = width > 0 ? width : null;
         height = height > 0 ? height : null;
@@ -225,8 +229,7 @@ public static class SKImageExtensions
         SKPoint point,
         SKSize size)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (image2 is null)
             return image;
@@ -247,11 +250,10 @@ public static class SKImageExtensions
     /// <param name="direction">true=水平方向，false=垂直方向</param>
     /// <returns></returns>
     public static SKImage Concatenate(this SKImage image,
-         SKImage image2,
+        SKImage image2,
         bool direction = false)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (image2 is null)
             return image;
@@ -294,6 +296,9 @@ public static class SKImageExtensions
         string path,
         (SKEncodedImageFormat Format, int Quality)? format = default)
     {
+        if (image is null)
+            return;
+
         var (Format, Quality) = format ?? (SKEncodedImageFormat.Png, 100);
         File.WriteAllBytes(path, image.Encode(Format, Quality).ToArray());
     }
@@ -308,6 +313,9 @@ public static class SKImageExtensions
         string path,
         (SKEncodedImageFormat Format, int Quality)? format = default)
     {
+        if (image is null)
+            return;
+
         var (Format, Quality) = format ?? (SKEncodedImageFormat.Png, 100);
 
 #if NETSTANDARD2_0

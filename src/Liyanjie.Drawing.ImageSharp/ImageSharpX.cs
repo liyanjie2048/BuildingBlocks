@@ -1,11 +1,21 @@
 ﻿namespace Liyanjie.Drawing.ImageSharp;
 
-public class ImageSharpX
+public partial class ImageSharpX
 {
+#if NET8_0_OR_GREATER
+    [GeneratedRegex(@"^data\:(?<MIME>image\/(bmp|emf|exif|gif|icon|jpeg|png|tiff|wmf))\;base64\,(?<DATA>.+)")]
+    private static partial Regex _Regex_ImageDataUrl();
+#endif
+
     /// <summary>
     /// 
     /// </summary>
-    public readonly static Regex Regex_ImageDataUrl = new(@"^data\:(?<MIME>image\/(bmp|emf|exif|gif|icon|jpeg|png|tiff|wmf))\;base64\,(?<DATA>.+)");
+    public readonly static Regex Regex_ImageDataUrl =
+#if NET8_0_OR_GREATER
+        _Regex_ImageDataUrl();
+#else
+        new(@"^data\:(?<MIME>image\/(bmp|emf|exif|gif|icon|jpeg|png|tiff|wmf))\;base64\,(?<DATA>.+)");
+#endif
 
     /// <summary>
     /// 从base64字符串中获取图片

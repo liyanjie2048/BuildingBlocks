@@ -5,6 +5,15 @@
 /// </summary>
 public static class ImageSharpExtensions
 {
+    static void ThrowIfNull(this Image image)
+    {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if (image is null)
+            throw new ArgumentNullException(nameof(image));
+#endif
+    }
 
     /// <summary>
     /// 将图片转码为base64字符串
@@ -15,8 +24,7 @@ public static class ImageSharpExtensions
     public static string ToBase64String(this Image image,
         IImageFormat? format = default)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.Metadata.DecodedImageFormat ?? JpegFormat.Instance);
@@ -28,8 +36,7 @@ public static class ImageSharpExtensions
     public static string ToDataUrl(this Image image,
         IImageFormat? format = default)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         var format_ = format ?? image.Metadata.DecodedImageFormat ?? JpegFormat.Instance;
         return $"data:{format_.MimeTypes};base64,{ToBase64String(image, format_)}";
@@ -42,8 +49,7 @@ public static class ImageSharpExtensions
     /// <param name="opacity"></param>
     public static Image SetOpacity(this Image image, float opacity)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (opacity < 0 || opacity > 1)
             throw new ArgumentOutOfRangeException(nameof(opacity), "不透明度必须为0~1之间的浮点数");
@@ -62,8 +68,7 @@ public static class ImageSharpExtensions
     /// <returns></returns>
     public static Image Clear(this Image image, Color color)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         var output = image.CloneAs<Rgba32>();
         output.ProcessPixelRows(_ =>
@@ -117,8 +122,7 @@ public static class ImageSharpExtensions
     /// <returns></returns>
     public static Image Crop(this Image image, Rectangle rectangle)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         image.Mutate(_ => _.Crop(rectangle));
 
@@ -140,8 +144,7 @@ public static class ImageSharpExtensions
         bool zoom = true,
         bool cover = false)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         width = width > 0 ? width : null;
         height = height > 0 ? height : null;
@@ -221,8 +224,7 @@ public static class ImageSharpExtensions
         Point point,
         Size size)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (image2 is null)
             return image;
@@ -246,8 +248,7 @@ public static class ImageSharpExtensions
         ushort repeatCount = 0,
         params (Image Image, int DelayByMilliseconds)[] images)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (images is null || images.Length == 0)
             return image;
@@ -277,8 +278,7 @@ public static class ImageSharpExtensions
         Image image2,
         bool direction = false)
     {
-        if (image is null)
-            throw new ArgumentNullException(nameof(image));
+        image.ThrowIfNull();
 
         if (image2 is null)
             return image;
