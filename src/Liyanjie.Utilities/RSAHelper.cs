@@ -29,6 +29,8 @@ public static class RSAHelper
         return (RSAParameters)new XmlSerializer(typeof(RSAParameters)).Deserialize(xmlReader)!;
     }
 
+#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
+
     /// <summary>
     /// 
     /// </summary>
@@ -48,4 +50,6 @@ public static class RSAHelper
     {
         return Convert.FromBase64String(keyString);
     }
+
+#endif
 }

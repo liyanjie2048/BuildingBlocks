@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<ImplicitUsings>true</ImplicitUsings>
+		<VersionSuffix>240320</VersionSuffix>
 		<Description>Liyanjie.Pinyin</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>
@@ -19,49 +20,49 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\char_state_tab.json" />
-	  <None Remove="Resources\cn_synonym.txt" />
-	  <None Remove="Resources\dict.txt" />
-	  <None Remove="Resources\idf.txt" />
-	  <None Remove="Resources\pos_prob_emit.json" />
-	  <None Remove="Resources\pos_prob_start.json" />
-	  <None Remove="Resources\pos_prob_trans.json" />
-	  <None Remove="Resources\prob_emit.json" />
-	  <None Remove="Resources\prob_trans.json" />
-	  <None Remove="Resources\stopwords.txt" />
+		<None Remove="Resources\char_state_tab.json" />
+		<None Remove="Resources\cn_synonym.txt" />
+		<None Remove="Resources\dict.txt" />
+		<None Remove="Resources\idf.txt" />
+		<None Remove="Resources\pos_prob_emit.json" />
+		<None Remove="Resources\pos_prob_start.json" />
+		<None Remove="Resources\pos_prob_trans.json" />
+		<None Remove="Resources\prob_emit.json" />
+		<None Remove="Resources\prob_trans.json" />
+		<None Remove="Resources\stopwords.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Resources\char_state_tab.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\cn_synonym.txt">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\dict.txt">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\idf.txt">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\pos_prob_emit.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\pos_prob_start.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\pos_prob_trans.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\prob_emit.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\prob_trans.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Resources\stopwords.txt">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
+		<Content Include="Resources\char_state_tab.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\cn_synonym.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\dict.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\idf.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\pos_prob_emit.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\pos_prob_start.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\pos_prob_trans.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\prob_emit.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\prob_trans.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\stopwords.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -72,7 +73,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="jieba.NET" Version="0.42.2" />
+		<PackageReference Include="jieba.NET" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,7 +81,7 @@
 	</ItemGroup>
 
 	<Target Name="MovePackage" AfterTargets="Pack">
-		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
 	</Target>
 
 </Project>

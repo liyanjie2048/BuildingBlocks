@@ -42,14 +42,14 @@ public static class ImageExtensions
         if (opacity < 0 || opacity > 1)
             throw new ArgumentOutOfRangeException(nameof(opacity), "不透明度必须为0~1之间的浮点数");
 
-        var colorMatrix = new ColorMatrix(new[]
-        {
-            new float[] { 1, 0, 0, 0, 0 },
-            new float[] { 0, 1, 0, 0, 0 },
-            new float[] { 0, 0, 1, 0, 0 },
-            new float[] { 0, 0, 0, opacity, 0 },
-            new float[] { 0, 0, 0, 0, 1 }
-        });
+        var colorMatrix = new ColorMatrix(
+        [
+            [1, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 0, opacity, 0],
+            [0, 0, 0, 0, 1]
+        ]);
         var imageAttributes = new ImageAttributes();
         imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
@@ -125,7 +125,7 @@ public static class ImageExtensions
 
         if (image.RawFormat.Guid == ImageFormat.Gif.Guid)
         {
-            var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value);
+            var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value!, 0);
             var frames = GetGifFrames(image).Select(_ => (Image: _.Image.Crop(rectangle), _.DelayByMilliseconds)).ToArray();
 
             return frames[0].Image.CombineToGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
@@ -218,7 +218,7 @@ public static class ImageExtensions
 
         if (image.RawFormat.Guid == ImageFormat.Gif.Guid)
         {
-            var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value);
+            var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value!, 0);
             var frames = GetGifFrames(image).Select(_ => (Image: _Resize(_.Image, w, h), _.DelayByMilliseconds)).ToArray();
 
             return frames[0].Image.CombineToGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
@@ -384,7 +384,7 @@ public static class ImageExtensions
                 property.Value![2 + i * 4],
                 property.Value![3 + i * 4]
             };
-            var delay = BitConverter.ToInt32(bytes) * 10;
+            var delay = BitConverter.ToInt32(bytes, 0) * 10;
 
             output.Add((bitmap, delay));
         }

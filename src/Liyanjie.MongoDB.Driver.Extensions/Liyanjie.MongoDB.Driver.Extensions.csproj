@@ -1,37 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<ImplicitUsings>true</ImplicitUsings>
 		<VersionSuffix>240303</VersionSuffix>
-        <Description>Extensions for MongoDB.Driver</Description>
-        <Copyright>© Liyanjie.net</Copyright>
-        <Authors>liyanjie2048@outlook.com</Authors>
-        <Company>Liyanjie.net</Company>
-        <RepositoryType>Git</RepositoryType>
-        <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
-        <PackageIcon>liyanjie.net.256.png</PackageIcon>
-    </PropertyGroup>
+		<Description>Extensions for MongoDB.Driver</Description>
+		<Copyright>© Liyanjie.net</Copyright>
+		<Authors>liyanjie2048@outlook.com</Authors>
+		<Company>Liyanjie.net</Company>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
+		<PackageIcon>liyanjie.net.256.png</PackageIcon>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Release'">
-        <DocumentationFile>bin\Release\Liyanjie.MongoDB.Driver.Extensions.xml</DocumentationFile>
-    </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DocumentationFile>bin\Release\Liyanjie.MongoDB.Driver.Extensions.xml</DocumentationFile>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <None Include="..\..\liyanjie.net.256.png">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </None>
-    </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\liyanjie.net.256.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
-    <Target Name="MovePackage" AfterTargets="Pack">
-        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
-    </Target>
+	<ItemGroup>
+		<PackageReference Include="MongoDB.Driver" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
-    </ItemGroup>
+	<Target Name="MovePackage" AfterTargets="Pack">
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
+	</Target>
 
 </Project>

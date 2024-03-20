@@ -8,10 +8,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD90A61F-0AEB-4B78-B4BD-FB8140368475}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		LICENSE = LICENSE
 		liyanjie.net.256.png = liyanjie.net.256.png
-		Nuget.config = Nuget.config
-		Push.bat = Push.bat
 		README.md = README.md
+		Publish.bat = Publish.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Http", "src\Liyanjie.Http\Liyanjie.Http.csproj", "{887B7D80-CFE9-4146-855F-D18E9DB6F2C2}"
@@ -69,6 +72,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.ValueObjects.Protobuf", "src\Liyanjie.ValueObjects.Protobuf\Liyanjie.ValueObjects.Protobuf.csproj", "{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liyanjie.Protobuf.Surrogates", "src\Liyanjie.Protobuf.Surrogates\Liyanjie.Protobuf.Surrogates.csproj", "{24C5A023-B0E1-458C-9DDF-F83A65F87441}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Pollyfill", "src\Pollyfill\Pollyfill.shproj", "{064236F8-6F18-4CF1-898D-AA295FC26FCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,8 +216,18 @@ Global
 		{C3D4E26C-0150-439E-B365-CB5DE75C2474} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{10CF70A3-3748-4E3E-8DEF-BD49F7FC3B95} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 		{24C5A023-B0E1-458C-9DDF-F83A65F87441} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
+		{064236F8-6F18-4CF1-898D-AA295FC26FCC} = {6E9FF2CF-EAD3-43DD-8D5D-A53BB0445A43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8F8E1D8-848B-4EE7-B1FD-9200F7EF1AD2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Pollyfill\Pollyfill.projitems*{064236f8-6f18-4cf1-898d-aa295fc26fcc}*SharedItemsImports = 13
+		src\Pollyfill\Pollyfill.projitems*{10126fe3-0c42-4590-a6f2-a71174e38a22}*SharedItemsImports = 5
+		src\Pollyfill\Pollyfill.projitems*{52684068-f076-4258-beec-a92207d3a193}*SharedItemsImports = 5
+		src\Pollyfill\Pollyfill.projitems*{9a59fb4a-07c8-43d3-bd56-eaae3e43f61a}*SharedItemsImports = 5
+		src\Pollyfill\Pollyfill.projitems*{a822e6da-54a5-4b5c-83b4-706163683eb5}*SharedItemsImports = 5
+		src\Pollyfill\Pollyfill.projitems*{c312199d-35a4-4e8f-b4a8-6fa585a20f06}*SharedItemsImports = 5
+		src\Pollyfill\Pollyfill.projitems*{f1902356-652e-4204-bfcc-2570d5aee6bc}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

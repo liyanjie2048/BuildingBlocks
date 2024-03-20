@@ -13,11 +13,11 @@ public class PinyinHelper
     public static string[] GetChineseCharPinyins(char chineseChar)
     {
         if ((chineseChar > 47 && chineseChar < 58) || (chineseChar > 64 && chineseChar < 91) || (chineseChar > 96 && chineseChar < 123))
-            return new[] { chineseChar.ToString() };
+            return [chineseChar.ToString()];
 
         return ChineseCharManager.ChineseChars.ContainsKey(chineseChar)
             ? ChineseCharManager.ChineseChars[chineseChar].Pinyins
-            : new[] { "*" };
+            : ["*"];
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public class PinyinHelper
     public static string[] GetPinyin(IEnumerable<string> chineseWords)
     {
         return chineseWords
-            .SelectMany(_ => GetChineseWordPinyin(_))
+            .SelectMany(_ => GetChineseWordPinyin(_) ?? [])
             .ToArray();
     }
 
@@ -69,7 +69,7 @@ public class PinyinHelper
                 .Where(_ => !string.IsNullOrWhiteSpace(_));
             var version = data.First().Split(':')[1].Trim();
             var charsData = data.Where(_ => !_.StartsWith("#"))
-                .Select(_ => _.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+                .Select(_ => _.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             foreach (var array in charsData)
             {
                 var @char = array[3][0];
@@ -126,13 +126,13 @@ public class PinyinHelper
                 .Where(_ => !string.IsNullOrWhiteSpace(_));
             var version = data.First().Split(':')[1].Trim();
             var wordsData = data.Where(_ => !_.StartsWith("#"))
-                .Select(_ => _.Split(':', StringSplitOptions.RemoveEmptyEntries));
+                .Select(_ => _.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries));
             foreach (var array in wordsData)
             {
                 var word = array[0];
                 if (chineseWords.ContainsKey(word))
                     continue;
-                chineseWords.Add(word, array[1].Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries));
+                chineseWords.Add(word, array[1].Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             }
             return (version, chineseWords);
         });
@@ -160,7 +160,7 @@ public class PinyinHelper
         public static void AddChineseWord(string chineseWord, params string[] pinyins)
         {
             if (lazyData.Value.Data.ContainsKey(chineseWord))
-                lazyData.Value.Data[chineseWord] = lazyData.Value.Data[chineseWord].Concat(pinyins).ToArray();
+                lazyData.Value.Data[chineseWord] = [.. lazyData.Value.Data[chineseWord], .. pinyins];
             else
                 lazyData.Value.Data[chineseWord] = pinyins;
         }

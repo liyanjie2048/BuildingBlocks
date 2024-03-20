@@ -1,6 +1,8 @@
 ﻿namespace Liyanjie.EnglishPluralization.Internals;
 
 internal class BidirectionalDictionary<TFirst, TSecond>
+    where TFirst : notnull
+    where TSecond : notnull
 {
     public Dictionary<TFirst, TSecond> FirstToSecondDictionary { get; set; }
 
@@ -8,8 +10,8 @@ internal class BidirectionalDictionary<TFirst, TSecond>
 
     public BidirectionalDictionary()
     {
-        this.FirstToSecondDictionary = new Dictionary<TFirst, TSecond>();
-        this.SecondToFirstDictionary = new Dictionary<TSecond, TFirst>();
+        this.FirstToSecondDictionary = [];
+        this.SecondToFirstDictionary = [];
     }
 
     public BidirectionalDictionary(Dictionary<TFirst, TSecond> firstToSecondDictionary) : this()

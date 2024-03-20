@@ -98,16 +98,22 @@ public class PNCnHelper
     {
         [Description("未知")]
         UNKNOWN = 0,
+
         [Description("中国移动")]
         CMCC,
+
         [Description("中国联通")]
         CUCC,
+
         [Description("中国电信")]
         CTCC,
+
         [Description("电信虚拟运营商")]
         CTCC_V,
+
         [Description("联通虚拟运营商")]
         CUCC_V,
+
         [Description("移动虚拟运营商")]
         CMCC_V
     };
@@ -124,10 +130,7 @@ public class PNCnHelper
         public string AreaZone { get; set; }
         public Carrier Carrier { get; set; }
 
-        public override string ToString()
-        {
-            return $"Number7:{Number7}\t{Province}|{City}|{ZipCode}|{AreaZone}|{Carrier}";
-        }
+        public override readonly string ToString() => $"Number7:{Number7}\t{Province}|{City}|{ZipCode}|{AreaZone}|{Carrier}";
     }
 }
 

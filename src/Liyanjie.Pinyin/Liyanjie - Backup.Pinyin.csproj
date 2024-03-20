@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>true</ImplicitUsings>
-		<VersionSuffix>240320</VersionSuffix>
-		<Description>Liyanjie.GrpcServer</Description>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Description>Liyanjie.Pinyin</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>
 		<Company>Liyanjie.net</Company>
@@ -16,20 +15,28 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<DocumentationFile>bin\Release\Liyanjie.Http.xml</DocumentationFile>
+		<DocumentationFile>bin\Release\Liyanjie.Pinyin.xml</DocumentationFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Resources\large_pinyin.txt" />
+		<None Remove="Resources\pinyin.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Resources\large_pinyin.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\pinyin.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\liyanjie.net.256.png">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Grpc.Core"  />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions"  />
-		<PackageReference Include="Microsoft.Extensions.Options"  />
 	</ItemGroup>
 
 	<Target Name="MovePackage" AfterTargets="Pack">

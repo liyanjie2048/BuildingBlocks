@@ -8,8 +8,7 @@
 		<EnableDefaultContentItems>false</EnableDefaultContentItems>
 		<TargetFrameworks>net6.0-windows;net8.0-windows;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>true</ImplicitUsings>
-		<VersionSuffix>240320</VersionSuffix>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<Description>Liyanjie.AspNetCore.Hosting.WindowsDesktop</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>

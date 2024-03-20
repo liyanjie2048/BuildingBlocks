@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>true</ImplicitUsings>
-		<VersionSuffix>240320</VersionSuffix>
-        <Description>将字符串表达式解析为Expression</Description>
+		<ImplicitUsings>enable</ImplicitUsings>
+        <Description>英语多元化</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
         <Company>Liyanjie.net</Company>
@@ -16,7 +15,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
-        <DocumentationFile>bin\Release\Liyanjie.Linq.Expressions.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\Liyanjie.EnglishPluralization.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,14 +25,8 @@
         </None>
     </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Liyanjie.TypeBuilder\Liyanjie.TypeBuilder.csproj" />
-	</ItemGroup>
-
-	<Import Project="..\Pollyfill\Pollyfill.projitems" Label="Shared" />
-
-	<Target Name="MovePackage" AfterTargets="Pack">
-		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
-	</Target>
+    <Target Name="MovePackage" AfterTargets="Pack">
+        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
+    </Target>
 
 </Project>

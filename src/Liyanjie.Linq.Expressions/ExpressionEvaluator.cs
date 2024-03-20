@@ -12,7 +12,7 @@ public static class ExpressionEvaluator
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public static object Evaluate(string input)
+    public static object? Evaluate(string input)
     {
         var parser = new ExpressionParser(_parameterExpression, null);
         var expression = parser.Parse(input);
@@ -27,7 +27,7 @@ public static class ExpressionEvaluator
     /// <param name="input">表达式字符串</param>
     /// <param name="variables">变量字典</param>
     /// <returns></returns>
-    public static object Evaluate(string input, ref IDictionary<string, object> variables)
+    public static object? Evaluate(string input, ref Dictionary<string, object?> variables)
     {
         var parser = new ExpressionParser(_parameterExpression, variables);
         var expression = parser.Parse(input);

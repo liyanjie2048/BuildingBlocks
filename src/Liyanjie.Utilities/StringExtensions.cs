@@ -156,59 +156,63 @@ public static class StringExtensions
         RSAEncryptionPadding? encryptionPadding = default)
         => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKey_xml, encryptionPadding));
 
+#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
+
     /// <summary>
     /// 加密
     /// </summary>
     /// <param name="input"></param>
-    /// <param name="publicKey_str">公钥</param>
+    /// <param name="publicKey_string">公钥</param>
     /// <param name="encryptionPadding"></param>
     /// <returns>Base64String</returns>
     public static string RSAEncrypt(this string input,
-        string publicKey_str,
+        string publicKey_string,
         RSAEncryptionPadding? encryptionPadding = default)
-        => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSAEncrypt(publicKey_str, encryptionPadding));
+        => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSAEncrypt(publicKey_string, encryptionPadding));
 
     /// <summary>
     /// 解密
     /// </summary>
     /// <param name="base64String"></param>
-    /// <param name="privateKey_str">私钥</param>
+    /// <param name="privateKey_string">私钥</param>
     /// <param name="encryptionPadding"></param>
     /// <returns></returns>
     public static string RSADecrypt(this string base64String,
-        string privateKey_str,
+        string privateKey_string,
         RSAEncryptionPadding? encryptionPadding = default)
-        => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKey_str, encryptionPadding));
+        => Encoding.UTF8.GetString(Convert.FromBase64String(base64String).RSADecrypt(privateKey_string, encryptionPadding));
 
     /// <summary>
     /// 签名
     /// </summary>
     /// <param name="input"></param>
-    /// <param name="privateKey_str">私钥</param>
+    /// <param name="privateKey_string">私钥</param>
     /// <param name="hashAlgorithmName"></param>
     /// <param name="rsaSignaturePadding"></param>
     /// <returns>Base64String</returns>
     public static string RSASign(this string input,
-        string privateKey_str,
+        string privateKey_string,
         HashAlgorithmName hashAlgorithmName,
         RSASignaturePadding? rsaSignaturePadding = default)
-        => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSASign(privateKey_str, hashAlgorithmName, rsaSignaturePadding));
+        => Convert.ToBase64String(Encoding.UTF8.GetBytes(input).RSASign(privateKey_string, hashAlgorithmName, rsaSignaturePadding));
 
     /// <summary>
     /// 验签
     /// </summary>
     /// <param name="input"></param>
     /// <param name="signature"></param>
-    /// <param name="publicKey_str"></param>
+    /// <param name="publicKey_string"></param>
     /// <param name="hashAlgorithmName"></param>
     /// <param name="rsaSignaturePadding"></param>
     /// <returns></returns>
     public static bool RSAVerify(this string input,
         string signature,
-        string publicKey_str,
+        string publicKey_string,
         HashAlgorithmName hashAlgorithmName,
         RSASignaturePadding? rsaSignaturePadding = default)
-        => Encoding.UTF8.GetBytes(input).RSAVerify(Convert.FromBase64String(signature), publicKey_str, hashAlgorithmName, rsaSignaturePadding);
+        => Encoding.UTF8.GetBytes(input).RSAVerify(Convert.FromBase64String(signature), publicKey_string, hashAlgorithmName, rsaSignaturePadding);
+
+#endif
 
     /// <summary>
     /// N进制字符串转int64
@@ -473,6 +477,17 @@ public static class StringExtensions
     /// <returns></returns>
     public static string Replace(this string input, string pattern, MatchEvaluator evaluator, RegexOptions options, TimeSpan matchTimeout)
         => Regex.Replace(input, pattern, evaluator, options, matchTimeout);
+
+#if NETSTANDARD2_0
+    public static string[] Split(this string input, char separator, StringSplitOptions options)
+    {
+        return input.Split(new char[] { separator }, options);
+    }
+    public static string[] Split(this string input, string separator, StringSplitOptions options)
+    {
+        return input.Split(new string[] { separator }, options);
+    }
+#endif
 
     /// <summary>
     /// 在由指定正则表达式模式定义的位置将输入字符串拆分为一个子字符串数组。指定的选项将修改匹配操作。

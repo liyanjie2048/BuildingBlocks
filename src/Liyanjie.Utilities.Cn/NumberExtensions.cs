@@ -91,8 +91,7 @@ public static class NumberExtensions
     }
     static string ConvertToCnDigit<T>(T number)
     {
-        var s = number?.ToString();
-        return Regex.Replace(s, ".", _ => "负点-〇一二三四五六七八九"[_.Value[0] - 45].ToString());
+        return Regex.Replace(number!.ToString()!, ".", _ => "负点-〇一二三四五六七八九"[_.Value[0] - 45].ToString());
     }
 }
 

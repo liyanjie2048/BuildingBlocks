@@ -309,6 +309,12 @@ public static class SKImageExtensions
         (SKEncodedImageFormat Format, int Quality)? format = default)
     {
         var (Format, Quality) = format ?? (SKEncodedImageFormat.Png, 100);
+
+#if NETSTANDARD2_0
+        await Task.CompletedTask;
+        File.WriteAllBytes(path, image.Encode(Format, Quality).ToArray());
+#else
         await File.WriteAllBytesAsync(path, image.Encode(Format, Quality).ToArray());
+#endif
     }
 }

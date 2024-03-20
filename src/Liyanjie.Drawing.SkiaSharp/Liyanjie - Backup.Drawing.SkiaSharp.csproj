@@ -1,11 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>true</ImplicitUsings>
-		<VersionSuffix>240320</VersionSuffix>
-		<Description>Liyanjie.GrpcServer</Description>
+		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
+		<Description>Liyanjie.Drawing.SkiaSharp</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>
 		<Company>Liyanjie.net</Company>
@@ -13,10 +10,12 @@
 		<RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
 		<PackageIcon>liyanjie.net.256.png</PackageIcon>
+		<PackageIconUrl />
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<DocumentationFile>bin\Release\Liyanjie.Http.xml</DocumentationFile>
+		<DocumentationFile>bin\Release\Liyanjie.Drawing.SkiaSharp.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -26,14 +25,12 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Grpc.Core"  />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions"  />
-		<PackageReference Include="Microsoft.Extensions.Options"  />
-	</ItemGroup>
-
 	<Target Name="MovePackage" AfterTargets="Pack">
 		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
 	</Target>
+
+	<ItemGroup>
+		<PackageReference Include="SkiaSharp" Version="2.88.7" />
+	</ItemGroup>
 
 </Project>

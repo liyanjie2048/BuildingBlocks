@@ -19,7 +19,7 @@ public class PinyinJiebaHelper
         ['z'] = "źž",
     };
 
-    public static string[] GetPinyins(string input)
+    public static string[] GetPinyin(string input)
     {
         var segmenter = new JiebaSegmenter();
         var segments = segmenter.Cut(input);
@@ -28,7 +28,7 @@ public class PinyinJiebaHelper
     }
     public static string GetPinyinInitials(string input)
     {
-        var initials = GetPinyins(input)
+        var initials = GetPinyin(input)
             .Select(_ => _[0])
             .Select(_ =>
             {

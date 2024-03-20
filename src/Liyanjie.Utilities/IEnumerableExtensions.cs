@@ -5,6 +5,8 @@
 /// </summary>
 public static class IEnumerableExtensions
 {
+#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
+
     /// <summary>
     /// 
     /// </summary>
@@ -24,6 +26,8 @@ public static class IEnumerableExtensions
 
         return string.Join(separator, source.Select(toString));
     }
+
+#endif
 
     /// <summary>
     /// 

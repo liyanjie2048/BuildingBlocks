@@ -246,19 +246,21 @@ namespace System.Security.Cryptography
             return rsa.VerifyData(input, signature, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
 
+#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
+
         /// <summary>
         /// 加密
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="publicKey_str">公钥</param>
+        /// <param name="publicKey_string">公钥</param>
         /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
         /// <returns></returns>
         public static byte[] RSAEncrypt(this byte[] input,
-            string publicKey_str,
+            string publicKey_string,
             RSAEncryptionPadding? encryptionPadding = default)
         {
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
-            using var rsa = CreateRSAByStringKey(publicKey_str, null);
+            using var rsa = CreateRSAByStringKey(publicKey_string, null);
             var bufferSize = rsa.KeySize / 8 - 11;    //加密块最大长度限制
 
             if (input.Length <= bufferSize)
@@ -291,15 +293,15 @@ namespace System.Security.Cryptography
         /// 解密
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="privateKey_str">私钥</param>
+        /// <param name="privateKey_string">私钥</param>
         /// <param name="encryptionPadding">OaepSHA1|OaepSHA256|OaepSHA384|OaepSHA512|Pkcs1</param>
         /// <returns></returns>
         public static byte[] RSADecrypt(this byte[] input,
-            string privateKey_str,
+            string privateKey_string,
             RSAEncryptionPadding? encryptionPadding = default)
         {
             encryptionPadding ??= RSAEncryptionPadding.Pkcs1;
-            using var rsa = CreateRSAByStringKey(null, privateKey_str);
+            using var rsa = CreateRSAByStringKey(null, privateKey_string);
             var maxBlockSize = rsa.KeySize / 8;    //解密块最大长度限制
 
             if (input.Length <= maxBlockSize)
@@ -334,6 +336,7 @@ namespace System.Security.Cryptography
                 throw new ArgumentException("No keys.");
 
             var rsa = RSA.Create();
+
             if (!string.IsNullOrEmpty(publicKey_str))
             {
                 var publicKey_bytes = RSAHelper.DeserializeRSAKey(publicKey_str);
@@ -351,16 +354,16 @@ namespace System.Security.Cryptography
         /// 签名
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="privateKey_str">私钥</param>
+        /// <param name="privateKey_string">私钥</param>
         /// <param name="hashAlgorithmName"></param>
         /// <param name="rsaSignaturePadding"></param>
         /// <returns></returns>
         public static byte[] RSASign(this byte[] input,
-            string privateKey_str,
+            string privateKey_string,
             HashAlgorithmName hashAlgorithmName,
             RSASignaturePadding? rsaSignaturePadding = default)
         {
-            using var rsa = CreateRSAByStringKey(null, privateKey_str);
+            using var rsa = CreateRSAByStringKey(null, privateKey_string);
             return rsa.SignData(input, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
 
@@ -369,19 +372,22 @@ namespace System.Security.Cryptography
         /// </summary>
         /// <param name="input"></param>
         /// <param name="signature"></param>
-        /// <param name="publicKey_str">公钥</param>
+        /// <param name="publicKey_string">公钥</param>
         /// <param name="hashAlgorithmName"></param>
         /// <param name="rsaSignaturePadding"></param>
         /// <returns></returns>
         public static bool RSAVerify(this byte[] input,
             byte[] signature,
-            string publicKey_str,
+            string publicKey_string,
             HashAlgorithmName hashAlgorithmName,
             RSASignaturePadding? rsaSignaturePadding = default)
         {
-            using var rsa = CreateRSAByStringKey(publicKey_str, null);
+            using var rsa = CreateRSAByStringKey(publicKey_string, null);
             return rsa.VerifyData(input, signature, hashAlgorithmName, rsaSignaturePadding ?? RSASignaturePadding.Pkcs1);
         }
+
+#endif
+
         #endregion
     }
 

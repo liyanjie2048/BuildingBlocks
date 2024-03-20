@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<VersionSuffix>240303</VersionSuffix>
+		<ImplicitUsings>true</ImplicitUsings>
+		<VersionSuffix>240320</VersionSuffix>
 		<Description>常用值对象的Protobuf CodeFirst RuntimeTypeModel</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>
@@ -26,16 +26,16 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="protobuf-net" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Liyanjie.ValueObjects\Liyanjie.ValueObjects.csproj" />
+	</ItemGroup>
+
 	<Target Name="MovePackage" AfterTargets="Pack">
-		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
 	</Target>
-
-	<ItemGroup>
-		<PackageReference Include="protobuf-net" Version="3.2.30" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Liyanjie.ValueObjects\Liyanjie.ValueObjects.csproj" />
-	</ItemGroup>
 
 </Project>

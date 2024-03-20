@@ -44,7 +44,7 @@ internal static class ExtendMethods
     /// <param name="method"></param>
     /// <param name="lambda"></param>
     /// <returns></returns>
-    public static object Execute(this IQueryable source, MethodInfo method, LambdaExpression? lambda = null)
+    public static object? Execute(this IQueryable source, MethodInfo method, LambdaExpression? lambda = null)
     {
         if (method.IsGenericMethod)
             method = method.MakeGenericMethod(source.ElementType);
@@ -81,7 +81,7 @@ internal static class ExtendMethods
     /// <param name="method"></param>
     /// <param name="constant"></param>
     /// <returns></returns>
-    public static object Execute(this IQueryable source, MethodInfo method, ConstantExpression constant)
+    public static object? Execute(this IQueryable source, MethodInfo method, ConstantExpression constant)
     {
         if (method.IsGenericMethod)
             method = method.MakeGenericMethod(source.ElementType);
@@ -97,10 +97,13 @@ internal static class ExtendMethods
     /// <param name="method"></param>
     /// <param name="lambda"></param>
     /// <returns></returns>
-    public static object ExecuteMaxMin(this IQueryable source, MethodInfo method, LambdaExpression? lambda = null)
+    public static object? ExecuteMaxMin(this IQueryable source, MethodInfo method, LambdaExpression? lambda = null)
     {
+        if (method.GetGenericArguments().Length == 2 && lambda is null)
+            throw new ArgumentNullException(nameof(lambda));
+
         method = method.GetGenericArguments().Length == 2
-            ? method.MakeGenericMethod(source.ElementType, lambda?.ReturnType)
+            ? method.MakeGenericMethod(source.ElementType, lambda!.ReturnType)
             : method.MakeGenericMethod(source.ElementType);
 
         var expression = lambda is null
@@ -115,13 +118,13 @@ internal static class ExtendMethods
     /// <param name="source"></param>
     /// <param name="lambda"></param>
     /// <returns></returns>
-    public static object ExecuteAverage(this IQueryable source, LambdaExpression? lambda = null)
+    public static object? ExecuteAverage(this IQueryable source, LambdaExpression? lambda = null)
     {
         var method = nameof(Queryable.Average);
 
         var expression = lambda is null
             ? Expression.Call(typeof(Queryable), method, null, source.Expression)
-            : Expression.Call(typeof(Queryable), method, new[] { source.ElementType }, source.Expression, lambda);
+            : Expression.Call(typeof(Queryable), method, [source.ElementType], source.Expression, lambda);
 
         return source.Provider.Execute(expression);
     }
@@ -132,13 +135,13 @@ internal static class ExtendMethods
     /// <param name="source"></param>
     /// <param name="lambda"></param>
     /// <returns></returns>
-    public static object ExecuteSum(this IQueryable source, LambdaExpression? lambda = null)
+    public static object? ExecuteSum(this IQueryable source, LambdaExpression? lambda = null)
     {
         var method = nameof(Queryable.Sum);
 
         var expression = lambda is null
             ? Expression.Call(typeof(Queryable), method, null, source.Expression)
-            : Expression.Call(typeof(Queryable), method, new[] { source.ElementType }, source.Expression, lambda);
+            : Expression.Call(typeof(Queryable), method, [source.ElementType], source.Expression, lambda);
 
         return source.Provider.Execute(expression);
     }

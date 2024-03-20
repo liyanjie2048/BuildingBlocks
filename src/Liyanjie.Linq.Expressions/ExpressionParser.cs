@@ -16,10 +16,10 @@ public class ExpressionParser
     /// <param name="variables"></param>
     public ExpressionParser(
         ParameterExpression parameterExpression,
-        IDictionary<string, object>? variables = default)
+        Dictionary<string, object?>? variables = default)
     {
         _parameterExpression = parameterExpression;
-        _variablesObject = TypeFactory.CreateObject(variables ?? new Dictionary<string, object>());
+        _variablesObject = TypeFactory.CreateObject(variables ?? []);
         _variablesExpression = Expression.Constant(_variablesObject);
     }
 
@@ -31,8 +31,8 @@ public class ExpressionParser
     /// <summary>
     /// 
     /// </summary>
-    public IDictionary<string, object> Variables
-        => _variablesObject.GetType().GetProperties().ToDictionary(_ => _.Name, _ => _.GetValue(_variablesObject));
+    public Dictionary<string, object?> Variables
+        => _variablesObject.GetType().GetProperties().ToDictionary(_ => _.Name, _ => (object?)_.GetValue(_variablesObject));
 
     /// <summary>
     /// 
@@ -259,7 +259,7 @@ public class ExpressionParser
             if (token.Id == TokenId.Add)
             {
                 if (valueLeft.Type == typeof(string) || valueRight.Type == typeof(string))
-                    token.Value = Expression.Call(null, typeof(string).GetTypeInfo().GetMethod("Concat", new[] { valueLeft.Type, valueRight.Type }), new[] { valueLeft, valueRight });
+                    token.Value = Expression.Call(null, typeof(string).GetTypeInfo().GetMethod("Concat", [valueLeft.Type, valueRight.Type])!, [valueLeft, valueRight]);
                 else
                     token.Value = Expression.Add(valueLeft, valueRight);
             }
@@ -499,18 +499,14 @@ public class ExpressionParser
 
         if (token_LeftLeft.Id == TokenId.In)
         {
-            var expression_LeftLeftLeft = Expression_TokenLeft(token_LeftLeft, tokens);
-            if (expression_LeftLeftLeft is null)
-                throw new ExpressionParseException($"访问符“{token_LeftLeft.Id.Description()}”左侧找不到表达式。", Input, token_LeftLeft);
+            var expression_LeftLeftLeft = Expression_TokenLeft(token_LeftLeft, tokens) ?? throw new ExpressionParseException($"访问符“{token_LeftLeft.Id.Description()}”左侧找不到表达式。", Input, token_LeftLeft);
             tokens.Remove(token_LeftLeft);
 
-            return Expression.Call(typeof(Enumerable), nameof(Enumerable.Contains), new[] { expression_LeftLeftLeft.Type }, GetExpression(token_Left), expression_LeftLeftLeft);
+            return Expression.Call(typeof(Enumerable), nameof(Enumerable.Contains), [expression_LeftLeftLeft.Type], GetExpression(token_Left), expression_LeftLeftLeft);
         }
         else if (token_LeftLeft.Id == TokenId.Access || token_LeftLeft.Id == TokenId.NullableAccess)
         {
-            var expression_LeftLeftLeft = Expression_TokenLeft(token_LeftLeft, tokens);
-            if (expression_LeftLeftLeft is null)
-                throw new ExpressionParseException($"访问符“{token_LeftLeft.Id.Description()}”左侧找不到表达式。", Input, token_LeftLeft);
+            var expression_LeftLeftLeft = Expression_TokenLeft(token_LeftLeft, tokens) ?? throw new ExpressionParseException($"访问符“{token_LeftLeft.Id.Description()}”左侧找不到表达式。", Input, token_LeftLeft);
             tokens.Remove(token_LeftLeft);
 
             if (token_Left.Id == TokenId.Property)
@@ -569,21 +565,16 @@ public class ExpressionParser
             {
                 if (token_RightRight.Id == TokenId.In)
                 {
-                    var expression_RightRightRight = Expression_TokenRight(token_RightRight, tokens);
-                    if (expression_RightRightRight is null)
-                        throw new ExpressionParseException($"访问符“{token_RightRight.Id.Description()}”右侧找不到表达式。", Input, token_RightRight);
-
+                    var expression_RightRightRight = Expression_TokenRight(token_RightRight, tokens) ?? throw new ExpressionParseException($"访问符“{token_RightRight.Id.Description()}”右侧找不到表达式。", Input, token_RightRight);
                     tokens.Remove(token_RightRight);
 
-                    expression = Expression.Call(typeof(Enumerable), nameof(Enumerable.Contains), new[] { expression.Type }, expression_RightRightRight, expression);
+                    expression = Expression.Call(typeof(Enumerable), nameof(Enumerable.Contains), [expression.Type], expression_RightRightRight, expression);
                 }
                 else if (token_RightRight.Id == TokenId.Access || token_RightRight.Id == TokenId.NullableAccess)
                 {
                     tokens.Remove(token_RightRight);
 
-                    var token_RightRightRight = tokens.IndexOf(token) + 1 < tokens.Count ? tokens[tokens.IndexOf(token) + 1] : null;
-                    if (token_RightRightRight is null)
-                        throw new ExpressionParseException($"访问符“{token_RightRight.Id.Description()}”右侧必须是属性或方法。", Input, token_RightRight);
+                    var token_RightRightRight = (tokens.IndexOf(token) + 1 < tokens.Count ? tokens[tokens.IndexOf(token) + 1] : null) ?? throw new ExpressionParseException($"访问符“{token_RightRight.Id.Description()}”右侧必须是属性或方法。", Input, token_RightRight);
                     tokens.Remove(token_RightRightRight);
 
                     if (token_RightRightRight.Id == TokenId.Property)
@@ -617,7 +608,7 @@ public class ExpressionParser
             TokenId.Property => Expression.Property(_parameterExpression, (string)token.Value),
             TokenId.Variable => Expression.Property(_variablesExpression, (string)token.Value),
             TokenId.String => token.Value is string
-                ? (Expression)Expression.Constant(token.Value)
+                ? Expression.Constant(token.Value)
                 : Expression.Call(Parse((IList<Token>)token.Value), "ToString", null),
             TokenId.Char => Expression_ParseOrConvert(token, typeof(char)),
             TokenId.Int => Expression_ParseOrConvert(token, typeof(int)),
@@ -643,7 +634,9 @@ public class ExpressionParser
             return Expression.Constant(token.Value);
         var expression = Parse((IList<Token>)token.Value);
         return expression.Type == typeof(string)
-            ? (Expression)Expression.Call(methodSelector is null ? type.GetTypeInfo().GetDeclaredMethod("Parse") : type.GetTypeInfo().GetDeclaredMethods("Parse").First(methodSelector), expression)
+            ? Expression.Call(methodSelector is null
+                ? type.GetTypeInfo().GetDeclaredMethod("Parse")!
+                : type.GetTypeInfo().GetDeclaredMethods("Parse").First(methodSelector), expression)!
             : Expression.Convert(expression, type);
     }
 
@@ -687,7 +680,7 @@ public class ExpressionParser
         }
         var type = TypeFactory.CreateType(properties);
         var propertyTypes = type.GetTypeInfo().GetProperties().Select(p => p.PropertyType).ToArray();
-        var constructor = type.GetTypeInfo().GetConstructor(propertyTypes);
+        var constructor = type.GetTypeInfo().GetConstructor(propertyTypes)!;
         return Expression.New(constructor, expressions);
     }
 
@@ -1037,7 +1030,7 @@ public class ExpressionParser
     /// <param name="expressionString"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static LambdaExpression ParseLambda(Type parameterType, string expressionString, IDictionary<string, object>? variables = default)
+    public static LambdaExpression ParseLambda(Type parameterType, string expressionString, Dictionary<string, object?>? variables = default)
     {
         var parameter = Expression.Parameter(parameterType);
         var parser = new ExpressionParser(parameter, variables);

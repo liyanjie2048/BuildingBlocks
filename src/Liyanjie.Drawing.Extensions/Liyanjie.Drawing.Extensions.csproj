@@ -1,36 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;</TargetFrameworks>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-        <Description>Liyanjie.Drawing.Extensions</Description>
-        <Copyright>© Liyanjie.net</Copyright>
-        <Authors>liyanjie2048@outlook.com</Authors>
-        <Company>Liyanjie.net</Company>
-        <RepositoryType>Git</RepositoryType>
-        <RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
-        <PackageIcon>liyanjie.net.256.png</PackageIcon>
-    </PropertyGroup>
+		<ImplicitUsings>true</ImplicitUsings>
+		<VersionSuffix>240320</VersionSuffix>
+		<Description>Liyanjie.Drawing.Extensions</Description>
+		<Copyright>© Liyanjie.net</Copyright>
+		<Authors>liyanjie2048@outlook.com</Authors>
+		<Company>Liyanjie.net</Company>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryUrl>https://github.com/liyanjie2048/BuildingBlocks</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/liyanjie2048/BuildingBlocks</PackageProjectUrl>
+		<PackageIcon>liyanjie.net.256.png</PackageIcon>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Release'">
-        <DocumentationFile>bin\Release\Liyanjie.Drawing.Extensions.xml</DocumentationFile>
-    </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DocumentationFile>bin\Release\Liyanjie.Drawing.Extensions.xml</DocumentationFile>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <None Include="..\..\liyanjie.net.256.png">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </None>
-    </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\liyanjie.net.256.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
-    <Target Name="MovePackage" AfterTargets="Pack">
-        <Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
-    </Target>
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common"  />
+	</ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
-    </ItemGroup>
+	<Import Project="..\Pollyfill\Pollyfill.projitems" Label="Shared" />
+
+	<Target Name="MovePackage" AfterTargets="Pack">
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
+	</Target>
 
 </Project>

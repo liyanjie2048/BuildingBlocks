@@ -14,7 +14,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static bool All(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static bool All(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -47,7 +47,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static bool Any(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static bool Any(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -83,7 +83,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object Average(this IQueryable source)
+    public static object? Average(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -97,7 +97,7 @@ public static class DynamicQueryable
     /// <param name="selector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object Average(this IQueryable source, string selector, IDictionary<string, dynamic>? variables = null)
+    public static object? Average(this IQueryable source, string selector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(selector, nameof(selector));
@@ -130,7 +130,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static int Count(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static int Count(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -166,7 +166,7 @@ public static class DynamicQueryable
     /// <param name="source"></param>
     /// <param name="index"></param>
     /// <returns></returns>
-    public static object ElementAt(this IQueryable source, int index)
+    public static object? ElementAt(this IQueryable source, int index)
     {
         Check.NotNull(source, nameof(source));
         Check.Condition(index, _ => _ >= 0, nameof(index));
@@ -184,7 +184,7 @@ public static class DynamicQueryable
     /// <param name="source"></param>
     /// <param name="index"></param>
     /// <returns></returns>
-    public static object ElementAtOrDefault(this IQueryable source, int index)
+    public static object? ElementAtOrDefault(this IQueryable source, int index)
     {
         Check.NotNull(source, nameof(source));
         Check.Condition(index, _ => _ >= 0, nameof(index));
@@ -201,7 +201,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object First(this IQueryable source)
+    public static object? First(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -215,7 +215,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object First(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static object? First(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -234,7 +234,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object FirstOrDefault(this IQueryable source)
+    public static object? FirstOrDefault(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -248,7 +248,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object FirstOrDefault(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static object? FirstOrDefault(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -269,7 +269,7 @@ public static class DynamicQueryable
     /// <param name="keySelector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IQueryable GroupBy(this IQueryable source, string keySelector, IDictionary<string, dynamic>? variables = null)
+    public static IQueryable GroupBy(this IQueryable source, string keySelector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(keySelector, nameof(keySelector));
@@ -288,7 +288,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object Last(this IQueryable source)
+    public static object? Last(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -302,7 +302,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object Last(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static object? Last(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -321,7 +321,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object LastOrDefault(this IQueryable source)
+    public static object? LastOrDefault(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -335,7 +335,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object LastOrDefault(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static object? LastOrDefault(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -354,7 +354,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object Max(this IQueryable source)
+    public static object? Max(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -368,7 +368,7 @@ public static class DynamicQueryable
     /// <param name="selector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object Max(this IQueryable source, string selector, IDictionary<string, dynamic>? variables = null)
+    public static object? Max(this IQueryable source, string selector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(selector, nameof(selector));
@@ -387,7 +387,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object Min(this IQueryable source)
+    public static object? Min(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -401,7 +401,7 @@ public static class DynamicQueryable
     /// <param name="selector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object Min(this IQueryable source, string selector, IDictionary<string, dynamic>? variables = null)
+    public static object? Min(this IQueryable source, string selector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(selector, nameof(selector));
@@ -422,7 +422,7 @@ public static class DynamicQueryable
     /// <param name="keySelector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IOrderedQueryable OrderBy(this IQueryable source, string keySelector, IDictionary<string, dynamic>? variables = null)
+    public static IOrderedQueryable OrderBy(this IQueryable source, string keySelector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(keySelector, nameof(keySelector));
@@ -443,7 +443,7 @@ public static class DynamicQueryable
     /// <param name="keySelector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IOrderedQueryable OrderByDescending(this IQueryable source, string keySelector, IDictionary<string, dynamic>? variables = null)
+    public static IOrderedQueryable OrderByDescending(this IQueryable source, string keySelector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(keySelector, nameof(keySelector));
@@ -480,7 +480,7 @@ public static class DynamicQueryable
     /// <param name="selector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IQueryable Select(this IQueryable source, string selector, IDictionary<string, dynamic>? variables = null)
+    public static IQueryable Select(this IQueryable source, string selector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(selector, nameof(selector));
@@ -499,7 +499,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object Single(this IQueryable source)
+    public static object? Single(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -513,7 +513,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object Single(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static object? Single(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -532,7 +532,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object SingleOrDefault(this IQueryable source)
+    public static object? SingleOrDefault(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -546,7 +546,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object SingleOrDefault(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static object? SingleOrDefault(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(predicate, nameof(predicate));
@@ -588,7 +588,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IQueryable SkipWhile(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static IQueryable SkipWhile(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotNull(predicate, nameof(predicate));
@@ -607,7 +607,7 @@ public static class DynamicQueryable
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static object Sum(this IQueryable source)
+    public static object? Sum(this IQueryable source)
     {
         Check.NotNull(source, nameof(source));
 
@@ -621,7 +621,7 @@ public static class DynamicQueryable
     /// <param name="selector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static object Sum(this IQueryable source, string selector, IDictionary<string, dynamic>? variables = null)
+    public static object? Sum(this IQueryable source, string selector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(selector, nameof(selector));
@@ -660,7 +660,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IQueryable TakeWhile(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static IQueryable TakeWhile(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotNull(predicate, nameof(predicate));
@@ -681,7 +681,7 @@ public static class DynamicQueryable
     /// <param name="keySelector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IOrderedQueryable ThenBy(this IOrderedQueryable source, string keySelector, IDictionary<string, dynamic>? variables = null)
+    public static IOrderedQueryable ThenBy(this IOrderedQueryable source, string keySelector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(keySelector, nameof(keySelector));
@@ -702,7 +702,7 @@ public static class DynamicQueryable
     /// <param name="selector"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IOrderedQueryable ThenByDescending(this IOrderedQueryable source, string selector, IDictionary<string, dynamic>? variables = null)
+    public static IOrderedQueryable ThenByDescending(this IOrderedQueryable source, string selector, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotEmpty(selector, nameof(selector));
@@ -723,7 +723,7 @@ public static class DynamicQueryable
     /// <param name="predicate"></param>
     /// <param name="variables"></param>
     /// <returns></returns>
-    public static IQueryable Where(this IQueryable source, string predicate, IDictionary<string, dynamic>? variables = null)
+    public static IQueryable Where(this IQueryable source, string predicate, Dictionary<string, object?>? variables = null)
     {
         Check.NotNull(source, nameof(source));
         Check.NotNull(predicate, nameof(predicate));

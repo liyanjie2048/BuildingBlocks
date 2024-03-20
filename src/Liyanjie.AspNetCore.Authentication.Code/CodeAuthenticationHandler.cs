@@ -6,9 +6,7 @@
 /// <param name="options"></param>
 /// <param name="logger"></param>
 /// <param name="encoder"></param>
-#if NET6_0
 /// <param name="clock"></param>
-#endif
 public class CodeAuthenticationHandler(
     IOptionsMonitor<CodeAuthenticationOptions> options,
     ILoggerFactory logger,
@@ -17,7 +15,10 @@ public class CodeAuthenticationHandler(
    , ISystemClock clock
 #endif
     )
-    : AuthenticationHandler<CodeAuthenticationOptions>(options, logger, encoder
+    : AuthenticationHandler<CodeAuthenticationOptions>(
+        options,
+        logger,
+        encoder
 #if NET6_0
         , clock
 #endif
@@ -34,10 +35,10 @@ public class CodeAuthenticationHandler(
 
         if (Context.Request.Headers.TryGetValue("Authorization", out var code) && code[0] == $"Code {Options.ValidCode}")
         {
-            return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(new ClaimsIdentity(new[]
-            {
+            return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(new ClaimsIdentity(
+            [
                 new Claim(ClaimTypes.Name, "_"),
-            }, CodeAuthenticationDefaults.AuthenticationScheme)), CodeAuthenticationDefaults.AuthenticationScheme));
+            ], CodeAuthenticationDefaults.AuthenticationScheme)), CodeAuthenticationDefaults.AuthenticationScheme));
         }
 
         return AuthenticateResult.Fail("Code Authorization Fail");

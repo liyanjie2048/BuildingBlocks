@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<ImplicitUsings>true</ImplicitUsings>
+		<VersionSuffix>240320</VersionSuffix>
 		<Description>Liyanjie.AdministrativeDevision.Cn</Description>
 		<Copyright>© Liyanjie.net</Copyright>
 		<Authors>liyanjie2048@outlook.com</Authors>
@@ -19,7 +20,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Resources\123-lLL.json" />
+		<None Remove="Resources\123-all.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -35,12 +36,14 @@
 		</None>
 	</ItemGroup>
 
-	<Target Name="MovePackage" AfterTargets="Pack">
-		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist" />
-	</Target>
-
 	<ItemGroup>
-		<PackageReference Include="System.Text.Json" Version="8.0.0" />
+		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
+
+	<Import Project="..\Pollyfill\Pollyfill.projitems" Label="Shared" />
+
+	<Target Name="MovePackage" AfterTargets="Pack">
+		<Move SourceFiles="$(OutputPath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(SolutionPath)\..\dist\" />
+	</Target>
 
 </Project>

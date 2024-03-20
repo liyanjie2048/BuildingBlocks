@@ -5,12 +5,12 @@
 /// </summary>
 public static class TypeFactory
 {
-    static readonly ConcurrentDictionary<string, Type> generatedTypes = new ConcurrentDictionary<string, Type>();
+    static readonly ConcurrentDictionary<string, Type> generatedTypes = new();
     static readonly ModuleBuilder moduleBuilder = AssemblyBuilder
         .DefineDynamicAssembly(new AssemblyName("Liyanjie.DynamicTypes"), AssemblyBuilderAccess.Run)
         .DefineDynamicModule("Liyanjie.DynamicTypes");
 
-    static readonly ConstructorInfo objectConstructor = typeof(object).GetTypeInfo().GetConstructor(new Type[0]);
+    static readonly ConstructorInfo objectConstructor = typeof(object).GetTypeInfo().GetConstructor([])!;
 
     /// <summary>
     /// 
@@ -38,18 +38,22 @@ public static class TypeFactory
 
             var property = typeBuilder.DefineProperty(item.Key, PropertyAttributes.None, item.Value, null);
 
-            var getter = typeBuilder.DefineMethod($"get_{item.Key}",
+            var getter = typeBuilder.DefineMethod(
+                $"get_{item.Key}",
                 MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
-                item.Value, null);
+                item.Value,
+                []);
             var getterILGenerator = getter.GetILGenerator();
             getterILGenerator.Emit(OpCodes.Ldarg_0);
             getterILGenerator.Emit(OpCodes.Ldfld, field);
             getterILGenerator.Emit(OpCodes.Ret);
             property.SetGetMethod(getter);
 
-            var setter = typeBuilder.DefineMethod($"set_{item.Key}",
+            var setter = typeBuilder.DefineMethod(
+                $"set_{item.Key}",
                 MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName,
-                null, new[] { item.Value });
+                null,
+                [item.Value]);
             setter.DefineParameter(1, ParameterAttributes.In, "value");
             var setterILGenerator = setter.GetILGenerator();
             setterILGenerator.Emit(OpCodes.Ldarg_0);
@@ -63,17 +67,19 @@ public static class TypeFactory
 
         #region Define Constructor
 
-        var defaultConstructor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig,
+        var defaultConstructor = typeBuilder.DefineConstructor(
+            MethodAttributes.Public | MethodAttributes.HideBySig,
             CallingConventions.HasThis,
-            null);
+            []);
         var defaultConstructorILGenerator = defaultConstructor.GetILGenerator();
         defaultConstructorILGenerator.Emit(OpCodes.Ldarg_0);
         defaultConstructorILGenerator.Emit(OpCodes.Call, objectConstructor);
         defaultConstructorILGenerator.Emit(OpCodes.Ret);
 
-        var parametersConstructor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig,
+        var parametersConstructor = typeBuilder.DefineConstructor(
+            MethodAttributes.Public | MethodAttributes.HideBySig,
             CallingConventions.HasThis,
-            properties.Values.ToArray());
+            [.. properties.Values]);
         var parametersConstructorILGenerator = parametersConstructor.GetILGenerator();
         parametersConstructorILGenerator.Emit(OpCodes.Ldarg_0);
         parametersConstructorILGenerator.Emit(OpCodes.Call, objectConstructor);
@@ -99,7 +105,7 @@ public static class TypeFactory
 
         #endregion
 
-        type = typeBuilder.CreateTypeInfo().UnderlyingSystemType;
+        type = typeBuilder.CreateTypeInfo()!.UnderlyingSystemType;
 
         generatedTypes.TryAdd(id, type);
 
@@ -111,17 +117,18 @@ public static class TypeFactory
     /// </summary>
     /// <param name="values"></param>
     /// <returns></returns>
-    public static object CreateObject(IDictionary<string, object> values)
+    public static object CreateObject(Dictionary<string, object?> values)
     {
-        var properties = values.ToDictionary(_ => _.Key, _ => _.Value.GetType());
+        var properties = values.ToDictionary(_ => _.Key, _ => _.Value is null ? typeof(object) : _.Value.GetType());
         var type = CreateType(properties);
-        var @object = (DynamicBase)Activator.CreateInstance(type);
+        var instance = (DynamicBase)Activator.CreateInstance(type)!;
         foreach (var item in values)
         {
-            @object.SetPropertyValue(item.Key, item.Value);
+            if (item.Value is not null)
+                instance.SetPropertyValue(item.Key, item.Value);
         }
 
-        return @object;
+        return instance;
     }
 
     static string GetMD5(string input)

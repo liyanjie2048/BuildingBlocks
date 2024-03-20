@@ -7,16 +7,11 @@ public abstract class Request
 {
     HttpClient? client;
 
-    internal HttpMethod? Method { get; set; }
-
+    internal HttpMethod Method { get; set; } = HttpMethod.Get;
     internal string? Url { get; set; }
-
-    internal List<KeyValuePair<string, string>> Queries { get; set; } = new();
-
-    internal List<KeyValuePair<string, string>> Headers { get; set; } = new();
-
-    internal List<HttpContent> Contents { get; set; } = new();
-
+    internal List<KeyValuePair<string, string>> Queries { get; set; } = [];
+    internal List<KeyValuePair<string, string>> Headers { get; set; } = [];
+    internal List<HttpContent> Contents { get; set; } = [];
     internal Request() { }
 
     internal HttpClient CreateHttpClient(TimeSpan timeout)

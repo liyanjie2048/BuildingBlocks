@@ -16,7 +16,7 @@ public class ADCnHelper
                 throw new FileNotFoundException($"Data file not exists:{dataFile}", dataFile);
             var json = File.ReadAllText(dataFile);
             if (string.IsNullOrWhiteSpace(json))
-                return new();
+                return [];
             return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json!)!;
         });
 
@@ -69,7 +69,7 @@ public class ADCnHelper
                 output.Add(county);
         }
 
-        return output.ToArray();
+        return [.. output];
     }
 }
 

@@ -2,6 +2,15 @@
 
 一系列帮助类及扩展方法、小组件等
 
+- #### Liyanjie.AdministrativeDevision.Cn
+    省市县三级数据
+  - ADCnHelper
+    ```csharp
+    // when code="0",return all provinces.
+    bool TryGetChildren(string code, out Dictionary<string, string>? children);
+    // result may be like ["省", "市", "县"]
+    string[]? Display(string code);
+    ```
 - #### Liyanjie.AspNetCore.Authentication.Code
     Code认证
   - Extension Methods
@@ -60,6 +69,11 @@
     ```csharp
     void WriteFrame(Image image, int delay = 0);
     ```
+  - ImageX
+    ```csharp
+    Image? FromBase64String(string imageBase64String);
+    Image? FromDataUrl(string imageDataUrl);
+    ```
   - Extension Methods
     ```csharp
     Image SetOpacity(this Image image, float opacity);  //设置透明度
@@ -68,11 +82,59 @@
     Image Crop(this Image image, Rectangle rectangle);  //裁剪
     Image Resize(this Image image, int? width, int? height, bool zoom = true, bool coverSize = false);  //调整尺寸
     Image Combine(this Image image, params (Point Point, Size Size, Image Image)[] images);  //组合多张图片
-    Image CombineToGif(this Image image, int delay = 0, int repeat = 0, params (Point Point, Size Size, Image Image, int Delay)[] images);  //组合多张图片并生成GIF
+    Image CombineToGif(this Image image, ushort delay = 0, int repeat = 0, params (Point Point, Size Size, Image Image, int Delay)[] images);  //组合多张图片并生成GIF
     Image Concatenate(this Image image, Image image2, bool direction = false);  //拼接多张图片
     void CompressSave(this Image image, string path, long quality, ImageFormat format = default);  //压缩存储
-    string Encode(this Image image, ImageFormat format = default);  //将图片转换为Base64字符串
+    string ToBase64String(this Image image, ImageFormat format = default);  //将图片转换为Base64字符串
+    string ToDataUrl(this Image image, ImageFormat format = default);  //将图片转换为DataUri字符串
     Bitmap Decode(this string imageBase64String);  //将Base64字符串转换为图片
+    ```
+- #### Liyanjie.Drawing.ImageSharp
+    Image绘图相关的一些扩展
+  - ImageSharpX
+    ```csharp
+    void WriteFrame(Image image, int delay = 0);
+    Image? FromBase64String(string imageBase64String);
+    Image? FromDataUrl(string imageDataUrl);
+    Image Load(string path);
+    Image LoadAsync(string path);
+    ```
+    ```
+  - Extension Methods
+    ```csharp
+    Image SetOpacity(this Image image, float opacity);  //设置透明度
+    Image Clear(this Image image, Color color);  //清除整个图像并以指定颜色填充
+    Image Crop(this Image image, int startX, int startY, int width, int height);  //裁剪
+    Image Crop(this Image image, Rectangle rectangle);  //裁剪
+    Image Resize(this Image image, int? width, int? height, bool zoom = true, bool coverSize = false);  //调整尺寸
+    Image Combine(this Image image, params (Point Point, Size Size, Image Image)[] images);  //组合多张图片
+    Image CombineToGif(this Image image, ushort delay = 0, int repeat = 0, params (Point Point, Size Size, Image Image, int Delay)[] images);  //组合多张图片并生成GIF
+    Image Concatenate(this Image image, Image image2, bool direction = false);  //拼接多张图片
+    string ToBase64String(this Image image, IImageFormat format = default);  //将图片转换为Base64字符串
+    string ToDataUrl(this Image image, IImageFormat format = default);  //将图片转换为DataUri字符串
+    ```
+- #### Liyanjie.Drawing.SkiaSharp
+    Image绘图相关的一些扩展
+  - SKImageX
+    ```csharp
+    SKImage FromFile(string filePath);
+    SKImage? FromBase64String(string imageBase64String);
+    SKImage? FromDataUrl(string imageDataUrl);
+    ```
+    ```
+  - Extension Methods
+    ```csharp
+    SKImage SetOpacity(this SKImage image, float opacity);  //设置透明度
+    SKImage Clear(this SKImage image, SKColor color);  //清除整个图像并以指定颜色填充
+    SKImage Crop(this SKImage image, int startX, int startY, int width, int height);  //裁剪
+    SKImage Crop(this SKImage image, SKRect rect);  //裁剪
+    SKImage Resize(this SKImage image, int? width, int? height, SKFilterQuality quality = SKFilterQuality.None, bool zoom = true, bool coverSize = false);  //调整尺寸
+    SKImage Combine(this SKImage image, params (SKPoint Point, SKSize Size, SKImage Image)[] images);  //组合多张图片
+    SKImage Concatenate(this SKImage image, SKImage image2, bool direction = false);  //拼接多张图片
+    void Save(this SKImage image, string path, (SKEncodedImageFormat Format, int Quality)? format = default);  //存储
+    Task SaveAsync(this SKImage image, string path, (SKEncodedImageFormat Format, int Quality)? format = default);  //存储
+    string ToBase64String(this SKImage image, (SKEncodedImageFormat Format, int Quality)? format = default);  //将图片转换为Base64字符串
+    string ToDataUrl(this SKImage image, (SKEncodedImageFormat Format, int Quality)? format = default);  //将图片转换为DataUri字符串
     ```
 - #### Liyanjie.EnglishPluralization
     英语多元化
@@ -127,12 +189,6 @@
     ```csharp
     LambdaExpression ParseLambda(Type, string, IDictionary<string, object>);
     ```
-- #### Liyanjie.Linq.js
-    javascript的linq实现
-  - Enumerable
-    ```javascript
-    Enumerable.new([]).orderBy(_ => _).thenByDescing(_ => _).groupBy(_ => _);
-    ```
 - #### Liyanjie.MongoDB.Driver.Extensions
     MongoDB Driver的一些扩展
   - MongoDBDateTimeOffsetSerializer
@@ -143,13 +199,30 @@
     ```csharp
     IMongoQueryable<TSource> IfWhere<TSource>(this IMongoQueryable<TSource> source, Func<bool> ifPredicate, Expression<Func<TSource, bool>> wherePredicate);
     ```
-- #### Liyanjie.TemplateMatching
-    适用于AspNet的模板匹配
-  - Usage
+- #### Liyanjie.PhoneNumber.Cn
+    手机号码归属地信息
+  - PNCnHelper
     ```csharp
-    var routeValues = new RouteValueDictionary();
-    var templateMatcher = new TemplateMatcher(TemplateParser.Parse(string routeTemplate), routeValues);
-    var isMatch = templateMatcher.TryMatch(request.Path, routeValues);
+    bool TryFind(string phoneNumber, out PhoneNumber number);
+    ```
+- #### Liyanjie.Pinyin
+    汉语拼音
+  - PinyinHelper
+    ```csharp
+    string[] GetPinyins(string input);
+    string GetPinyinInitials(string input)
+    ```
+- #### Liyanjie.Pinyin.Jieba
+    汉语拼音
+  - PinyinJiebaHelper
+    ```csharp
+    string[] GetPinyins(string input);
+    ```
+- #### Liyanjie.Protobuf.Surrogates
+- #### Liyanjie.QQWry
+  - QQWryHelper
+    ```csharp
+    (string? Area, string? ISP) SearchIP(string ip);
     ```
 - #### Liyanjie.TypeBuilder
     动态构建Type类型
@@ -158,7 +231,7 @@
     Type CreateType(IDictionary<string, Type> properties);  //使用 属性 字典创建类型
     object CreateObject(IDictionary<string, object> values);  //使用 值 字典创建对象
     ```
-- #### Liyanjie.Utility
+- #### Liyanjie.Utilities
     常用帮助类及扩展方法
   - BEncoding
     ```csharp
@@ -173,7 +246,7 @@
     ```csharp
     //so many…
     ```
-- #### Liyanjie.Utility.Cn
+- #### Liyanjie.Utilities.Cn
     中国(中文)常用的一些帮助类及扩展方法
   - ChineseADHelper
     ```csharp
@@ -208,31 +281,6 @@
     string HideIdNumber_Cn(this string origin, char @char = '*');  //隐藏身份证号码
     string HidePhoneNumber_Cn(this string origin, char @char = '*');  //隐藏手机号码
     ```
-- #### Liyanjie.Utility.js
-    javascript的扩展类及扩展方法
-  - Guid
-    ```javascript
-    Guid Guid.empty();  //00000000-0000-0000-0000-000000000000
-    Guid Guid.newGuid();  //新Guid实例
-    Guid.prototype.format(format?: 'N|D|B|P');  //Guid格式化，format默认为D
-    ```
-  - Extension Methods
-    ```javascript
-    Date.prototype.format(format: string, weekDisplay: {sun,mon,tue,wed,thu,fri,sat}); //Date格式化
-    Date.prototype.addMillionSeconds(millionSeconds: number);
-    Date.prototype.addSeconds(seconds: number);
-    Date.prototype.addMinutes(minutes: number);
-    Date.prototype.addHours(hours: number);
-    Date.prototype.addDays(days: number);
-    Date.prototype.addMonths(months: number);
-    Date.prototype.addYears(years: number);
-    Number.prototype.plus(arg: number);  //加
-    Number.prototype.minus(arg: number);  //减
-    Number.prototype.multipy(arg: number);  //乘
-    Number.prototype.divide(arg: number);  //除
-    Number.prototype.toCnNumber(number: number, uppercase: boolean);  //将数字转换为中文
-    Number.prototype.toCn(number: number, numberType: 'Normal|NormalUpper|Direct|DirectUpper|Currency');  //将数字转换为中文
-    ```
 - #### Liyanjie.ValueObjects
     常用复合类型
   - Address
@@ -248,3 +296,4 @@
   - School
   - Score
   - Status
+- #### Liyanjie.ValueObjects.Protobuf

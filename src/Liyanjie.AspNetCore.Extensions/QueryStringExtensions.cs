@@ -11,7 +11,7 @@ public static class QueryStringExtensions
     /// <typeparam name="TModel"></typeparam>
     /// <param name="queryString"></param>
     /// <returns></returns>
-    public static TModel BuildModel<TModel>(this QueryString queryString)
+    public static TModel? BuildModel<TModel>(this QueryString queryString)
         where TModel : new()
     {
         if (!queryString.HasValue)

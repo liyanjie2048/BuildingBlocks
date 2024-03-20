@@ -10,9 +10,9 @@ public abstract class DynamicBase
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public object GetPropertyValue(string name)
+    public object? GetPropertyValue(string name)
     {
-        return GetType().GetTypeInfo().GetProperty(name).GetValue(this);
+        return GetType().GetTypeInfo().GetProperty(name)?.GetValue(this);
     }
 
     /// <summary>
@@ -22,6 +22,6 @@ public abstract class DynamicBase
     /// <param name="value"></param>
     public void SetPropertyValue(string name, object value)
     {
-        GetType().GetTypeInfo().GetProperty(name).SetValue(this, value);
+        GetType().GetTypeInfo().GetProperty(name)?.SetValue(this, value);
     }
 }
