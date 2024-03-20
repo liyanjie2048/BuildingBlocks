@@ -13,8 +13,12 @@ public static class ImageExtensions
     /// <returns></returns>
     public static string ToBase64String(this Image image, ImageFormat? format = default)
     {
-        if (image is null)
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if(image is null)
             throw new ArgumentNullException(nameof(image));
+#endif
 
         using var memory = new MemoryStream();
         image.Save(memory, format ?? image.RawFormat);
@@ -23,8 +27,12 @@ public static class ImageExtensions
 
     public static string ToDataUrl(this Image image, ImageFormat? imageFormat = default)
     {
-        if (image is null)
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if(image is null)
             throw new ArgumentNullException(nameof(image));
+#endif
 
         return $"data:{(imageFormat ?? image.RawFormat).GetMIMEType()};base64,{ToBase64String(image, imageFormat)}";
     }
@@ -36,8 +44,12 @@ public static class ImageExtensions
     /// <param name="opacity"></param>
     public static Image SetOpacity(this Image image, float opacity)
     {
-        if (image is null)
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if(image is null)
             throw new ArgumentNullException(nameof(image));
+#endif
 
         if (opacity < 0 || opacity > 1)
             throw new ArgumentOutOfRangeException(nameof(opacity), "不透明度必须为0~1之间的浮点数");
@@ -76,8 +88,12 @@ public static class ImageExtensions
     /// <returns></returns>
     public static Image Clear(this Image image, Color color)
     {
-        if (image is null)
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if(image is null)
             throw new ArgumentNullException(nameof(image));
+#endif
 
         using var graphics = Graphics.FromImage(image);
         graphics.Clear(color);
@@ -120,15 +136,19 @@ public static class ImageExtensions
     /// <returns></returns>
     public static Image Crop(this Image image, Rectangle rectangle)
     {
-        if (image is null)
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if(image is null)
             throw new ArgumentNullException(nameof(image));
+#endif
 
         if (image.RawFormat.Guid == ImageFormat.Gif.Guid)
         {
             var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value!, 0);
             var frames = GetGifFrames(image).Select(_ => (Image: _.Image.Crop(rectangle), _.DelayByMilliseconds)).ToArray();
 
-            return frames[0].Image.CombineToGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
+            return frames[0].Image.CombineGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
         }
         else
         {
@@ -152,8 +172,12 @@ public static class ImageExtensions
         bool zoom = true,
         bool coverSize = false)
     {
-        if (image is null)
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(image);
+#else
+        if(image is null)
             throw new ArgumentNullException(nameof(image));
+#endif
 
         width = width == 0 ? null : width;
         height = height == 0 ? null : height;
@@ -221,7 +245,7 @@ public static class ImageExtensions
             var repeatCount = BitConverter.ToUInt16(image.GetPropertyItem(0x5101)!.Value!, 0);
             var frames = GetGifFrames(image).Select(_ => (Image: _Resize(_.Image, w, h), _.DelayByMilliseconds)).ToArray();
 
-            return frames[0].Image.CombineToGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
+            return frames[0].Image.CombineGif(frames[0].DelayByMilliseconds, repeatCount, frames[1..]);
         }
         else
         {
@@ -275,7 +299,7 @@ public static class ImageExtensions
     /// <param name="repeatCount"></param>
     /// <param name="images"></param>
     /// <returns></returns>
-    public static Image CombineToGif(this Image image,
+    public static Image CombineGif(this Image image,
         int delayByMilliseconds = 0,
         ushort repeatCount = 0,
         params (Image Image, int DelayByMilliseconds)[] images)
