@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-public static class StringExtensions
+public static partial class StringExtensions
 {
     /// <summary>
     /// 计算长度（英文计1长度，Unicode计2长度）
@@ -24,6 +24,38 @@ public static class StringExtensions
             length += len;
         }
         return length;
+    }
+
+    /// <summary>
+    /// Any type has "TryParse" static method can use this
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="input"></param>
+    /// <param name="provider"></param>
+    /// <returns></returns>
+    public static T? To<T>(this string input, IFormatProvider? provider = default) where T : struct
+    {
+        var type = typeof(T);
+        var type_String = typeof(string);
+        var type_Provider = typeof(IFormatProvider);
+
+        var method_TryParse = type.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Where(_ => _.Name == nameof(int.TryParse))
+            .FirstOrDefault(_ =>
+            {
+                var parameters = _.GetParameters();
+                return provider is null
+                    ? parameters.Length == 2 && parameters[0].ParameterType == type_String && parameters[1].IsOut
+                    : parameters.Length == 3 && parameters[0].ParameterType == type_String && parameters[1].ParameterType == type_Provider && parameters[2].IsOut;
+            });
+        if (method_TryParse is not null)
+        {
+            object?[] parameters = provider is null ? [input, null] : [input, provider, null];
+            if ((bool)method_TryParse.Invoke(null, parameters)!)
+                return (provider is null ? parameters[1] : parameters[2]) as T?;
+        }
+
+        return default;
     }
 
     /// <summary>
@@ -272,11 +304,8 @@ public static class StringExtensions
             return input;
 
         var output = input;
-        output = Regex.Replace(output, @"(<script[^>]*>[.\n]*?</script>)+?", string.Empty, RegexOptions.IgnoreCase);
-        output = Regex.Replace(output, @"(<[^>]*>)+?", string.Empty, RegexOptions.IgnoreCase);
-        output = Regex.Replace(output, @"([\r\n])[\s]+", string.Empty, RegexOptions.IgnoreCase);
-        output = Regex.Replace(output, @"-->", string.Empty, RegexOptions.IgnoreCase);
-        output = Regex.Replace(output, @"<!--.*", string.Empty, RegexOptions.IgnoreCase);
+#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+        output = Regex.Replace(output, @"((\<script[^\>]*\>[.\r\n]*?\<\/script\>)+?)|((\<[^\>]*\>)+?)|(([\r\n])[\s]+)|(\<\!\-\-[.\r\n]*?\-\-\>)", string.Empty, RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"&(quot|#34);", "\"", RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"&(amp|#38);", "&", RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"&(lt|#60);", "<", RegexOptions.IgnoreCase);
@@ -287,9 +316,8 @@ public static class StringExtensions
         output = Regex.Replace(output, @"&(pound|#163);", "\xa3", RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"&(copy|#169);", "\xa9", RegexOptions.IgnoreCase);
         output = Regex.Replace(output, @"&#(\d+);", string.Empty, RegexOptions.IgnoreCase);
-        output.Replace("<", string.Empty);
-        output.Replace(">", string.Empty);
-        output.Replace(Environment.NewLine, string.Empty);
+#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+        output = output.Replace(Environment.NewLine, string.Empty);
         return output;
     }
 
