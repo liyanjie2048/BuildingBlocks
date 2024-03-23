@@ -5,44 +5,44 @@
 /// </summary>
 public static class ReflectionExtensions
 {
-    public static Dictionary<(Type, Type), Func<object, object>> Translations = new()
+    public static Dictionary<(Type, Type), Func<object, object?>> Translations = new()
     {
         [(typeof(string), typeof(byte))] = input => byte.Parse((string)input),
-        [(typeof(string), typeof(byte?))] = input => byte.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(byte?))] = input => byte.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(short))] = input => short.Parse((string)input),
-        [(typeof(string), typeof(short?))] = input => short.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(short?))] = input => short.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(ushort))] = input => ushort.Parse((string)input),
-        [(typeof(string), typeof(ushort?))] = input => ushort.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(ushort?))] = input => ushort.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(int))] = input => int.Parse((string)input),
-        [(typeof(string), typeof(int?))] = input => int.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(int?))] = input => int.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(uint))] = input => uint.Parse((string)input),
-        [(typeof(string), typeof(uint?))] = input => uint.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(uint?))] = input => uint.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(long))] = input => long.Parse((string)input),
-        [(typeof(string), typeof(long?))] = input => long.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(long?))] = input => long.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(ulong))] = input => ulong.Parse((string)input),
-        [(typeof(string), typeof(ulong?))] = input => ulong.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(ulong?))] = input => ulong.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(float))] = input => float.Parse((string)input),
-        [(typeof(string), typeof(float?))] = input => float.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(float?))] = input => float.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(double))] = input => double.Parse((string)input),
-        [(typeof(string), typeof(double?))] = input => double.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(double?))] = input => double.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(decimal))] = input => decimal.Parse((string)input),
-        [(typeof(string), typeof(decimal?))] = input => decimal.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(decimal?))] = input => decimal.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(DateTime))] = input => DateTime.Parse((string)input),
-        [(typeof(string), typeof(DateTime?))] = input => DateTime.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(DateTime?))] = input => DateTime.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(DateTimeOffset))] = input => DateTimeOffset.Parse((string)input),
-        [(typeof(string), typeof(DateTimeOffset?))] = input => DateTimeOffset.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(DateTimeOffset?))] = input => DateTimeOffset.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(TimeSpan))] = input => TimeSpan.Parse((string)input),
-        [(typeof(string), typeof(TimeSpan?))] = input => TimeSpan.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(TimeSpan?))] = input => TimeSpan.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(Guid))] = input => Guid.Parse((string)input),
-        [(typeof(string), typeof(Guid?))] = input => Guid.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(Guid?))] = input => Guid.TryParse((string)input, out var value) ? value : null,
 #if NET6_0_OR_GREATER
         [(typeof(string), typeof(DateOnly))] = input => DateOnly.Parse((string)input),
-        [(typeof(string), typeof(DateOnly?))] = input => DateOnly.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(DateOnly?))] = input => DateOnly.TryParse((string)input, out var value) ? value : null,
         [(typeof(string), typeof(TimeOnly))] = input => TimeOnly.Parse((string)input),
-        [(typeof(string), typeof(TimeOnly?))] = input => TimeOnly.TryParse((string)input, out var value) ? value : null!,
+        [(typeof(string), typeof(TimeOnly?))] = input => TimeOnly.TryParse((string)input, out var value) ? value : null,
 #endif
     };
-    public static void RegisterTranslation<TInput, TOutput>(Func<object, object> func)
+    public static void RegisterTranslation<TInput, TOutput>(Func<object, object?> func)
     {
         ReflectionExtensions.Translations.Add((typeof(TInput), typeof(TOutput)), func);
     }
