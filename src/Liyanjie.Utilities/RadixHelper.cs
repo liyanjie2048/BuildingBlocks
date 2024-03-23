@@ -19,8 +19,8 @@ public static class RadixHelper
     /// <returns></returns>
     public static string ToString(long number, int radix = 62, string? radixCodes = RadixCodes)
     {
-        var radixCodesIsNullOrWhiteSpace = string.IsNullOrWhiteSpace(radixCodes);
-        if (!radixCodesIsNullOrWhiteSpace && radixCodes!.Length < radix)
+        var hasRadixCodes = !string.IsNullOrWhiteSpace(radixCodes);
+        if (hasRadixCodes && radixCodes!.Length < radix)
             throw new ArgumentException($"不满足 {radix} 进制所需长度", nameof(radixCodes));
 
         var result = string.Empty;
@@ -41,7 +41,7 @@ public static class RadixHelper
             number -= tmp;
             number /= radix;
 
-            if (radixCodesIsNullOrWhiteSpace)
+            if (!hasRadixCodes)
             {
                 tmp += 48;
                 if (tmp > 57)
@@ -54,7 +54,7 @@ public static class RadixHelper
         }
         tmp = number % radix;
 
-        if (radixCodesIsNullOrWhiteSpace)
+        if (!hasRadixCodes)
         {
             tmp += 48;
             if (tmp > 57)
@@ -67,7 +67,7 @@ public static class RadixHelper
 
         foreach (var item in list)
         {
-            result = (radixCodesIsNullOrWhiteSpace ? ((char)item).ToString() : radixCodes![(int)item].ToString()) + result;
+            result = (!hasRadixCodes ? ((char)item).ToString() : radixCodes![(int)item].ToString()) + result;
         }
 
         if (fu)
@@ -88,7 +88,9 @@ public static class RadixHelper
         if (string.IsNullOrWhiteSpace(input))
             throw new ArgumentException($"Parameter '{nameof(input)}' can't be Null nor Empty nor WhiteSpace", nameof(input));
 
-        var radixCodesIsNullOrWhiteSpace = string.IsNullOrWhiteSpace(radixCodes);
+        var hasRadixCodes = !string.IsNullOrWhiteSpace(radixCodes);
+        if (hasRadixCodes && radixCodes!.Length < radix)
+            throw new ArgumentException($"不满足 {radix} 进制所需长度", nameof(radixCodes));
 
         var result = 0L;
         var fu = false;
@@ -107,7 +109,7 @@ public static class RadixHelper
         for (int i = 0; i < array.Count; i++)
         {
             long num;
-            if (radixCodesIsNullOrWhiteSpace)
+            if (!hasRadixCodes)
             {
                 num = array[i];
 

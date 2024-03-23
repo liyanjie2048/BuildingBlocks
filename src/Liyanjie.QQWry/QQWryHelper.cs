@@ -12,7 +12,7 @@ public class QQWryHelper
     static readonly Lazy<QQWry> qqwry_Lazy = new(() => ReadData());
     static QQWry ReadData()
     {
-        var dataFile = GetAbsolutePath(QQWryDatFile);
+        var dataFile = GetAbsolutePath(DatFile!);
         if (!File.Exists(dataFile))
             throw new FileNotFoundException($"Data file not exists:{dataFile}", dataFile);
         return new QQWry(dataFile);
@@ -23,7 +23,7 @@ public class QQWryHelper
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
 
-    public static string QQWryDatFile { get; set; } = @"Resources\\qqwry.dat";
+    public static string DatFile { get; set; } = @"Resources\qqwry.dat";
     public static (string? Area, string? ISP) SearchIP(string ip)
     {
         if (string.IsNullOrWhiteSpace(ip))
