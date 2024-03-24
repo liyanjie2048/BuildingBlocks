@@ -1,6 +1,8 @@
-﻿namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
+﻿#if NET6_0_OR_GREATER
 
-public class MongoDBDateOnlySerializer : StructSerializerBase<DateOnly>
+namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
+
+public class MongoDateOnlySerializer : StructSerializerBase<DateOnly>
 {
     public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateOnly value)
     {
@@ -14,3 +16,5 @@ public class MongoDBDateOnlySerializer : StructSerializerBase<DateOnly>
         return DateOnly.FromDateTime(dateTime);
     }
 }
+
+#endif

@@ -1,6 +1,8 @@
-﻿namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
+﻿#if NET6_0_OR_GREATER
 
-public class MongoDBDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>
+namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
+
+public class MongoDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>
 {
     public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateTimeOffset value)
     {
@@ -12,3 +14,5 @@ public class MongoDBDateTimeOffsetSerializer : StructSerializerBase<DateTimeOffs
         return new DateTimeOffset(BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime())).ToLocalTime();
     }
 }
+
+#endif

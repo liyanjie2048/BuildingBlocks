@@ -1,6 +1,8 @@
-﻿namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
+﻿#if NET6_0_OR_GREATER
 
-public class MongoDBTimeOnlySerializer : StructSerializerBase<TimeOnly>
+namespace Liyanjie.MongoDB.Driver.Extensions.Serializers;
+
+public class MongoTimeOnlySerializer : StructSerializerBase<TimeOnly>
 {
     public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TimeOnly value)
     {
@@ -14,3 +16,5 @@ public class MongoDBTimeOnlySerializer : StructSerializerBase<TimeOnly>
         return TimeOnly.FromDateTime(dateTime);
     }
 }
+
+#endif
