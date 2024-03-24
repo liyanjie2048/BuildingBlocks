@@ -54,7 +54,7 @@ public static class ReflectionExtensions
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static TOutput? TranslateTo<TOutput>(this object input, Action<TOutput>? extra = default)
+    public static TOutput? TranslateTo<TOutput>(this object? input, Action<TOutput>? extra = default)
     {
         var output = DoTranslate<TOutput>(input!);
 
@@ -73,7 +73,7 @@ public static class ReflectionExtensions
     /// <param name="input"></param>
     /// <param name="extra"></param>
     /// <returns></returns>
-    public static async Task<TOutput?> TranslateToAsync<TOutput>(this object input, Func<TOutput, Task> extra)
+    public static async Task<TOutput?> TranslateToAsync<TOutput>(this object? input, Func<TOutput, Task> extra)
     {
         var output = DoTranslate<TOutput>(input);
 
@@ -86,8 +86,11 @@ public static class ReflectionExtensions
         return output;
     }
 
-    static TOutput? DoTranslate<TOutput>(this object input)
+    static TOutput? DoTranslate<TOutput>(this object? input)
     {
+        if (input is null)
+            return default;
+
         var translated = new Dictionary<(Type, Type, object), object?>();
         var output = (TOutput?)DoTranslate(typeof(TOutput), input, translated);
 
@@ -96,7 +99,7 @@ public static class ReflectionExtensions
         return output;
     }
 
-    static object? DoTranslate(Type outputType, object input, Dictionary<(Type, Type, object), object?> translated)
+    static object? DoTranslate(Type outputType, object? input, Dictionary<(Type, Type, object), object?> translated)
     {
         if (input is null)
             return null;
@@ -191,7 +194,7 @@ public static class ReflectionExtensions
             if (inputProperty is null || inputProperty.CanRead == false)
                 continue;
 
-            outputProperty.SetValue(output, DoTranslate(outputProperty.PropertyType, inputProperty.GetValue(input)!, translated));
+            outputProperty.SetValue(output, DoTranslate(outputProperty.PropertyType, inputProperty.GetValue(input), translated));
         }
 
         return output;
@@ -254,7 +257,7 @@ public static class ReflectionExtensions
                 }
             }
 
-            //目标为类
+            //目标为类实例
             else if (property_model.PropertyType != typeof(string) && property_model.PropertyType.IsClass)
             {
                 if (value_ is null)
