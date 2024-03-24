@@ -6,7 +6,8 @@ public class MongoTimeOnlySerializer : StructSerializerBase<TimeOnly>
 {
     public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TimeOnly value)
     {
-        var dateTime = new DateTime(0, 1, 1, value.Hour, value.Minute, value.Second, value.Millisecond, DateTimeKind.Local);
+        //年份小于1970会报错
+        var dateTime = new DateTime(1970, 1, 1, value.Hour, value.Minute, value.Second, value.Millisecond, DateTimeKind.Local);
         context.Writer.WriteDateTime(BsonUtils.ToMillisecondsSinceEpoch(dateTime.ToUniversalTime()));
     }
 
