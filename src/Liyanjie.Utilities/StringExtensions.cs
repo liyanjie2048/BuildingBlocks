@@ -33,7 +33,7 @@ public static partial class StringExtensions
     /// <param name="input"></param>
     /// <param name="provider"></param>
     /// <returns></returns>
-    public static T? To<T>(this string input, IFormatProvider? provider = default) where T : struct
+    public static T? ParseTo<T>(this string input, IFormatProvider? provider = default) where T : struct
     {
         var type = typeof(T);
         var type_String = typeof(string);
@@ -505,6 +505,16 @@ public static partial class StringExtensions
     /// <returns></returns>
     public static string Replace(this string input, string pattern, MatchEvaluator evaluator, RegexOptions options, TimeSpan matchTimeout)
         => Regex.Replace(input, pattern, evaluator, options, matchTimeout);
+
+    public static string ReplaceNullOrEmpty(this string? input, string replacement)
+    {
+        return string.IsNullOrEmpty(input) ? replacement : input!;
+    }
+
+    public static string ReplaceNullOrWhiteSpace(this string? input, string replacement)
+    {
+        return string.IsNullOrWhiteSpace(input) ? replacement : input!;
+    }
 
 #if NETSTANDARD2_0
     public static string[] Split(this string input, char separator, StringSplitOptions options)

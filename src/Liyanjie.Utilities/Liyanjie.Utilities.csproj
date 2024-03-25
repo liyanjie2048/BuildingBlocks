@@ -4,7 +4,7 @@
         <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;</TargetFrameworks>
         <Nullable>enable</Nullable>
 		<ImplicitUsings>true</ImplicitUsings>
-		<VersionSuffix>240324</VersionSuffix>
+		<VersionSuffix>240325</VersionSuffix>
         <Description>扩展方法合集</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
