@@ -6,13 +6,13 @@ public class MongoDateOnlySerializer : StructSerializerBase<DateOnly>
 {
     public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateOnly value)
     {
-        var dateTime = value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local);
+        var dateTime = value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
         context.Writer.WriteDateTime(BsonUtils.ToMillisecondsSinceEpoch(dateTime.ToUniversalTime()));
     }
 
     public override DateOnly Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
     {
-        var dateTime = BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime()).ToLocalTime();
+        var dateTime = BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime()).ToUniversalTime();
         return DateOnly.FromDateTime(dateTime);
     }
 }
