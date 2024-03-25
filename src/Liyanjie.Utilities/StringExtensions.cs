@@ -506,14 +506,14 @@ public static partial class StringExtensions
     public static string Replace(this string input, string pattern, MatchEvaluator evaluator, RegexOptions options, TimeSpan matchTimeout)
         => Regex.Replace(input, pattern, evaluator, options, matchTimeout);
 
-    public static string ReplaceNullOrEmpty(this string? input, string replacement)
+    public static string? ReplaceNullOrEmpty(this string? input, string? replacement)
     {
-        return string.IsNullOrEmpty(input) ? replacement : input!;
+        return string.IsNullOrEmpty(input) ? replacement : input;
     }
 
-    public static string ReplaceNullOrWhiteSpace(this string? input, string replacement)
+    public static string? ReplaceNullOrWhiteSpace(this string? input, string? replacement)
     {
-        return string.IsNullOrWhiteSpace(input) ? replacement : input!;
+        return string.IsNullOrWhiteSpace(input) ? replacement : input;
     }
 
 #if NETSTANDARD2_0

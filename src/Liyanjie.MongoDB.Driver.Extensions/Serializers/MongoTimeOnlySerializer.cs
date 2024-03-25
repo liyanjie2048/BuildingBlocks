@@ -13,7 +13,7 @@ public class MongoTimeOnlySerializer : StructSerializerBase<TimeOnly>
 
     public override TimeOnly Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
     {
-        var dateTime = BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime()).ToUniversalTime();
+        var dateTime = BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime()).ToLocalTime();
         return TimeOnly.FromDateTime(dateTime);
     }
 }
