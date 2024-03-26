@@ -1,22 +1,14 @@
 ﻿namespace Liyanjie.AspNetCore.Extensions;
 
 /// <summary>
+/// 只能用在Query或Form绑定数据时使用
+/// 
 /// [ModelBinder(BinderType = typeof(DelimitedArrayModelBinder))]
 /// public string[] ModelProperty { get; set; }
 /// </summary>
-public class DelimitedArrayModelBinder : IModelBinder
+/// <param name="delimiter"></param>
+public class DelimitedArrayModelBinder(string delimiter = ",") : IModelBinder
 {
-    readonly string _delimiter;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="delimiter"></param>
-    public DelimitedArrayModelBinder(string delimiter = ",")
-    {
-        this._delimiter = delimiter;
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -24,8 +16,7 @@ public class DelimitedArrayModelBinder : IModelBinder
     /// <returns></returns>
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        if (bindingContext is null)
-            throw new ArgumentNullException(nameof(bindingContext));
+        await Task.CompletedTask;
 
         if (!bindingContext.ModelMetadata.IsEnumerableType)
             return;
@@ -44,7 +35,7 @@ public class DelimitedArrayModelBinder : IModelBinder
         try
         {
             var value = values
-                .SelectMany(_ => _.Split(new[] { _delimiter }, StringSplitOptions.RemoveEmptyEntries)
+                .SelectMany(_ => _.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(_ => converter.ConvertFromString(_)))
                 .ToArray();
             var typedValue = Array.CreateInstance(elementType, value.Length);
@@ -55,7 +46,5 @@ public class DelimitedArrayModelBinder : IModelBinder
         {
             bindingContext.ModelState.AddModelError(bindingContext.ModelName, e.Message);
         }
-
-        await Task.CompletedTask;
     }
 }

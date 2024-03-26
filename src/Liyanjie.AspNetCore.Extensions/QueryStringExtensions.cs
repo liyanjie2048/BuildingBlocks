@@ -17,12 +17,12 @@ public static class QueryStringExtensions
         if (!queryString.HasValue)
             return new();
 
-        var dictionary = QueryHelpers.ParseNullableQuery(queryString.Value!);
+        var dictionary = QueryHelpers.ParseNullableQuery(queryString.Value);
         if (dictionary is null)
             return new();
 
         return dictionary
-            .ToDictionary(_ => _.Key, _ => (object)_.Value)
+            .ToDictionary(_ => _.Key, _ => (object?)_.Value)
             .BuildModel<TModel>();
     }
 }

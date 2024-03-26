@@ -1,4 +1,6 @@
-﻿namespace Liyanjie.AspNetCore.Extensions;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+
+namespace Liyanjie.AspNetCore.Extensions;
 
 /// <summary>
 /// services.AddMvc(options => 
@@ -15,20 +17,15 @@ public class DelimitedArrayModelBinderProvider : IModelBinderProvider
     /// <returns></returns>
     public IModelBinder? GetBinder(ModelBinderProviderContext context)
     {
-        if (context is null)
-            throw new ArgumentNullException(nameof(context));
+        if (context.Metadata.IsEnumerableType)
+        {
+            var delimitedArrayAttribute = ((DefaultModelMetadata)context.Metadata).Attributes.ParameterAttributes?.FirstOrDefault(_ => _ is DelimitedArrayAttribute);
+            if (delimitedArrayAttribute is DelimitedArrayAttribute delimitedArray)
+            {
+                return new DelimitedArrayModelBinder(delimitedArray.Delimiter);
+            }
+        }
 
-        if (!context.Metadata.IsEnumerableType)
-            return default;
-
-        var propertyName = context.Metadata.PropertyName;
-        if (string.IsNullOrEmpty(propertyName))
-            return default;
-
-        var propertyAttribute = context.Metadata.ContainerType?.GetProperty(propertyName)?.GetCustomAttributes<DelimitedArrayAttribute>(false).FirstOrDefault();
-        if (propertyAttribute is null)
-            return default;
-
-        return new DelimitedArrayModelBinder(propertyAttribute.Delimiter);
+        return default;
     }
 }

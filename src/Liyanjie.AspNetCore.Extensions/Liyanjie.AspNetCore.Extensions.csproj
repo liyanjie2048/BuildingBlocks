@@ -6,7 +6,7 @@
         <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>true</ImplicitUsings>
-		<VersionSuffix>240320</VersionSuffix>
+		<VersionSuffix>240326</VersionSuffix>
         <Description>AspNetCore 扩展</Description>
         <Copyright>© Liyanjie.net</Copyright>
         <Authors>liyanjie2048@outlook.com</Authors>
