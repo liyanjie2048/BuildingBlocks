@@ -22,7 +22,7 @@ public class DelimitedArrayModelBinderProvider : IModelBinderProvider
             var delimitedArrayAttribute = ((DefaultModelMetadata)context.Metadata).Attributes.ParameterAttributes?.FirstOrDefault(_ => _ is DelimitedArrayAttribute);
             if (delimitedArrayAttribute is DelimitedArrayAttribute delimitedArray)
             {
-                return new DelimitedArrayModelBinder(delimitedArray.Delimiter);
+                return new DelimitedArrayModelBinder(delimitedArray.Delimiter, delimitedArray.SplitOptions);
             }
         }
 

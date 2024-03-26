@@ -1,8 +1,8 @@
 @Liyanjie.AspNetCore.Extensions.Sample_HostAddress = http://localhost:5076
 
-POST {{Liyanjie.AspNetCore.Extensions.Sample_HostAddress}}/api?abc=58E759ED-E8C1-4F53-BF23-184B6B8D0FA6,F601CDC2-AA59-4112-AD4A-54E58B4B3C1B
+POST {{Liyanjie.AspNetCore.Extensions.Sample_HostAddress}}/api?abc=58E759ED-E8C1-4F53-BF23-184B6B8D0FA6,%20F601CDC2-AA59-4112-AD4A-54E58B4B3C1B
 Accept: application/json
 Content-Type: application/x-www-form-urlencoded
 
-Ids=58E759ED-E8C1-4F53-BF23-184B6B8D0FA6,F601CDC2-AA59-4112-AD4A-54E58B4B3C1B
+Ids=58E759ED-E8C1-4F53-BF23-184B6B8D0FA6,%20F601CDC2-AA59-4112-AD4A-54E58B4B3C1B
 ###

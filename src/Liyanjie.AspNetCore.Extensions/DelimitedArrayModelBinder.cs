@@ -7,7 +7,11 @@
 /// public string[] ModelProperty { get; set; }
 /// </summary>
 /// <param name="delimiter"></param>
-public class DelimitedArrayModelBinder(string delimiter = ",") : IModelBinder
+/// <param name="splitOptions"></param>
+public class DelimitedArrayModelBinder(
+    string delimiter = ",",
+    StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
+    : IModelBinder
 {
     /// <summary>
     /// 
@@ -35,7 +39,7 @@ public class DelimitedArrayModelBinder(string delimiter = ",") : IModelBinder
         try
         {
             var value = values
-                .SelectMany(_ => _.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries)
+                .SelectMany(_ => _.Split(new[] { delimiter }, splitOptions)
                 .Select(_ => converter.ConvertFromString(_)))
                 .ToArray();
             var typedValue = Array.CreateInstance(elementType, value.Length);
